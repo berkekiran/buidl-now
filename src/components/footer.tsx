@@ -21,6 +21,7 @@ export function Footer() {
             aria-label="GitHub Repository"
           >
             <FaGithub className="w-4 h-4" />
+            <span>GitHub</span>
           </a>
         </div>
       </div>
