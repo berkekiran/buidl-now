@@ -1,4 +1,6 @@
-![Buidl Now](public/buidl-now-logo.svg)
+<p align="center">
+  <img src="public/buidl-now-logo.svg" alt="Buidl Now" width="200" />
+</p>
 
 Buidl Now! Developer tools for builders who ship fast. A comprehensive suite of developer tools and Web3 utilities.
 
