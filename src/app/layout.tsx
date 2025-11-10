@@ -95,7 +95,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${albertSans.variable} antialiased overflow-x-hidden`}>
         <div className="relative z-10 min-h-screen flex flex-col">
-          <main className="flex-1 pt-12 sm:pt-20 pb-2 w-full overflow-x-hidden">
+          <main className="flex flex-col justify-between pt-12 sm:pt-20 pb-2 min-h-screen w-full overflow-x-hidden">
             <Header />
             <div className="max-w-[640px] w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
               {children}
