@@ -24,7 +24,7 @@ export function ToolStructuredData({ tool }: ToolStructuredDataProps) {
       url: "https://buidlnow.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://buidlnow.com/buidl-now-logo.svg",
+        url: "https://buidlnow.com/favicon.png",
       },
     },
     audience: {
@@ -63,7 +63,7 @@ export function WebsiteStructuredData() {
       url: "https://buidlnow.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://buidlnow.com/buidl-now-logo.svg",
+        url: "https://buidlnow.com/favicon.png",
       },
     },
   };
@@ -82,7 +82,7 @@ export function OrganizationStructuredData() {
     "@type": "Organization",
     name: "Buidl Now!",
     url: "https://buidlnow.com",
-    logo: "https://buidlnow.com/buidl-now-logo.svg",
+    logo: "https://buidlnow.com/favicon.png",
     description: "Free online developer tools for Web3 builders",
     sameAs: [
       "https://twitter.com/buidlnow",

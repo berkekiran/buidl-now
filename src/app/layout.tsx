@@ -73,8 +73,8 @@ export const metadata: Metadata = {
     creator: "@buidlnow",
   },
   icons: {
-    icon: "/buidl-now-logo.svg",
-    apple: "/buidl-now-logo.svg",
+    icon: "/favicon.png",
+    apple: "/favicon.png",
   },
   manifest: "/manifest.json",
   themeColor: "#0a0a0a",
