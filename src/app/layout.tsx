@@ -76,8 +76,6 @@ export const metadata: Metadata = {
     icon: "/favicon.png",
     apple: "/favicon.png",
   },
-  manifest: "/manifest.json",
-  themeColor: "#0a0a0a",
   robots: {
     index: true,
     follow: true,
