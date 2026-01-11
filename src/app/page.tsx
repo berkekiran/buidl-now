@@ -4,16 +4,26 @@ import { tools } from "@/lib/tools-list";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { MdSearch, MdClose, MdKeyboardReturn, MdAccessTime, MdOutlineCurrencyExchange, MdCode } from "react-icons/md";
 import Image from "next/image";
 import { WebsiteStructuredData, OrganizationStructuredData } from "@/components/structured-data";
 
-export default function Home() {
+function HomeContent() {
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selectedItemRef = useRef<HTMLAnchorElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Initialize search query from URL parameter
+  useEffect(() => {
+    const urlSearch = searchParams.get("search");
+    if (urlSearch) {
+      setSearchQuery(urlSearch);
+    }
+  }, [searchParams]);
 
   const filteredTools = searchQuery
     ? tools.filter(
@@ -210,5 +220,30 @@ export default function Home() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<HomeLoading />}>
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+function HomeLoading() {
+  return (
+    <div className='flex flex-col items-center justify-center h-[60vh]'>
+      <div className="flex items-end gap-4 text-white mb-8">
+        <div className="w-24 h-24 sm:w-32 sm:h-32 bg-muted/20 rounded-lg animate-pulse" />
+        <div className="flex flex-col items-start justify-end gap-2">
+          <div className="h-9 w-32 bg-muted/20 rounded animate-pulse" />
+          <div className="h-4 w-48 bg-muted/20 rounded animate-pulse" />
+        </div>
+      </div>
+      <div className="w-full max-w-2xl px-4">
+        <div className="h-12 bg-muted/20 rounded-md animate-pulse" />
+      </div>
+    </div>
   );
 }
