@@ -6,9 +6,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { MdSearch, MdClose, MdKeyboardReturn, MdAccessTime, MdOutlineCurrencyExchange, MdCode } from "react-icons/md";
+import {
+  MdSearch,
+  MdClose,
+  MdKeyboardReturn,
+  MdAccessTime,
+  MdOutlineCurrencyExchange,
+  MdCode,
+} from "react-icons/md";
 import Image from "next/image";
-import { WebsiteStructuredData, OrganizationStructuredData } from "@/components/structured-data";
+import {
+  WebsiteStructuredData,
+  OrganizationStructuredData,
+} from "@/components/structured-data";
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -26,9 +36,8 @@ function HomeContent() {
   }, [searchParams]);
 
   const filteredTools = searchQuery
-    ? tools.filter(
-        (tool) =>
-          tool.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ? tools.filter((tool) =>
+        tool.name.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : [];
 
@@ -59,7 +68,7 @@ function HomeContent() {
   // Scroll selected item into view when selectedIndex changes
   useEffect(() => {
     if (selectedItemRef.current) {
-      const container = selectedItemRef.current.closest('[data-scrollable]');
+      const container = selectedItemRef.current.closest("[data-scrollable]");
       if (container) {
         const itemRect = selectedItemRef.current.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
@@ -67,10 +76,11 @@ function HomeContent() {
 
         if (itemRect.top < containerRect.top + offset) {
           // Item is above visible area
-          container.scrollTop -= (containerRect.top + offset - itemRect.top);
+          container.scrollTop -= containerRect.top + offset - itemRect.top;
         } else if (itemRect.bottom > containerRect.bottom - offset) {
           // Item is below visible area
-          container.scrollTop += (itemRect.bottom - containerRect.bottom + offset);
+          container.scrollTop +=
+            itemRect.bottom - containerRect.bottom + offset;
         }
       }
     }
@@ -85,7 +95,7 @@ function HomeContent() {
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
       setSelectedIndex((prev) =>
-        prev < filteredTools.length - 1 ? prev + 1 : prev
+        prev < filteredTools.length - 1 ? prev + 1 : prev,
       );
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
@@ -104,7 +114,7 @@ function HomeContent() {
       <WebsiteStructuredData />
       <OrganizationStructuredData />
 
-      <div className='flex flex-col items-center justify-center h-[60vh]'>
+      <div className="flex flex-col items-center justify-center h-[72vh]">
         {/* Hero Section */}
         <div className="flex items-end gap-4 text-white mb-8">
           <Image
@@ -117,7 +127,9 @@ function HomeContent() {
           <div className="flex flex-col items-start justify-end gap-2">
             <div className="flex flex-row items-center gap-2">
               <span className="text-3xl sm:text-4xl font-medium">Buidl</span>
-              <span className="text-3xl sm:text-4xl font-normal italic">Now!</span>
+              <span className="text-3xl sm:text-4xl font-normal italic">
+                Now!
+              </span>
             </div>
             <span className="text-sm sm:text-base text-muted-foreground">
               Developer tools for builders who ship fast
@@ -180,18 +192,22 @@ function HomeContent() {
                     ref={index === selectedIndex ? selectedItemRef : null}
                     href={tool.path}
                     className={`block px-3 py-2.5 rounded-md transition-colors ${
-                      index === selectedIndex
-                        ? "bg-accent"
-                        : "hover:bg-accent"
+                      index === selectedIndex ? "bg-accent" : "hover:bg-accent"
                     }`}
                     onClick={() => setSearchQuery("")}
                     onMouseEnter={() => setSelectedIndex(index)}
                   >
                     <div className="flex items-center gap-2 mb-1">
-                      {tool.icon && <tool.icon className="w-3.5 h-3.5 text-muted-foreground" />}
-                      <div className="font-medium text-foreground">{tool.name}</div>
+                      {tool.icon && (
+                        <tool.icon className="w-3.5 h-3.5 text-muted-foreground" />
+                      )}
+                      <div className="font-medium text-foreground">
+                        {tool.name}
+                      </div>
                     </div>
-                    <div className="text-sm text-muted-foreground">{tool.description}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {tool.description}
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -203,14 +219,27 @@ function HomeContent() {
         <div className="w-full max-w-2xl px-4 mt-6">
           <div className="flex flex-wrap gap-2 justify-center">
             {[
-              { tool: tools.find((t) => t.id === "epoch-converter"), icon: MdAccessTime },
-              { tool: tools.find((t) => t.id === "eth-unit-converter"), icon: MdOutlineCurrencyExchange },
-              { tool: tools.find((t) => t.id === "json-validator"), icon: MdCode },
+              {
+                tool: tools.find((t) => t.id === "epoch-converter"),
+                icon: MdAccessTime,
+              },
+              {
+                tool: tools.find((t) => t.id === "eth-unit-converter"),
+                icon: MdOutlineCurrencyExchange,
+              },
+              {
+                tool: tools.find((t) => t.id === "json-validator"),
+                icon: MdCode,
+              },
             ]
               .filter((item) => item.tool)
               .map(({ tool, icon: Icon }) => (
                 <Link key={tool!.id} href={tool!.path}>
-                  <Button variant="outline" size="sm" className="text-xs gap-1.5">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs gap-1.5"
+                  >
                     <Icon className="w-3.5 h-3.5" />
                     {tool!.name}
                   </Button>
@@ -233,7 +262,7 @@ export default function Home() {
 
 function HomeLoading() {
   return (
-    <div className='flex flex-col items-center justify-center h-[60vh]'>
+    <div className="flex flex-col items-center justify-center h-[60vh]">
       <div className="flex items-end gap-4 text-white mb-8">
         <div className="w-24 h-24 sm:w-32 sm:h-32 bg-muted/20 rounded-lg animate-pulse" />
         <div className="flex flex-col items-start justify-end gap-2">
