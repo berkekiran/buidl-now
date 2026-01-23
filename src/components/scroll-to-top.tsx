@@ -36,7 +36,7 @@ export function ScrollToTop() {
       <div className="w-[640px] mx-auto px-6 py-12 flex justify-end">
         <Button
           onClick={scrollToTop}
-          variant="secondary"
+         
           size="sm"
           className={`pointer-events-auto !px-2 h-auto min-h-0 transition-all duration-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"

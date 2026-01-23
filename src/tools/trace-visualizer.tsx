@@ -44,7 +44,7 @@ interface ParsedCall {
 const callTypeColors: Record<string, string> = {
   CALL: "text-blue-400 border-blue-500/30 bg-blue-500/5",
   DELEGATECALL: "text-purple-400 border-purple-500/30 bg-purple-500/5",
-  STATICCALL: "text-green-400 border-green-500/30 bg-green-500/5",
+  STATICCALL: "text-[var(--color-green-500)] border-green-500/30 bg-green-500/5",
   CREATE: "text-orange-400 border-orange-500/30 bg-orange-500/5",
   CREATE2: "text-orange-400 border-orange-500/30 bg-orange-500/5",
   CALLCODE: "text-yellow-400 border-yellow-500/30 bg-yellow-500/5",
@@ -70,7 +70,7 @@ function TraceNode({
 
   const colorClass = call.success
     ? callTypeColors[call.type] || "text-gray-400 border-gray-500/30 bg-gray-500/5"
-    : "text-red-400 border-red-500/30 bg-red-500/5";
+    : "text-[var(--color-red-500)] border-red-500/30 bg-red-500/5";
 
   const truncate = (str: string, length: number = 10) => {
     if (str.length <= length) return str;
@@ -81,7 +81,7 @@ function TraceNode({
     <div className="space-y-2">
       {/* Call Node */}
       <div
-        className={`p-3 rounded border ${colorClass} ${
+        className={`p-3 rounded-[12px] border ${colorClass} ${
           hasChildren ? "cursor-pointer" : ""
         }`}
         onClick={hasChildren ? onToggle : undefined}
@@ -104,7 +104,7 @@ function TraceNode({
           <div className="flex-1 min-w-0 space-y-2">
             {/* Header */}
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-mono text-xs px-2 py-0.5 rounded bg-[#0f0f0f] font-semibold">
+              <span className="font-mono text-xs px-2 py-0.5 rounded-[12px] bg-[var(--color-gray-0)] font-semibold">
                 {call.type}
               </span>
               {call.functionSelector && (
@@ -113,7 +113,7 @@ function TraceNode({
                 </span>
               )}
               {!call.success && (
-                <span className="text-xs px-2 py-0.5 rounded bg-red-500/20 text-red-300 font-semibold">
+                <span className="text-xs px-2 py-0.5 rounded-[12px] bg-red-500/20 text-red-300 font-semibold">
                   FAILED
                 </span>
               )}
@@ -124,41 +124,41 @@ function TraceNode({
               <span className="text-muted-foreground">From:</span>
               <div className="flex items-center gap-2">
                 <span className="font-mono">{truncate(call.from, 8)}</span>
-                <Button
+                <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleCopy(call.from, `from-${call.from}`);
                   }}
-                  variant="ghost"
-                  size="sm"
-                  className="opacity-0 hover:opacity-100 transition-opacity h-auto p-0"
+                  className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer opacity-0 hover:opacity-100"
+                  title={copied === `from-${call.from}` ? "Copied!" : "Copy to clipboard"}
                 >
                   {copied === `from-${call.from}` ? (
-                    <MdCheck className="w-3 h-3" />
+                    <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                   ) : (
-                    <MdContentCopy className="w-3 h-3" />
+                    <MdContentCopy style={{ width: 16, height: 16 }} />
                   )}
-                </Button>
+                </button>
               </div>
 
               <span className="text-muted-foreground">To:</span>
               <div className="flex items-center gap-2">
                 <span className="font-mono">{truncate(call.to, 8)}</span>
-                <Button
+                <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleCopy(call.to, `to-${call.to}`);
                   }}
-                  variant="ghost"
-                  size="sm"
-                  className="opacity-0 hover:opacity-100 transition-opacity h-auto p-0"
+                  className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer opacity-0 hover:opacity-100"
+                  title={copied === `to-${call.to}` ? "Copied!" : "Copy to clipboard"}
                 >
                   {copied === `to-${call.to}` ? (
-                    <MdCheck className="w-3 h-3" />
+                    <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                   ) : (
-                    <MdContentCopy className="w-3 h-3" />
+                    <MdContentCopy style={{ width: 16, height: 16 }} />
                   )}
-                </Button>
+                </button>
               </div>
 
               {call.value !== "0x0" && call.value !== "0" && (
@@ -176,7 +176,7 @@ function TraceNode({
 
             {/* Error */}
             {call.error && (
-              <div className="text-xs bg-red-500/10 rounded px-2 py-1 font-mono">
+              <div className="text-xs bg-[var(--color-red-50)] rounded-[12px] px-2 py-1 font-mono">
                 Error: {call.error}
               </div>
             )}
@@ -188,29 +188,23 @@ function TraceNode({
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs text-muted-foreground">Input:</span>
-                      <Button
+                      <button
+                        type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleCopy(call.input, `input-${call.input}`);
                         }}
-                        variant="ghost"
-                        size="sm"
-                        className="text-xs h-auto p-0 gap-1"
+                        className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                        title={copied === `input-${call.input}` ? "Copied!" : "Copy to clipboard"}
                       >
                         {copied === `input-${call.input}` ? (
-                          <>
-                            <MdCheck className="w-3 h-3" />
-                            <span>Copied</span>
-                          </>
+                          <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                         ) : (
-                          <>
-                            <MdContentCopy className="w-3 h-3" />
-                            <span>Copy</span>
-                          </>
+                          <MdContentCopy style={{ width: 16, height: 16 }} />
                         )}
-                      </Button>
+                      </button>
                     </div>
-                    <div className="font-mono text-xs bg-[#0f0f0f] rounded px-2 py-1 break-all">
+                    <div className="font-mono text-xs bg-[var(--color-gray-0)] rounded-[12px] px-2 py-1 break-all">
                       {truncate(call.input, 64)}
                     </div>
                   </div>
@@ -220,29 +214,23 @@ function TraceNode({
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs text-muted-foreground">Output:</span>
-                      <Button
+                      <button
+                        type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleCopy(call.output, `output-${call.output}`);
                         }}
-                        variant="ghost"
-                        size="sm"
-                        className="text-xs h-auto p-0 gap-1"
+                        className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                        title={copied === `output-${call.output}` ? "Copied!" : "Copy to clipboard"}
                       >
                         {copied === `output-${call.output}` ? (
-                          <>
-                            <MdCheck className="w-3 h-3" />
-                            <span>Copied</span>
-                          </>
+                          <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                         ) : (
-                          <>
-                            <MdContentCopy className="w-3 h-3" />
-                            <span>Copy</span>
-                          </>
+                          <MdContentCopy style={{ width: 16, height: 16 }} />
                         )}
-                      </Button>
+                      </button>
                     </div>
-                    <div className="font-mono text-xs bg-[#0f0f0f] rounded px-2 py-1 break-all">
+                    <div className="font-mono text-xs bg-[var(--color-gray-0)] rounded-[12px] px-2 py-1 break-all">
                       {truncate(call.output, 64)}
                     </div>
                   </div>
@@ -435,7 +423,7 @@ export function TraceVisualizerTool() {
               setInputMode("json");
               handleReset();
             }}
-            variant={inputMode === "json" ? "default" : "secondary"}
+            variant={inputMode === "json" ? "primary" : "secondary"}
             className="h-auto p-3 flex flex-col items-start justify-start"
           >
             <div className="text-sm font-medium">Trace JSON</div>
@@ -446,7 +434,7 @@ export function TraceVisualizerTool() {
               setInputMode("tx");
               handleReset();
             }}
-            variant={inputMode === "tx" ? "default" : "secondary"}
+            variant={inputMode === "tx" ? "primary" : "secondary"}
             className="h-auto p-3 flex flex-col items-start justify-start"
           >
             <div className="text-sm font-medium">Transaction Hash</div>
@@ -468,14 +456,12 @@ export function TraceVisualizerTool() {
             }}
             placeholder='{"type":"CALL","from":"0x...","to":"0x...","value":"0x0","gas":"0x...","gasUsed":"0x...","input":"0x...","output":"0x...","calls":[...]}'
             className="font-mono text-sm min-h-[200px]"
-            showClear
-            onClearClick={handleReset}
           />
           <div className="flex gap-2 mt-2">
-            <Button onClick={handleParseJson} className="flex-1">
+            <Button onClick={handleParseJson} variant="primary" className="flex-1">
               Parse & Visualize
             </Button>
-            <Button onClick={handleReset} variant="secondary">
+            <Button onClick={handleReset}>
               Reset
             </Button>
           </div>
@@ -504,18 +490,19 @@ export function TraceVisualizerTool() {
             placeholder="https://eth-mainnet.g.alchemy.com/v2/..."
             className="font-mono text-sm"
           />
-          <div className="text-xs text-yellow-400 bg-yellow-500/5 border border-yellow-500/30 rounded p-2">
+          <div className="text-xs text-yellow-400 bg-yellow-500/5 border border-yellow-500/30 rounded-[12px] p-2">
             Note: debug_traceTransaction requires archive node access. Not all RPC providers support this.
           </div>
           <div className="flex gap-2">
             <Button
               onClick={handleFetchTrace}
+              variant="primary"
               className="flex-1"
               disabled={loading}
             >
               {loading ? "Fetching..." : "Fetch & Visualize"}
             </Button>
-            <Button onClick={handleReset} variant="secondary" disabled={loading}>
+            <Button onClick={handleReset} disabled={loading}>
               Reset
             </Button>
           </div>
@@ -524,7 +511,7 @@ export function TraceVisualizerTool() {
 
       {/* Error Message */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
           <div className="text-sm font-medium">Error: {error}</div>
         </div>
       )}
@@ -534,11 +521,11 @@ export function TraceVisualizerTool() {
         <div className="space-y-4">
           {/* Statistics */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-3 rounded border border-border bg-[#1a1a1a]">
+            <div className="p-3 rounded-[12px] border border-border bg-[#1a1a1a]">
               <div className="text-xs text-muted-foreground mb-1">Total Calls</div>
               <div className="text-base font-mono">{countCalls(parsedTrace)}</div>
             </div>
-            <div className="p-3 rounded border border-border bg-[#1a1a1a]">
+            <div className="p-3 rounded-[12px] border border-border bg-[#1a1a1a]">
               <div className="text-xs text-muted-foreground mb-1">Max Depth</div>
               <div className="text-base font-mono">
                 {Math.max(
@@ -548,7 +535,7 @@ export function TraceVisualizerTool() {
                 )}
               </div>
             </div>
-            <div className="p-3 rounded border border-border bg-[#1a1a1a]">
+            <div className="p-3 rounded-[12px] border border-border bg-[#1a1a1a]">
               <div className="text-xs text-muted-foreground mb-1">Total Gas</div>
               <div className="text-base font-mono">
                 {calculateTotalGas(parsedTrace).toLocaleString()}
@@ -558,10 +545,10 @@ export function TraceVisualizerTool() {
 
           {/* Controls */}
           <div className="flex items-center justify-between">
-            <div className="text-sm font-medium text-green-400">
+            <div className="text-sm font-medium text-[var(--color-green-500)]">
               Call Trace Tree
             </div>
-            <Button onClick={collapseAll} variant="secondary" size="sm">
+            <Button onClick={collapseAll} size="sm">
               Refresh
             </Button>
           </div>
@@ -572,7 +559,7 @@ export function TraceVisualizerTool() {
           </div>
 
           {/* Legend */}
-          <div className="p-3 rounded border border-border bg-[#1a1a1a]">
+          <div className="p-3 rounded-[12px] border border-border bg-[#1a1a1a]">
             <div className="text-xs font-medium mb-2">Call Type Legend</div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
               <div className="flex items-center gap-2">
@@ -601,15 +588,15 @@ export function TraceVisualizerTool() {
       )}
 
       {/* Info Box */}
-      <div className="p-4 rounded border border-blue-500/30 bg-blue-500/5">
+      <div className="p-4 rounded-[12px] border border-blue-500/30 bg-blue-500/5">
         <div className="text-sm text-blue-400 space-y-2">
           <div>
             <strong>Transaction Traces:</strong> Visualize the complete call graph of a
             transaction, including all internal calls, gas usage, and return values.
           </div>
           <div className="text-xs">
-            Use <code className="px-1 py-0.5 rounded bg-[#0f0f0f]">debug_traceTransaction</code>{" "}
-            with the <code className="px-1 py-0.5 rounded bg-[#0f0f0f]">callTracer</code>{" "}
+            Use <code className="px-1 py-0.5 rounded-[6px] bg-[var(--color-gray-0)]">debug_traceTransaction</code>{" "}
+            with the <code className="px-1 py-0.5 rounded-[6px] bg-[var(--color-gray-0)]">callTracer</code>{" "}
             to get trace data. Click nodes to expand/collapse and see detailed call information.
           </div>
         </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ToolConfig } from "@/types/tool";
 import { keccak256, toBytes } from "viem";
@@ -207,7 +208,7 @@ export function TimelockTransactionBuilderTool() {
       </div>
 
       {/* Calculate Button */}
-      <Button onClick={buildTransaction} className="w-full">
+      <Button onClick={buildTransaction} variant="primary" className="w-full">
         Generate Timelock Data
       </Button>
 
@@ -220,7 +221,7 @@ export function TimelockTransactionBuilderTool() {
               value={calldata}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               Encoded function call data
@@ -233,7 +234,7 @@ export function TimelockTransactionBuilderTool() {
               value={etaTimestamp}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               Earliest execution time in Unix timestamp
@@ -246,7 +247,7 @@ export function TimelockTransactionBuilderTool() {
               value={readableTime}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               When the transaction can be executed
@@ -254,59 +255,35 @@ export function TimelockTransactionBuilderTool() {
           </div>
 
           <div>
-            <label className="text-sm mb-2 block">Queue Transaction Data</label>
-            <div className="relative">
-              <textarea
-                value={queueData}
-                readOnly
-                className="flex w-full rounded border border-border bg-[#0f0f0f] px-3 py-2 text-sm font-mono
-                  shadow-[0_1px_2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]
-                  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500
-                  resize-none"
-                rows={8}
-              />
-              <Button
-                onClick={() => navigator.clipboard.writeText(queueData)}
-                variant="ghost"
-                size="sm"
-                className="absolute top-2 right-2"
-              >
-                Copy
-              </Button>
-            </div>
+            <Textarea
+              label="Queue Transaction Data"
+              value={queueData}
+              readOnly
+              showCopy
+              rows={8}
+              className="bg-[var(--color-gray-0)]"
+            />
             <div className="text-xs text-muted-foreground mt-1">
               Data to call queueTransaction() on Timelock contract
             </div>
           </div>
 
           <div>
-            <label className="text-sm mb-2 block">Execute Transaction Data</label>
-            <div className="relative">
-              <textarea
-                value={executeData}
-                readOnly
-                className="flex w-full rounded border border-border bg-[#0f0f0f] px-3 py-2 text-sm font-mono
-                  shadow-[0_1px_2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]
-                  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500
-                  resize-none"
-                rows={8}
-              />
-              <Button
-                onClick={() => navigator.clipboard.writeText(executeData)}
-                variant="ghost"
-                size="sm"
-                className="absolute top-2 right-2"
-              >
-                Copy
-              </Button>
-            </div>
+            <Textarea
+              label="Execute Transaction Data"
+              value={executeData}
+              readOnly
+              showCopy
+              rows={8}
+              className="bg-[var(--color-gray-0)]"
+            />
             <div className="text-xs text-muted-foreground mt-1">
               Data to call executeTransaction() after ETA
             </div>
           </div>
 
           {/* Instructions */}
-          <div className="bg-blue-500/10 border border-blue-500/20 rounded p-4">
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-[12px] p-4">
             <div className="text-xs font-semibold text-blue-400 mb-2">Timelock Workflow</div>
             <ol className="text-xs text-muted-foreground space-y-1 list-decimal list-inside">
               <li>Call queueTransaction() with the Queue Data</li>
@@ -317,7 +294,7 @@ export function TimelockTransactionBuilderTool() {
           </div>
 
           {/* Formula Display */}
-          <div className="bg-[#0f0f0f] rounded border border-border p-4 space-y-2">
+          <div className="bg-[var(--color-gray-0)] rounded-[12px] border border-border p-4 space-y-2">
             <div className="text-xs font-semibold text-blue-400 mb-1">Timelock Parameters</div>
             <div className="text-xs font-mono text-muted-foreground space-y-1">
               <div>ETA = currentTimestamp + delay</div>
@@ -326,7 +303,7 @@ export function TimelockTransactionBuilderTool() {
             </div>
           </div>
 
-          <Button onClick={handleReset} variant="secondary" className="w-full">
+          <Button onClick={handleReset} className="w-full">
             Reset Builder
           </Button>
         </div>

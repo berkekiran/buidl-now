@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
+import { MdCheck, MdClose } from "react-icons/md";
 
 // Simple YAML parser and validator
 function parseYaml(yaml: string): any {
@@ -200,10 +201,10 @@ export function YamlValidatorTool() {
 
       {/* Buttons */}
       <div className="flex gap-2">
-        <Button onClick={handleValidate} className="flex-1">
+        <Button onClick={handleValidate} variant="primary" className="flex-1">
           Validate YAML
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
@@ -211,14 +212,14 @@ export function YamlValidatorTool() {
       {/* Validation Result */}
       {isValid !== null && (
         <div
-          className={`p-4 rounded border ${
+          className={`p-4 rounded-[12px] border ${
             isValid
-              ? "bg-green-500/10 border-green-500/30 text-green-400"
-              : "bg-red-500/10 border-red-500/30 text-red-400"
+              ? "bg-[var(--color-green-50)] border-green-500/30 text-[var(--color-green-500)]"
+              : "bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]"
           }`}
         >
           <div className="flex items-center gap-2 text-sm font-medium">
-            {isValid ? "✓" : "✗"}
+            {isValid ? <MdCheck className="w-4 h-4" /> : <MdClose className="w-4 h-4" />}
             <span>{isValid ? "Valid YAML" : "Invalid YAML"}</span>
           </div>
           {error && <div className="mt-2 text-sm">{error}</div>}
@@ -233,14 +234,14 @@ export function YamlValidatorTool() {
             value={output}
             readOnly
             showCopy
-            className="bg-[#0f0f0f] font-mono text-sm"
+            className="bg-[var(--color-gray-0)] font-mono text-sm"
             rows={12}
           />
         </div>
       )}
 
       {/* Info */}
-      <div className="p-4 rounded border border-border bg-card text-sm text-muted-foreground">
+      <div className="p-4 rounded-[12px] border border-border bg-card text-sm text-muted-foreground">
         <p>
           This validator parses YAML and displays the result as JSON. It
           supports basic YAML features including nested objects, arrays,

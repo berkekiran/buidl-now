@@ -288,7 +288,7 @@ export function FoundryCheatcodeGeneratorTool() {
             <Button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              variant={selectedCategory === category ? "default" : "secondary"}
+              variant={selectedCategory === category ? "primary" : "secondary"}
               size="sm"
             >
               {category}
@@ -307,7 +307,7 @@ export function FoundryCheatcodeGeneratorTool() {
             <Button
               key={cheatcode.name}
               onClick={() => handleCheatcodeSelect(cheatcode)}
-              variant={selectedCheatcode?.name === cheatcode.name ? "default" : "secondary"}
+              variant={selectedCheatcode?.name === cheatcode.name ? "primary" : "secondary"}
               className="p-3 h-auto flex flex-col items-start justify-start text-left"
             >
               <div className="flex items-start justify-between gap-2 w-full">
@@ -319,7 +319,7 @@ export function FoundryCheatcodeGeneratorTool() {
                     {cheatcode.description}
                   </div>
                 </div>
-                <div className="text-xs px-2 py-0.5 rounded bg-[#0f0f0f] text-muted-foreground shrink-0">
+                <div className="text-xs px-2 py-0.5 rounded-[12px] bg-[var(--color-gray-0)] text-muted-foreground shrink-0">
                   {cheatcode.category}
                 </div>
               </div>
@@ -330,10 +330,10 @@ export function FoundryCheatcodeGeneratorTool() {
 
       {/* Selected Cheatcode Details */}
       {selectedCheatcode && (
-        <div className="space-y-4 p-4 rounded border border-blue-500/30 bg-blue-500/5">
+        <div className="space-y-4 p-4 rounded-[12px] border border-blue-500/30 bg-blue-500/5">
           <div>
             <div className="text-sm font-medium text-blue-400 mb-2">Syntax</div>
-            <div className="p-3 rounded bg-[#0f0f0f] border border-border font-mono text-sm">
+            <div className="p-3 rounded-[12px] bg-[var(--color-gray-0)] border border-border font-mono text-sm">
               {selectedCheatcode.syntax}
             </div>
           </div>
@@ -360,7 +360,7 @@ export function FoundryCheatcodeGeneratorTool() {
           )}
 
           {/* Generate Button */}
-          <Button onClick={generateCode} className="w-full">
+          <Button onClick={generateCode} className="w-full" variant="primary">
             Generate Code
           </Button>
 
@@ -368,27 +368,21 @@ export function FoundryCheatcodeGeneratorTool() {
           {generatedCode && (
             <div>
               <div className="flex items-center justify-between mb-2">
-                <div className="text-sm font-medium text-green-400">Generated Code</div>
-                <Button
+                <div className="text-sm font-medium text-[var(--color-green-500)]">Generated Code</div>
+                <button
+                  type="button"
                   onClick={() => handleCopy(generatedCode)}
-                  variant="ghost"
-                  size="sm"
-                  className="h-auto p-1 gap-1"
+                  className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                  title={copied ? "Copied!" : "Copy to clipboard"}
                 >
                   {copied ? (
-                    <>
-                      <MdCheck className="w-3.5 h-3.5 text-green-400" />
-                      <span className="text-green-400">Copied</span>
-                    </>
+                    <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                   ) : (
-                    <>
-                      <MdContentCopy className="w-3.5 h-3.5" />
-                      <span>Copy</span>
-                    </>
+                    <MdContentCopy style={{ width: 16, height: 16 }} />
                   )}
-                </Button>
+                </button>
               </div>
-              <div className="p-3 rounded bg-[#0f0f0f] border border-green-500/30 font-mono text-sm text-green-400">
+              <div className="p-3 rounded-[12px] bg-[var(--color-gray-0)] border border-green-500/30 font-mono text-sm text-[var(--color-green-500)]">
                 {generatedCode}
               </div>
             </div>
@@ -398,17 +392,16 @@ export function FoundryCheatcodeGeneratorTool() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <div className="text-sm font-medium text-blue-400">Example Usage</div>
-              <Button
+              <button
+                type="button"
                 onClick={() => handleCopy(selectedCheatcode.example)}
-                variant="ghost"
-                size="sm"
-                className="h-auto p-1 gap-1"
+                className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                title="Copy to clipboard"
               >
-                <MdContentCopy className="w-3.5 h-3.5" />
-                <span>Copy</span>
-              </Button>
+                <MdContentCopy style={{ width: 16, height: 16 }} />
+              </button>
             </div>
-            <div className="p-3 rounded bg-[#0f0f0f] border border-border">
+            <div className="p-3 rounded-[12px] bg-[var(--color-gray-0)] border border-border">
               <pre className="font-mono text-xs text-muted-foreground whitespace-pre-wrap">
                 {selectedCheatcode.example}
               </pre>
@@ -419,17 +412,17 @@ export function FoundryCheatcodeGeneratorTool() {
 
       {/* Reset Button */}
       {(selectedCheatcode || searchQuery || selectedCategory !== "All") && (
-        <Button onClick={handleReset} variant="secondary" className="w-full">
+        <Button onClick={handleReset} className="w-full">
           Reset All
         </Button>
       )}
 
       {/* Info Box */}
-      <div className="p-4 rounded border border-blue-500/30 bg-blue-500/5">
+      <div className="p-4 rounded-[12px] border border-blue-500/30 bg-blue-500/5">
         <div className="text-sm text-blue-400">
           <strong>Foundry Cheatcodes:</strong> Special testing functions that manipulate the EVM state.
           Use these in your Foundry tests to control time, impersonate accounts, mock calls, and more.
-          All cheatcodes are prefixed with <code className="px-1 py-0.5 rounded bg-[#0f0f0f]">vm.</code>
+          All cheatcodes are prefixed with <code className="px-1 py-0.5 rounded-[12px] bg-[var(--color-gray-0)]">vm.</code>
         </div>
       </div>
     </div>

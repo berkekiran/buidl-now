@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToolConfig } from "@/types/tool";
+import { MdCheck } from "react-icons/md";
 
 interface DiffResult {
   similarity: number;
@@ -198,14 +199,14 @@ export function BytecodeDifferTool() {
         <div className="flex gap-2">
           <Button
             onClick={() => setMode("direct")}
-            variant={mode === "direct" ? "default" : "secondary"}
+            variant={mode === "direct" ? "primary" : "secondary"}
             className="flex-1"
           >
             Direct Bytecode
           </Button>
           <Button
             onClick={() => setMode("fetch")}
-            variant={mode === "fetch" ? "default" : "secondary"}
+            variant={mode === "fetch" ? "primary" : "secondary"}
             className="flex-1"
           >
             Fetch from RPC
@@ -276,17 +277,17 @@ export function BytecodeDifferTool() {
 
       {/* Actions */}
       <div className="flex gap-2">
-        <Button onClick={handleCompare} className="flex-1" disabled={loading}>
+        <Button onClick={handleCompare} variant="primary" className="flex-1" disabled={loading}>
           {loading ? "Comparing..." : "Compare Bytecode"}
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
           <div className="text-sm font-medium">{error}</div>
         </div>
       )}
@@ -295,18 +296,18 @@ export function BytecodeDifferTool() {
       {result && (
         <div className="space-y-4">
           {/* Similarity Score */}
-          <div className="p-4 rounded border bg-[#0f0f0f] border-[#2a2a2a]">
+          <div className="p-4 rounded-[12px] border bg-[var(--color-gray-0)] border-[#2a2a2a]">
             <div className="flex items-center justify-between mb-2">
               <Label className="text-sm">Similarity Score</Label>
               <span className={`text-lg font-bold ${
-                result.similarity === 100 ? "text-green-400" :
+                result.similarity === 100 ? "text-[var(--color-green-500)]" :
                 result.similarity >= 90 ? "text-yellow-400" :
-                "text-red-400"
+                "text-[var(--color-red-500)]"
               }`}>
                 {result.similarity}%
               </span>
             </div>
-            <div className="w-full bg-[#1a1a1a] rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-[#1a1a1a] rounded-[12px] h-2 overflow-hidden">
               <div
                 className={`h-full transition-all ${
                   result.similarity === 100 ? "bg-green-500" :
@@ -319,21 +320,21 @@ export function BytecodeDifferTool() {
           </div>
 
           {/* Exact Match Status */}
-          <div className={`p-3 rounded border ${
+          <div className={`p-3 rounded-[12px] border ${
             result.similarity === 100
-              ? "bg-green-500/10 border-green-500/30 text-green-400"
+              ? "bg-[var(--color-green-50)] border-green-500/30 text-[var(--color-green-500)]"
               : "bg-yellow-500/10 border-yellow-500/30 text-yellow-400"
           }`}>
-            <div className="text-sm font-medium">
+            <div className="text-sm font-medium flex items-center gap-1">
               {result.similarity === 100
-                ? "✓ Bytecodes are identical"
+                ? <><MdCheck className="w-4 h-4" /> Bytecodes are identical</>
                 : `${result.differences.filter(d => d.type === "differ").length} difference(s) detected`}
             </div>
           </div>
 
           {/* Metadata */}
           {(result.metadata1 || result.metadata2) && (
-            <div className="p-4 rounded border bg-[#0f0f0f] border-[#2a2a2a]">
+            <div className="p-4 rounded-[12px] border bg-[var(--color-gray-0)] border-[#2a2a2a]">
               <Label className="text-sm mb-2 block">Metadata Hash</Label>
               <div className="space-y-2">
                 {result.metadata1 && (
@@ -357,20 +358,20 @@ export function BytecodeDifferTool() {
           )}
 
           {/* Diff View */}
-          <div className="p-4 rounded border bg-[#0f0f0f] border-[#2a2a2a]">
+          <div className="p-4 rounded-[12px] border bg-[var(--color-gray-0)] border-[#2a2a2a]">
             <div className="flex items-center justify-between mb-3">
               <Label className="text-sm">Diff View</Label>
               <div className="flex gap-3 text-xs">
                 <div className="flex items-center gap-1">
-                  <div className="w-3 h-3 bg-green-500/30 border border-green-500/50 rounded" />
+                  <div className="w-3 h-3 bg-green-500/30 border border-green-500/50 rounded-[12px]" />
                   <span className="text-gray-400">Match</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <div className="w-3 h-3 bg-red-500/30 border border-red-500/50 rounded" />
+                  <div className="w-3 h-3 bg-red-500/30 border border-red-500/50 rounded-[12px]" />
                   <span className="text-gray-400">Differ</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <div className="w-3 h-3 bg-yellow-500/30 border border-yellow-500/50 rounded" />
+                  <div className="w-3 h-3 bg-yellow-500/30 border border-yellow-500/50 rounded-[12px]" />
                   <span className="text-gray-400">Metadata</span>
                 </div>
               </div>
@@ -387,24 +388,24 @@ export function BytecodeDifferTool() {
                   <>
                     <div
                       key={`${idx}-1`}
-                      className={`p-2 rounded break-all ${
+                      className={`p-2 rounded-[12px] break-all ${
                         diff.type === "match"
-                          ? "bg-green-500/10 border border-green-500/30 text-green-400"
+                          ? "bg-[var(--color-green-50)] border border-green-500/30 text-[var(--color-green-500)]"
                           : diff.type === "metadata"
                           ? "bg-yellow-500/10 border border-yellow-500/30 text-yellow-400"
-                          : "bg-red-500/10 border border-red-500/30 text-red-400"
+                          : "bg-[var(--color-red-50)] border border-red-500/30 text-[var(--color-red-500)]"
                       }`}
                     >
                       {diff.bytecode1 || "(empty)"}
                     </div>
                     <div
                       key={`${idx}-2`}
-                      className={`p-2 rounded break-all ${
+                      className={`p-2 rounded-[12px] break-all ${
                         diff.type === "match"
-                          ? "bg-green-500/10 border border-green-500/30 text-green-400"
+                          ? "bg-[var(--color-green-50)] border border-green-500/30 text-[var(--color-green-500)]"
                           : diff.type === "metadata"
                           ? "bg-yellow-500/10 border border-yellow-500/30 text-yellow-400"
-                          : "bg-red-500/10 border border-red-500/30 text-red-400"
+                          : "bg-[var(--color-red-50)] border border-red-500/30 text-[var(--color-red-500)]"
                       }`}
                     >
                       {diff.bytecode2 || "(empty)"}

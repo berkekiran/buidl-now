@@ -87,28 +87,28 @@ export function RandomStringGeneratorTool() {
         <Label className="mb-2 block text-sm">Character Type</Label>
         <div className="grid grid-cols-2 gap-2">
           <Button
-            variant={characterType === "alphanumeric" ? "default" : "secondary"}
+            variant={characterType === "alphanumeric" ? "primary" : "secondary"}
             onClick={() => setCharacterType("alphanumeric")}
             className="w-full"
           >
             Alphanumeric
           </Button>
           <Button
-            variant={characterType === "hex" ? "default" : "secondary"}
+            variant={characterType === "hex" ? "primary" : "secondary"}
             onClick={() => setCharacterType("hex")}
             className="w-full"
           >
             Hex
           </Button>
           <Button
-            variant={characterType === "numeric" ? "default" : "secondary"}
+            variant={characterType === "numeric" ? "primary" : "secondary"}
             onClick={() => setCharacterType("numeric")}
             className="w-full"
           >
             Numeric
           </Button>
           <Button
-            variant={characterType === "custom" ? "default" : "secondary"}
+            variant={characterType === "custom" ? "primary" : "secondary"}
             onClick={() => setCharacterType("custom")}
             className="w-full"
           >
@@ -171,7 +171,7 @@ export function RandomStringGeneratorTool() {
       </div>
 
       {/* Generate Button */}
-      <Button onClick={handleGenerate} className="w-full">
+      <Button onClick={handleGenerate} variant="primary" className="w-full">
         Generate String{parseInt(count) > 1 ? "s" : ""}
       </Button>
 
@@ -182,7 +182,7 @@ export function RandomStringGeneratorTool() {
           value={randomString}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
         />
       )}
 
@@ -193,7 +193,7 @@ export function RandomStringGeneratorTool() {
           value={randomStrings.join("\n")}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
           rows={Math.min(randomStrings.length, 15)}
         />
       )}

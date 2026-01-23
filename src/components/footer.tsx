@@ -1,50 +1,65 @@
-import Link from "next/link";
+"use client";
+
 import { FaGithub } from "react-icons/fa";
 
 export function Footer() {
   return (
-    <footer className="w-full">
-      <div className="max-w-[640px] w-full mx-auto px-4 sm:px-6 pt-16 pb-4 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-1 text-sm text-muted-foreground text-center">
-          <div className="flex flex-row items-center gap-2">
-            <div className="flex flex-row items-center gap-1">
-              <span className="font-medium">Buidl</span>
-              <span className="font-normal italic">Now!</span>
-            </div>
-            <span className="font-normal">·</span>
-            <Link
-              href="/tools"
-              className="text-foreground hover:text-white hover:underline transition-colors"
-            >
-              All Tools
-            </Link>
-          </div>
-          <div className="flex flex-row items-center gap-2">
-            <span className="font-normal">
-              Built by{" "}
-              <a
-                href="https://berkekiran.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground hover:text-white hover:underline transition-colors"
-              >
-                Berke
-              </a>
-            </span>
-            <span className="font-normal">·</span>
+    <>
+      {/* Mobile Footer - Centered */}
+      <div className="md:hidden fixed bottom-6 left-0 right-0 flex flex-col items-center gap-4 z-50">
+        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+          <span>
+            Built by{" "}
             <a
-              href="https://github.com/berkekiran/buidl-now"
+              href="https://berkekiran.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-foreground hover:text-white transition-colors"
-              aria-label="GitHub Repository"
+              className="text-foreground hover:opacity-50 transition-opacity"
             >
-              <FaGithub className="w-4 h-4" />
-              <span>GitHub</span>
+              Berke
             </a>
-          </div>
+          </span>
+          <span>·</span>
+          <a
+            href="https://github.com/berkekiran/buidl-now"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-foreground hover:opacity-50 transition-opacity"
+            aria-label="GitHub Repository"
+          >
+            <FaGithub className="w-4 h-4" />
+            <span>GitHub</span>
+          </a>
         </div>
       </div>
-    </footer>
+
+      {/* Desktop Footer - Left: Built by, Right: GitHub */}
+      <div className="hidden md:block fixed bottom-10 left-10 z-50">
+        <span className="text-sm text-muted-foreground">
+          Built by{" "}
+          <a
+            href="https://berkekiran.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-foreground hover:opacity-50 transition-opacity"
+          >
+            Berke
+          </a>
+        </span>
+      </div>
+
+      <div className="hidden md:block fixed bottom-10 right-10 z-50">
+        <a
+          href="https://github.com/berkekiran/buidl-now"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 text-sm text-foreground hover:opacity-50 transition-opacity"
+          aria-label="GitHub Repository"
+        >
+          <FaGithub className="w-4 h-4" />
+          <span>GitHub</span>
+        </a>
+      </div>
+    </>
   );
 }

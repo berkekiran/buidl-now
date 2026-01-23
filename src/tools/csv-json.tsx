@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
+import { MdSwapVert } from "react-icons/md";
 
 type DelimiterType = "comma" | "semicolon" | "tab";
 
@@ -139,71 +140,66 @@ export function CsvJsonTool() {
   const [delimiter, setDelimiter] = useState<DelimiterType>("comma");
   const [hasHeaders, setHasHeaders] = useState(true);
   const [error, setError] = useState("");
+  const [lastEdited, setLastEdited] = useState<"csv" | "json" | null>(null);
 
-  const handleCsvToJson = () => {
-    if (!csvInput) {
-      setJsonInput("");
-      setError("");
-      return;
+  // Auto-convert when CSV input changes
+  useEffect(() => {
+    if (lastEdited === "csv" && csvInput) {
+      try {
+        const json = csvToJson(csvInput, delimiter, hasHeaders);
+        setJsonInput(json);
+        setError("");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Invalid CSV");
+      }
     }
+  }, [csvInput, delimiter, hasHeaders, lastEdited]);
 
-    try {
-      const json = csvToJson(csvInput, delimiter, hasHeaders);
-      setJsonInput(json);
-      setError("");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Invalid CSV");
-      setJsonInput("");
+  // Auto-convert when JSON input changes
+  useEffect(() => {
+    if (lastEdited === "json" && jsonInput) {
+      try {
+        const csv = jsonToCsv(jsonInput, delimiter);
+        setCsvInput(csv);
+        setError("");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Invalid JSON");
+      }
     }
-  };
+  }, [jsonInput, delimiter, lastEdited]);
 
-  const handleJsonToCsv = () => {
-    if (!jsonInput) {
-      setCsvInput("");
-      setError("");
-      return;
-    }
-
-    try {
-      const csv = jsonToCsv(jsonInput, delimiter);
-      setCsvInput(csv);
-      setError("");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Invalid JSON");
-      setCsvInput("");
-    }
-  };
-
-  const handleReset = () => {
-    setCsvInput("");
-    setJsonInput("");
-    setError("");
+  const handleSwap = () => {
+    const tempCsv = csvInput;
+    const tempJson = jsonInput;
+    setCsvInput(tempJson);
+    setJsonInput(tempCsv);
+    setLastEdited(null);
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Options */}
-      <div className="flex gap-4 p-4 rounded border border-border bg-card">
+      <div className="flex flex-col sm:flex-row gap-4 p-4 rounded-[12px] border border-border bg-card">
         <div className="flex-1">
           <Label className="mb-2 block text-sm">Delimiter</Label>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <Button
               onClick={() => setDelimiter("comma")}
-              variant={delimiter === "comma" ? "default" : "secondary"}
+              variant={delimiter === "comma" ? "primary" : "secondary"}
               size="sm"
             >
               Comma (,)
             </Button>
             <Button
               onClick={() => setDelimiter("semicolon")}
-              variant={delimiter === "semicolon" ? "default" : "secondary"}
+              variant={delimiter === "semicolon" ? "primary" : "secondary"}
               size="sm"
             >
               Semicolon (;)
             </Button>
             <Button
               onClick={() => setDelimiter("tab")}
-              variant={delimiter === "tab" ? "default" : "secondary"}
+              variant={delimiter === "tab" ? "primary" : "secondary"}
               size="sm"
             >
               Tab
@@ -212,17 +208,17 @@ export function CsvJsonTool() {
         </div>
         <div className="flex-1">
           <Label className="mb-2 block text-sm">First Row</Label>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <Button
               onClick={() => setHasHeaders(true)}
-              variant={hasHeaders ? "default" : "secondary"}
+              variant={hasHeaders ? "primary" : "secondary"}
               size="sm"
             >
               Contains Headers
             </Button>
             <Button
               onClick={() => setHasHeaders(false)}
-              variant={!hasHeaders ? "default" : "secondary"}
+              variant={!hasHeaders ? "primary" : "secondary"}
               size="sm"
             >
               No Headers
@@ -232,48 +228,48 @@ export function CsvJsonTool() {
       </div>
 
       {/* CSV Input */}
-      <div>
-        <Label className="mb-2 block text-sm">CSV</Label>
-        <Textarea
-          value={csvInput}
-          onChange={(e) => setCsvInput(e.target.value)}
-          placeholder="name,age,city&#10;John,30,New York&#10;Jane,25,London"
-          className="font-mono min-h-[200px]"
-        />
-      </div>
+      <Textarea
+        label="CSV"
+        value={csvInput}
+        onChange={(e) => {
+          setCsvInput(e.target.value);
+          setLastEdited("csv");
+        }}
+        placeholder="name,age,city&#10;John,30,New York&#10;Jane,25,London"
+        className="font-mono text-sm"
+        rows={8}
+      />
 
-      {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2">
-        <Button onClick={handleCsvToJson} className="flex-1">
-          <span className="hidden sm:inline">CSV → JSON</span>
-          <span className="sm:hidden">To JSON</span>
-        </Button>
-        <Button onClick={handleJsonToCsv} className="flex-1 sm:flex-none">
-          <span className="hidden sm:inline">JSON → CSV</span>
-          <span className="sm:hidden">To CSV</span>
-        </Button>
-        <Button onClick={handleReset} variant="secondary" className="sm:flex-none">
-          Reset
-        </Button>
+      {/* Swap Button */}
+      <div className="flex justify-center">
+        <button
+          onClick={handleSwap}
+          className="w-10 h-10 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+          title="Swap"
+        >
+          <MdSwapVert className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium">{error}</div>
         </div>
       )}
 
       {/* JSON Input */}
-      <div>
-        <Label className="mb-2 block text-sm">JSON</Label>
-        <Textarea
-          value={jsonInput}
-          onChange={(e) => setJsonInput(e.target.value)}
-          placeholder='[{"name":"John","age":"30","city":"New York"}]'
-          className="font-mono min-h-[200px]"
-        />
-      </div>
+      <Textarea
+        label="JSON"
+        value={jsonInput}
+        onChange={(e) => {
+          setJsonInput(e.target.value);
+          setLastEdited("json");
+        }}
+        placeholder='[{"name":"John","age":"30","city":"New York"}]'
+        className="font-mono text-sm"
+        rows={8}
+      />
     </div>
   );
 }

@@ -85,7 +85,7 @@ export function LineSorterTool() {
           <Label className="mb-2 block text-sm">Sort Order</Label>
           <div className="flex gap-2">
             <Button
-              variant={sortOrder === "asc" ? "default" : "secondary"}
+              variant={sortOrder === "asc" ? "primary" : "secondary"}
               onClick={() => setSortOrder("asc")}
               className="flex-1"
               size="sm"
@@ -93,7 +93,7 @@ export function LineSorterTool() {
               Ascending (A → Z)
             </Button>
             <Button
-              variant={sortOrder === "desc" ? "default" : "secondary"}
+              variant={sortOrder === "desc" ? "primary" : "secondary"}
               onClick={() => setSortOrder("desc")}
               className="flex-1"
               size="sm"
@@ -129,10 +129,10 @@ export function LineSorterTool() {
 
       {/* Buttons */}
       <div className="flex gap-2">
-        <Button onClick={handleSort} className="flex-1">
+        <Button onClick={handleSort} variant="primary" className="flex-1">
           Sort Lines
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>

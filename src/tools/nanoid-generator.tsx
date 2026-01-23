@@ -72,7 +72,7 @@ export function NanoidGeneratorTool() {
       </div>
 
       {/* Generate Button */}
-      <Button onClick={handleGenerate} className="w-full">
+      <Button onClick={handleGenerate} variant="primary" className="w-full">
         Generate Nanoid{parseInt(count) > 1 ? "s" : ""}
       </Button>
 
@@ -83,7 +83,7 @@ export function NanoidGeneratorTool() {
           value={nanoid}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
         />
       )}
 
@@ -94,7 +94,7 @@ export function NanoidGeneratorTool() {
           value={nanoids.join("\n")}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
           rows={Math.min(nanoids.length, 15)}
         />
       )}

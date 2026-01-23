@@ -60,17 +60,17 @@ export function MethodIdFinderTool() {
 
       {/* Error */}
       {error && (
-        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-sm text-red-400">
+        <div className="p-3 bg-[var(--color-red-50)] border border-[var(--color-red-200)] rounded-[12px] text-sm text-[var(--color-red-500)]">
           {error}
         </div>
       )}
 
       {/* Buttons */}
       <div className="flex gap-2">
-        <Button onClick={handleSearch} className="flex-1">
+        <Button onClick={handleSearch} variant="primary" className="flex-1">
           Search on 4byte.directory
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
@@ -82,7 +82,7 @@ export function MethodIdFinderTool() {
           {exampleMethodIds.map((example) => (
             <Button
               key={example.id}
-              variant="outline"
+             
               onClick={() => setMethodId(example.id)}
               className="w-full justify-start h-auto p-3"
             >
@@ -98,7 +98,7 @@ export function MethodIdFinderTool() {
       </div>
 
       {/* Info Box */}
-      <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded">
+      <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-[12px]">
         <div className="text-sm text-blue-400">
           <strong>How it works:</strong> This tool searches the 4byte.directory
           database, which maintains a registry of Ethereum function signatures and

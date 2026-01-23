@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ToolConfig } from "@/types/tool";
 import { keccak256, toHex, Hex, encodePacked } from "viem";
+import { MdWarning } from "react-icons/md";
 
 interface PermitSignature {
   v: number;
@@ -118,9 +119,9 @@ export function Erc20PermitGeneratorTool() {
   return (
     <div className="space-y-6">
       {/* Warning */}
-      <div className="p-4 rounded border border-yellow-500/30 bg-yellow-500/5">
+      <div className="p-4 rounded-[12px] border border-yellow-500/30 bg-yellow-500/5">
         <div className="flex items-start gap-2">
-          <div className="text-yellow-500 font-medium mt-0.5">⚠️</div>
+          <MdWarning className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
           <div className="text-sm text-yellow-500/90">
             <strong>Security Warning:</strong> Never share your private key. This tool demonstrates the EIP-2612 permit structure. For production use, integrate with a wallet (MetaMask, WalletConnect) to sign permits client-side.
           </div>
@@ -210,17 +211,17 @@ export function Erc20PermitGeneratorTool() {
 
       {/* Actions */}
       <div className="flex gap-3">
-        <Button onClick={generatePermit} className="flex-1">
+        <Button onClick={generatePermit} className="flex-1" variant="primary">
           Generate Permit Structure
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border border-red-500/30 bg-red-500/5 text-red-400 text-sm">
+        <div className="p-3 rounded-[12px] border border-red-500/30 bg-red-500/5 text-[var(--color-red-500)] text-sm">
           {error}
         </div>
       )}
@@ -294,7 +295,7 @@ export function Erc20PermitGeneratorTool() {
             className="font-mono text-sm"
           />
 
-          <div className="p-3 rounded border border-blue-500/30 bg-blue-500/5 text-blue-400 text-xs">
+          <div className="p-3 rounded-[12px] border border-blue-500/30 bg-blue-500/5 text-blue-400 text-xs">
             These values can be used to call the permit() function on the ERC-20 contract:
             <br />
             <code className="block mt-2">
@@ -305,7 +306,7 @@ export function Erc20PermitGeneratorTool() {
       )}
 
       {/* Reset */}
-      <Button onClick={handleReset} variant="secondary" className="w-full">
+      <Button onClick={handleReset} className="w-full">
         Reset
       </Button>
     </div>

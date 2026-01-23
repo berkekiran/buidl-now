@@ -4,6 +4,8 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { GeometricBackground } from "@/components/geometric-background";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const albertSans = Albert_Sans({
   subsets: ["latin"],
@@ -100,16 +102,27 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${albertSans.variable} antialiased overflow-x-hidden`}>
-        <div className="relative z-10 min-h-screen flex flex-col">
-          <main className="flex flex-col justify-between pt-12 sm:pt-20 pb-2 min-h-screen w-full overflow-x-hidden">
+        <GeometricBackground />
+        <div className="relative z-10 min-h-screen w-full flex flex-col">
+          {/* Mobile Header Row */}
+          <div className="lg:hidden flex items-center justify-between p-4">
             <Header />
-            <div className="max-w-[640px] w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
-              {children}
-            </div>
-            <Footer />
+            <ThemeToggle />
+          </div>
+          {/* Desktop Header */}
+          <div className="hidden lg:block">
+            <Header />
+          </div>
+          <main className="flex-1 w-full">
+            {children}
           </main>
+          <Footer />
         </div>
         <ScrollToTop />
+        {/* Desktop Theme Toggle */}
+        <div className="hidden lg:block">
+          <ThemeToggle />
+        </div>
       </body>
     </html>
   );

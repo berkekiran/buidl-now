@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { oneLight, oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { MdContentCopy, MdCheck, MdExpandMore, MdExpandLess } from "react-icons/md";
-import { Button } from "./button";
 
 interface CodeProps {
   children: string;
@@ -16,6 +15,19 @@ interface CodeProps {
 export function Code({ children, language = "", showLineNumbers = true, showCopy = false }: CodeProps) {
   const [copied, setCopied] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    };
+    checkDarkMode();
+
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
 
   const lines = children.split('\n');
   const shouldCollapse = lines.length > 10;
@@ -33,49 +45,40 @@ export function Code({ children, language = "", showLineNumbers = true, showCopy
     <div className="relative">
       {/* Language Badge */}
       {language !== "" && (
-        <div className="absolute top-2 left-2 z-10 px-2 py-1 text-xs text-muted-foreground bg-[#1a1a1a] rounded border border-border">
+        <div className="absolute top-3 left-3 z-10 px-2.5 py-1 text-xs font-medium text-[var(--color-gray-400)] bg-[var(--color-gray-0)] rounded-lg">
           {language}
         </div>
       )}
 
       {/* Copy Button */}
       {showCopy && (
-        <Button
+        <button
           type="button"
           onClick={handleCopy}
-          variant="secondary"
-          size="sm"
-          className="absolute top-2 right-2 z-10 h-auto min-h-0 px-2 py-1 text-xs"
-          title="Copy to clipboard"
+          className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+          title={copied ? "Copied!" : "Copy to clipboard"}
         >
           {copied ? (
-            <>
-              <MdCheck className="w-3.5 h-3.5 text-blue-400" />
-              <span className="text-blue-400">Copied</span>
-            </>
+            <MdCheck style={{ width: 18, height: 18, color: 'var(--color-green-500)' }} />
           ) : (
-            <>
-              <MdContentCopy className="w-3.5 h-3.5" />
-              <span>Copy</span>
-            </>
+            <MdContentCopy style={{ width: 18, height: 18 }} />
           )}
-        </Button>
+        </button>
       )}
 
       <SyntaxHighlighter
         language={language}
-        style={vscDarkPlus}
+        style={isDark ? oneDark : oneLight}
         showLineNumbers={showLineNumbers}
         wrapLongLines={false}
         customStyle={{
           margin: 0,
-          borderRadius: shouldCollapse ? "4px 4px 0 0" : "4px",
-          background: "#0f0f0f",
-          border: "1px solid #1f1f1f",
-          borderBottom: shouldCollapse ? "none" : "1px solid #1f1f1f",
-          fontSize: "0.75rem",
+          borderRadius: shouldCollapse ? "12px 12px 0 0" : "12px",
+          background: "var(--color-gray-0)",
+          border: "1px solid var(--color-gray-200)",
+          fontSize: "0.8125rem",
           padding: "1rem",
-          paddingTop: language !== "" || showCopy ? "2.5rem" : "1rem",
+          paddingTop: language !== "" || showCopy ? "3rem" : "1rem",
           overflowX: "auto",
           maxWidth: "100%",
         }}
@@ -90,11 +93,9 @@ export function Code({ children, language = "", showLineNumbers = true, showCopy
 
       {/* View More/Less Button */}
       {shouldCollapse && (
-        <Button
+        <button
           onClick={() => setIsExpanded(!isExpanded)}
-          variant="ghost"
-          size="sm"
-          className="w-full px-4 py-2 text-xs rounded-t-none border border-t-0 border-border rounded-b"
+          className="w-full px-4 py-3 text-sm font-medium text-[var(--color-gray-500)] bg-[var(--color-gray-0)] hover:bg-[var(--color-gray-50)] border border-t-0 border-[var(--color-gray-200)] rounded-b-[12px] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
         >
           {isExpanded ? (
             <>
@@ -107,7 +108,7 @@ export function Code({ children, language = "", showLineNumbers = true, showCopy
               <span>View More ({lines.length - 10} more lines)</span>
             </>
           )}
-        </Button>
+        </button>
       )}
     </div>
   );

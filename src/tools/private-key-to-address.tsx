@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { privateKeyToAddress } from "viem/accounts";
 import { ToolConfig } from "@/types/tool";
+import { MdWarning } from "react-icons/md";
 
 export function PrivateKeyToAddressTool() {
   const [privateKey, setPrivateKey] = useState("");
@@ -58,10 +59,10 @@ export function PrivateKeyToAddressTool() {
   return (
     <div className="space-y-6">
       {/* Security Warning */}
-      <div className="p-4 rounded border border-red-500/50 bg-red-500/10">
+      <div className="p-4 rounded-[12px] border border-red-500/50 bg-[var(--color-red-50)]">
         <div className="flex items-start gap-3">
-          <div className="text-red-400 text-lg">⚠️</div>
-          <div className="text-sm text-red-400">
+          <MdWarning className="w-5 h-5 text-[var(--color-red-500)] flex-shrink-0 mt-0.5" />
+          <div className="text-sm text-[var(--color-red-500)]">
             <strong className="block mb-1">Security Warning</strong>
             <ul className="list-disc list-inside space-y-1">
               <li>Never share your private key with anyone</li>
@@ -88,13 +89,13 @@ export function PrivateKeyToAddressTool() {
           type="password"
         />
         <div className="flex flex-col sm:flex-row gap-2">
-          <Button onClick={handleConvert} className="flex-1">
+          <Button onClick={handleConvert} variant="primary" className="flex-1">
             Convert to Address
           </Button>
-          <Button onClick={handleGenerateRandom} variant="outline" className="sm:flex-none whitespace-nowrap">
+          <Button onClick={handleGenerateRandom} className="sm:flex-none whitespace-nowrap">
             Generate Random
           </Button>
-          <Button onClick={handleReset} variant="secondary" className="sm:flex-none">
+          <Button onClick={handleReset} className="sm:flex-none">
             Reset
           </Button>
         </div>
@@ -102,7 +103,7 @@ export function PrivateKeyToAddressTool() {
 
       {/* Error Message */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
           <div className="text-sm font-medium">Error: {error}</div>
         </div>
       )}
@@ -115,11 +116,11 @@ export function PrivateKeyToAddressTool() {
             value={address}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
 
-          <div className="p-3 rounded border border-green-500/30 bg-green-500/5">
-            <div className="text-sm text-green-400">
+          <div className="p-3 rounded-[12px] border border-green-500/30 bg-green-500/5">
+            <div className="text-sm text-[var(--color-green-500)]">
               <strong>Success!</strong> Address derived from private key.
             </div>
           </div>
@@ -127,7 +128,7 @@ export function PrivateKeyToAddressTool() {
       )}
 
       {/* Info Box */}
-      <div className="p-4 rounded border border-blue-500/30 bg-blue-500/5">
+      <div className="p-4 rounded-[12px] border border-blue-500/30 bg-blue-500/5">
         <div className="text-sm text-blue-400">
           <strong>How it works:</strong> The Ethereum address is derived from the private key
           using elliptic curve cryptography (secp256k1). The public key is computed from the

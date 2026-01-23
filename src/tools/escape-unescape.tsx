@@ -70,13 +70,13 @@ export function EscapeUnescapeTool() {
 
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-2">
-        <Button onClick={handleEscape} className="flex-1">
+        <Button onClick={handleEscape} className="flex-1" variant="primary">
           Escape
         </Button>
         <Button onClick={handleUnescape} className="flex-1 sm:flex-none">
           Unescape
         </Button>
-        <Button onClick={handleReset} variant="secondary" className="sm:flex-none">
+        <Button onClick={handleReset} className="sm:flex-none">
           Reset
         </Button>
       </div>
@@ -88,7 +88,7 @@ export function EscapeUnescapeTool() {
           value={output}
           readOnly
           showCopy
-          className="min-h-[150px] bg-[#0f0f0f]"
+          className="min-h-[150px] bg-[var(--color-gray-0)]"
         />
       )}
     </div>

@@ -318,11 +318,11 @@ export function DelegatecallAnalyzerTool() {
   const getSafetyColor = (score: string) => {
     switch (score) {
       case "Safe":
-        return "text-green-400 bg-green-500/10 border-green-500/30";
+        return "text-[var(--color-green-500)] bg-[var(--color-green-50)] border-green-500/30";
       case "Warning":
         return "text-yellow-400 bg-yellow-500/10 border-yellow-500/30";
       case "Dangerous":
-        return "text-red-400 bg-red-500/10 border-red-500/30";
+        return "text-[var(--color-red-500)] bg-[var(--color-red-50)] border-red-500/30";
       default:
         return "text-gray-400 bg-gray-500/10 border-gray-500/30";
     }
@@ -331,7 +331,7 @@ export function DelegatecallAnalyzerTool() {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case "high":
-        return "bg-red-500/20 border-red-500/50 text-red-400";
+        return "bg-red-500/20 border-red-500/50 text-[var(--color-red-500)]";
       case "medium":
         return "bg-yellow-500/20 border-yellow-500/50 text-yellow-400";
       case "low":
@@ -376,17 +376,17 @@ export function DelegatecallAnalyzerTool() {
 
       {/* Actions */}
       <div className="flex gap-2">
-        <Button onClick={handleAnalyze} className="flex-1" disabled={loading}>
+        <Button onClick={handleAnalyze} variant="primary" className="flex-1" disabled={loading}>
           {loading ? "Analyzing..." : "Analyze Storage Layout"}
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
           <div className="text-sm font-medium">{error}</div>
         </div>
       )}
@@ -395,7 +395,7 @@ export function DelegatecallAnalyzerTool() {
       {result && (
         <div className="space-y-4">
           {/* Safety Score */}
-          <div className={`p-4 rounded border ${getSafetyColor(result.safetyScore)}`}>
+          <div className={`p-4 rounded-[12px] border ${getSafetyColor(result.safetyScore)}`}>
             <div className="flex items-center justify-between">
               <Label className="text-sm font-semibold">Safety Score</Label>
               <span className="text-lg font-bold">{result.safetyScore}</span>
@@ -409,15 +409,15 @@ export function DelegatecallAnalyzerTool() {
 
           {/* Conflicts */}
           {result.conflicts.length > 0 && (
-            <div className="p-4 rounded border bg-[#0f0f0f] border-[#2a2a2a]">
-              <Label className="text-sm mb-3 block text-red-400 font-semibold">
+            <div className="p-4 rounded-[12px] border bg-[var(--color-gray-0)] border-[#2a2a2a]">
+              <Label className="text-sm mb-3 block text-[var(--color-red-500)] font-semibold">
                 Storage Conflicts ({result.conflicts.length})
               </Label>
               <div className="space-y-2">
                 {result.conflicts.map((conflict, idx) => (
                   <div
                     key={idx}
-                    className={`p-3 rounded border ${getSeverityColor(conflict.severity)}`}
+                    className={`p-3 rounded-[12px] border ${getSeverityColor(conflict.severity)}`}
                   >
                     <div className="flex items-start justify-between mb-2 gap-2">
                       <div className="font-mono text-sm font-semibold">
@@ -429,10 +429,10 @@ export function DelegatecallAnalyzerTool() {
                     </div>
                     <div className="text-sm break-words">{conflict.description}</div>
                     <div className="flex flex-wrap gap-2 mt-2 text-xs">
-                      <span className="bg-[#0f0f0f] px-2 py-1 rounded break-all">
+                      <span className="bg-[var(--color-gray-0)] px-2 py-1 rounded-[12px] break-all">
                         Proxy: {conflict.proxyVar}
                       </span>
-                      <span className="bg-[#0f0f0f] px-2 py-1 rounded break-all">
+                      <span className="bg-[var(--color-gray-0)] px-2 py-1 rounded-[12px] break-all">
                         Impl: {conflict.implVar}
                       </span>
                     </div>
@@ -443,7 +443,7 @@ export function DelegatecallAnalyzerTool() {
           )}
 
           {/* Storage Layout Comparison */}
-          <div className="p-4 rounded border bg-[#0f0f0f] border-[#2a2a2a]">
+          <div className="p-4 rounded-[12px] border bg-[var(--color-gray-0)] border-[#2a2a2a]">
             <Label className="text-sm mb-3 block">Storage Layout Comparison</Label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Proxy Storage */}
@@ -456,7 +456,7 @@ export function DelegatecallAnalyzerTool() {
                     result.proxySlots.map((slot, idx) => (
                       <div
                         key={idx}
-                        className="p-2 rounded bg-[#1a1a1a] border border-[#2a2a2a] text-xs"
+                        className="p-2 rounded-[12px] bg-[#1a1a1a] border border-[#2a2a2a] text-xs"
                       >
                         <div className="flex items-center justify-between mb-1 gap-2">
                           <span className="font-mono font-semibold text-blue-400 break-all">
@@ -485,16 +485,16 @@ export function DelegatecallAnalyzerTool() {
                     result.implementationSlots.map((slot, idx) => (
                       <div
                         key={idx}
-                        className={`p-2 rounded border text-xs ${
+                        className={`p-2 rounded-[12px] border text-xs ${
                           slot.name === "__gap"
-                            ? "bg-green-500/10 border-green-500/30"
+                            ? "bg-[var(--color-green-50)] border-green-500/30"
                             : "bg-[#1a1a1a] border-[#2a2a2a]"
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1 gap-2">
                           <span
                             className={`font-mono font-semibold break-all ${
-                              slot.name === "__gap" ? "text-green-400" : "text-blue-400"
+                              slot.name === "__gap" ? "text-[var(--color-green-500)]" : "text-blue-400"
                             }`}
                           >
                             {slot.name}
@@ -515,7 +515,7 @@ export function DelegatecallAnalyzerTool() {
           </div>
 
           {/* Recommendations */}
-          <div className="p-4 rounded border bg-[#0f0f0f] border-[#2a2a2a]">
+          <div className="p-4 rounded-[12px] border bg-[var(--color-gray-0)] border-[#2a2a2a]">
             <Label className="text-sm mb-3 block">Recommendations</Label>
             <ul className="space-y-2">
               {result.recommendations.map((rec, idx) => (

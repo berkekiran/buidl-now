@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MdCheck } from "react-icons/md";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ToolConfig } from "@/types/tool";
@@ -90,10 +91,11 @@ export function EnsResolverTool() {
             onClick={handleResolve}
             className="flex-1"
             disabled={isResolving}
+            variant="primary"
           >
             {isResolving ? "Resolving..." : "Resolve Address"}
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -102,7 +104,7 @@ export function EnsResolverTool() {
       {/* Advanced Settings */}
       <div>
         <Button
-          variant="ghost"
+         
           size="sm"
           onClick={() => setShowAdvanced(!showAdvanced)}
           className="h-auto px-0 py-0 text-sm"
@@ -127,7 +129,7 @@ export function EnsResolverTool() {
 
       {/* Error Message */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
           <div className="text-sm font-medium">Error: {error}</div>
         </div>
       )}
@@ -139,15 +141,15 @@ export function EnsResolverTool() {
           value={resolvedAddress}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
         />
       )}
 
       {/* Info Box */}
-      <div className="p-4 rounded border border-green-500/30 bg-green-500/5">
-        <div className="text-sm text-green-400 space-y-2">
+      <div className="p-4 rounded-[12px] border border-green-500/30 bg-green-500/5">
+        <div className="text-sm text-[var(--color-green-500)] space-y-2">
           <div>
-            <strong>✓ Live Data:</strong> This tool queries ENS Registry and Resolver contracts
+            <strong className="flex items-center gap-1"><MdCheck className="inline" /> Live Data:</strong> This tool queries ENS Registry and Resolver contracts
             directly on Ethereum mainnet. Uses automatic fallback across 3 public RPCs for reliability.
           </div>
           <div className="text-xs">

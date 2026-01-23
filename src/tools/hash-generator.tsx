@@ -67,10 +67,10 @@ export function HashGeneratorTool() {
           className="text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={() => generateHashes(input)} className="flex-1">
+          <Button onClick={() => generateHashes(input)} className="flex-1" variant="primary">
             Generate
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -87,7 +87,7 @@ export function HashGeneratorTool() {
               value={hashes[algorithm]}
               readOnly
               showCopy
-              className="font-mono text-xs bg-[#0f0f0f]"
+              className="font-mono text-xs bg-[var(--color-gray-0)]"
             />
           ))}
         </div>

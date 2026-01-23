@@ -146,22 +146,22 @@ export function TextStatisticsTool() {
           <div>
             <Label className="text-sm mb-3 block">Basic Counts</Label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Characters</div>
                 <div className="text-lg font-mono">{stats.characters.toLocaleString()}</div>
               </div>
 
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Characters (no spaces)</div>
                 <div className="text-lg font-mono">{stats.charactersNoSpaces.toLocaleString()}</div>
               </div>
 
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Lines</div>
                 <div className="text-lg font-mono">{stats.lines.toLocaleString()}</div>
               </div>
 
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Paragraphs</div>
                 <div className="text-lg font-mono">{stats.paragraphs.toLocaleString()}</div>
               </div>
@@ -171,27 +171,27 @@ export function TextStatisticsTool() {
           <div>
             <Label className="text-sm mb-3 block">Word Statistics</Label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Total Words</div>
                 <div className="text-lg font-mono">{stats.totalWords.toLocaleString()}</div>
               </div>
 
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Unique Words</div>
                 <div className="text-lg font-mono">{stats.uniqueWords.toLocaleString()}</div>
               </div>
 
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Average Word Length</div>
                 <div className="text-lg font-mono">{stats.avgWordLength.toFixed(2)}</div>
               </div>
 
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Lexical Density</div>
                 <div className="text-lg font-mono">{stats.lexicalDensity.toFixed(1)}%</div>
               </div>
 
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Longest Word</div>
                 <div className="text-lg font-mono truncate">{stats.longestWord || "-"}</div>
                 {stats.longestWord && (
@@ -201,7 +201,7 @@ export function TextStatisticsTool() {
                 )}
               </div>
 
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Shortest Word</div>
                 <div className="text-lg font-mono">{stats.shortestWord || "-"}</div>
                 {stats.shortestWord && (
@@ -211,14 +211,14 @@ export function TextStatisticsTool() {
                 )}
               </div>
 
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Average Sentence Length</div>
                 <div className="text-lg font-mono">
                   {stats.avgSentenceLength.toFixed(1)} words
                 </div>
               </div>
 
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="text-sm text-muted-foreground mb-1">Reading Time</div>
                 <div className="text-lg font-mono">
                   {stats.readingTime} {stats.readingTime === 1 ? "minute" : "minutes"}
@@ -234,16 +234,16 @@ export function TextStatisticsTool() {
           {charFrequency.length > 0 && (
             <div>
               <Label className="text-sm mb-3 block">Character Frequency Distribution</Label>
-              <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+              <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
                 <div className="space-y-2">
                   {charFrequency.map(({ char, count, percentage }, index) => (
                     <div key={index} className="flex items-center gap-3">
-                      <div className="text-sm font-mono w-8 text-center bg-[#1a1a1a] px-2 py-1 rounded">
+                      <div className="text-sm font-mono w-8 text-center bg-[#1a1a1a] px-2 py-1 rounded-[12px]">
                         {char}
                       </div>
                       <div className="flex-1 flex items-center gap-2">
                         <div className="flex-1">
-                          <div className="h-2 bg-[#1a1a1a] rounded overflow-hidden">
+                          <div className="h-2 bg-[#1a1a1a] rounded-[12px] overflow-hidden">
                             <div
                               className="h-full bg-blue-500"
                               style={{
@@ -267,7 +267,7 @@ export function TextStatisticsTool() {
           )}
 
           {/* Info */}
-          <div className="p-3 bg-[#0f0f0f] border border-border rounded">
+          <div className="p-3 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
             <Label className="text-sm mb-2 block">About These Metrics</Label>
             <ul className="text-xs text-muted-foreground space-y-1">
               <li>

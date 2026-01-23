@@ -45,10 +45,10 @@ export function Rot13Tool() {
           className="text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={handleConvert} className="flex-1">
+          <Button onClick={handleConvert} variant="primary" className="flex-1">
             Convert (ROT13)
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -61,7 +61,7 @@ export function Rot13Tool() {
           value={output}
           readOnly
           showCopy
-          className="bg-[#0f0f0f] text-sm"
+          className="bg-[var(--color-gray-0)] text-sm"
           rows={8}
         />
       )}

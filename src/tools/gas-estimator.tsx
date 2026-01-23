@@ -77,35 +77,35 @@ export function GasEstimatorTool() {
         <div className="grid grid-cols-2 gap-2">
           <Button
             onClick={() => setTxType("transfer")}
-            variant={txType === "transfer" ? "default" : "secondary"}
+            variant={txType === "transfer" ? "primary" : "secondary"}
             className="text-sm"
           >
             ETH Transfer
           </Button>
           <Button
             onClick={() => setTxType("erc20")}
-            variant={txType === "erc20" ? "default" : "secondary"}
+            variant={txType === "erc20" ? "primary" : "secondary"}
             className="text-sm"
           >
             ERC20 Transfer
           </Button>
           <Button
             onClick={() => setTxType("swap")}
-            variant={txType === "swap" ? "default" : "secondary"}
+            variant={txType === "swap" ? "primary" : "secondary"}
             className="text-sm"
           >
             DEX Swap
           </Button>
           <Button
             onClick={() => setTxType("nft")}
-            variant={txType === "nft" ? "default" : "secondary"}
+            variant={txType === "nft" ? "primary" : "secondary"}
             className="text-sm"
           >
             NFT Transfer
           </Button>
           <Button
             onClick={() => setTxType("contract")}
-            variant={txType === "contract" ? "default" : "secondary"}
+            variant={txType === "contract" ? "primary" : "secondary"}
             className="text-sm col-span-2"
           >
             Contract Interaction
@@ -128,7 +128,7 @@ export function GasEstimatorTool() {
             <Button
               key={preset.label}
               onClick={() => setGasPrice(preset.gwei)}
-              variant="outline"
+             
               className="text-xs"
             >
               {preset.label}
@@ -164,39 +164,39 @@ export function GasEstimatorTool() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <div className="text-xs text-muted-foreground mb-1">Gas Limit</div>
             <div className="text-base font-mono">{results.gasLimit.toLocaleString()}</div>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <div className="text-xs text-muted-foreground mb-1">Total Gwei</div>
             <div className="text-base font-mono">{results.gasCostGwei}</div>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <div className="text-xs text-muted-foreground mb-1">Total ETH</div>
             <div className="text-base font-mono text-blue-400">{results.gasCostEth}</div>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <div className="text-xs text-muted-foreground mb-1">Total USD</div>
-            <div className="text-base font-mono text-green-400">${results.gasCostUsd}</div>
+            <div className="text-base font-mono text-[var(--color-green-500)]">${results.gasCostUsd}</div>
           </div>
         </div>
 
         <div className="flex gap-2">
-          <Button onClick={calculateGasCost} className="flex-1">
+          <Button onClick={calculateGasCost} className="flex-1" variant="primary">
             Recalculate
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
       </div>
 
       {/* Formula Explanation */}
-      <div className="p-4 rounded border border-blue-500/30 bg-blue-500/5">
+      <div className="p-4 rounded-[12px] border border-blue-500/30 bg-blue-500/5">
         <div className="text-sm text-blue-400">
           <strong>Formula:</strong>
           <div className="font-mono text-xs mt-2 space-y-1">
@@ -208,7 +208,7 @@ export function GasEstimatorTool() {
       </div>
 
       {/* Gas Limit Reference */}
-      <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+      <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
         <div className="text-sm font-medium mb-2">Typical Gas Limits</div>
         <div className="text-xs space-y-1 font-mono text-muted-foreground">
           <div>ETH Transfer: 21,000 gas</div>

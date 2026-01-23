@@ -73,25 +73,25 @@ export function WhitespaceRemoverTool() {
       {/* Action Buttons */}
       <div className="space-y-2">
         <div className="flex gap-2">
-          <Button onClick={handleTrim} className="flex-1">
+          <Button onClick={handleTrim} variant="primary" className="flex-1">
             Trim Lines
           </Button>
-          <Button onClick={handleRemoveAll} className="flex-1">
+          <Button onClick={handleRemoveAll} variant="primary" className="flex-1">
             Remove All
           </Button>
         </div>
         <div className="flex gap-2">
-          <Button onClick={handleNormalize} className="flex-1">
+          <Button onClick={handleNormalize} variant="primary" className="flex-1">
             Normalize
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
       </div>
 
       {/* Description of actions */}
-      <div className="text-sm text-muted-foreground space-y-2 p-4 bg-[#0f0f0f] border border-border rounded">
+      <div className="text-sm text-muted-foreground space-y-2 p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
         <div>
           <strong>Trim Lines:</strong> Removes leading and trailing whitespace from each line
         </div>
@@ -110,7 +110,7 @@ export function WhitespaceRemoverTool() {
           value={output}
           readOnly
           showCopy
-          className="min-h-[200px] bg-[#0f0f0f]"
+          className="min-h-[200px] bg-[var(--color-gray-0)]"
         />
       )}
     </div>

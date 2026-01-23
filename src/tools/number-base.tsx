@@ -166,7 +166,7 @@ export function NumberBaseTool() {
         <div className="text-xs text-muted-foreground mb-2">
           Digits: 0-9, A-F
         </div>
-        <Button onClick={handleReset} variant="secondary" className="w-full">
+        <Button onClick={handleReset} className="w-full">
           Reset
         </Button>
       </div>

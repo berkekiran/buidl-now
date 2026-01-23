@@ -56,10 +56,10 @@ export function FunctionSelectorTool() {
           className="font-mono text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={() => calculateSelector(functionSig)} className="flex-1">
+          <Button onClick={() => calculateSelector(functionSig)} className="flex-1" variant="primary">
             Convert
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -71,7 +71,7 @@ export function FunctionSelectorTool() {
         value={selector}
         readOnly
         showCopy
-        className="font-mono text-sm bg-[#0f0f0f]"
+        className="font-mono text-sm bg-[var(--color-gray-0)]"
       />
     </div>
   );

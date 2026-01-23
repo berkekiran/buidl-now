@@ -291,7 +291,7 @@ export function RevertReasonDecoderTool() {
               setInputMode("hex");
               handleReset();
             }}
-            variant={inputMode === "hex" ? "default" : "secondary"}
+            variant={inputMode === "hex" ? "primary" : "secondary"}
             className="h-auto p-3 flex flex-col items-start justify-start"
           >
             <div className="text-sm font-medium">Revert Data (Hex)</div>
@@ -302,7 +302,7 @@ export function RevertReasonDecoderTool() {
               setInputMode("tx");
               handleReset();
             }}
-            variant={inputMode === "tx" ? "default" : "secondary"}
+            variant={inputMode === "tx" ? "primary" : "secondary"}
             className="h-auto p-3 flex flex-col items-start justify-start"
           >
             <div className="text-sm font-medium">Transaction Hash</div>
@@ -324,14 +324,12 @@ export function RevertReasonDecoderTool() {
             }}
             placeholder="0x08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000..."
             className="font-mono text-sm min-h-[120px]"
-            showClear
-            onClearClick={handleReset}
           />
           <div className="flex gap-2 mt-2">
-            <Button onClick={handleDecodeHex} className="flex-1">
+            <Button onClick={handleDecodeHex} variant="primary" className="flex-1">
               Decode Revert Data
             </Button>
-            <Button onClick={handleReset} variant="secondary">
+            <Button onClick={handleReset}>
               Reset
             </Button>
           </div>
@@ -363,12 +361,13 @@ export function RevertReasonDecoderTool() {
           <div className="flex gap-2">
             <Button
               onClick={handleDecodeTx}
+              variant="primary"
               className="flex-1"
               disabled={loading}
             >
               {loading ? "Fetching..." : "Fetch & Decode"}
             </Button>
-            <Button onClick={handleReset} variant="secondary" disabled={loading}>
+            <Button onClick={handleReset} disabled={loading}>
               Reset
             </Button>
           </div>
@@ -377,7 +376,7 @@ export function RevertReasonDecoderTool() {
 
       {/* Error Message */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
           <div className="text-sm font-medium">Error: {error}</div>
         </div>
       )}
@@ -385,7 +384,7 @@ export function RevertReasonDecoderTool() {
       {/* Decoded Results */}
       {decoded && (
         <div className="space-y-4">
-          <div className="text-sm font-medium text-green-400 border-b border-green-500/30 pb-2">
+          <div className="text-sm font-medium text-[var(--color-green-500)] border-b border-green-500/30 pb-2">
             Decoded Error
           </div>
 
@@ -394,7 +393,7 @@ export function RevertReasonDecoderTool() {
             value={decoded.selector}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
 
           {decoded.errorName && (
@@ -403,7 +402,7 @@ export function RevertReasonDecoderTool() {
               value={decoded.errorName}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           )}
 
@@ -413,7 +412,7 @@ export function RevertReasonDecoderTool() {
               value={decoded.signature}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           )}
 
@@ -423,19 +422,19 @@ export function RevertReasonDecoderTool() {
               value={decoded.decodedMessage}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f] min-h-[80px]"
+              className="font-mono text-sm bg-[var(--color-gray-0)] min-h-[80px]"
             />
           )}
 
           {decoded.isPanic && (
-            <div className="p-4 rounded border border-red-500/30 bg-red-500/5">
-              <div className="text-sm font-medium text-red-400 mb-2">
+            <div className="p-4 rounded-[12px] border border-red-500/30 bg-red-500/5">
+              <div className="text-sm font-medium text-[var(--color-red-500)] mb-2">
                 Panic Error Detected
               </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-muted-foreground">Code:</span>
-                  <span className="font-mono text-sm text-red-400">
+                  <span className="font-mono text-sm text-[var(--color-red-500)]">
                     {decoded.panicCode}
                   </span>
                 </div>
@@ -443,7 +442,7 @@ export function RevertReasonDecoderTool() {
                   <span className="text-xs text-muted-foreground shrink-0">
                     Description:
                   </span>
-                  <span className="text-sm text-red-400">
+                  <span className="text-sm text-[var(--color-red-500)]">
                     {decoded.panicDescription}
                   </span>
                 </div>
@@ -452,11 +451,11 @@ export function RevertReasonDecoderTool() {
           )}
 
           {decoded.isCustomError && (
-            <div className="p-3 rounded border border-yellow-500/30 bg-yellow-500/5">
+            <div className="p-3 rounded-[12px] border border-yellow-500/30 bg-yellow-500/5">
               <div className="text-sm text-yellow-400">
                 This appears to be a custom error. Custom errors are more gas-efficient
                 but require the contract ABI to decode parameter values. The selector is:{" "}
-                <code className="px-1 py-0.5 rounded bg-[#0f0f0f]">{decoded.selector}</code>
+                <code className="px-1 py-0.5 rounded-[12px] bg-[var(--color-gray-0)]">{decoded.selector}</code>
               </div>
             </div>
           )}
@@ -467,7 +466,7 @@ export function RevertReasonDecoderTool() {
               value={decoded.rawData}
               readOnly
               showCopy
-              className="font-mono text-xs bg-[#0f0f0f] min-h-[100px]"
+              className="font-mono text-xs bg-[var(--color-gray-0)] min-h-[100px]"
             />
           )}
         </div>
@@ -482,7 +481,7 @@ export function RevertReasonDecoderTool() {
           {Object.entries(commonErrors).map(([selector, info]) => (
             <div
               key={selector}
-              className="p-3 rounded border border-border bg-[#1a1a1a] text-sm"
+              className="p-3 rounded-[12px] border border-border bg-[#1a1a1a] text-sm"
             >
               <div className="flex items-center justify-between mb-1">
                 <span className="font-mono text-blue-400">{selector}</span>
@@ -505,10 +504,10 @@ export function RevertReasonDecoderTool() {
           {Object.entries(panicCodes).map(([code, description]) => (
             <div
               key={code}
-              className="p-3 rounded border border-border bg-[#1a1a1a] text-sm"
+              className="p-3 rounded-[12px] border border-border bg-[#1a1a1a] text-sm"
             >
               <div className="flex items-start gap-3">
-                <span className="font-mono text-red-400 shrink-0">{code}</span>
+                <span className="font-mono text-[var(--color-red-500)] shrink-0">{code}</span>
                 <span className="text-muted-foreground">{description}</span>
               </div>
             </div>
@@ -517,7 +516,7 @@ export function RevertReasonDecoderTool() {
       </div>
 
       {/* Info Box */}
-      <div className="p-4 rounded border border-blue-500/30 bg-blue-500/5">
+      <div className="p-4 rounded-[12px] border border-blue-500/30 bg-blue-500/5">
         <div className="text-sm text-blue-400 space-y-2">
           <div>
             <strong>Error Types:</strong> Solidity has three main error types:

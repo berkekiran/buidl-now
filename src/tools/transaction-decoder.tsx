@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ToolConfig } from "@/types/tool";
 import { parseTransaction, formatEther, formatGwei } from "viem";
 import type { Transaction } from "viem";
+import { MdCheck } from "react-icons/md";
 
 interface DecodedTransaction {
   to?: string;
@@ -93,14 +94,12 @@ export function TransactionDecoderTool() {
           }}
           placeholder="0xf86c808504a817c800825208944592d8f8d7b001e72cb26a73e4fa1806a51ac79d880de0b6b3a7640000801ca0..."
           className="font-mono text-sm min-h-[120px]"
-          showClear
-          onClearClick={handleReset}
         />
         <div className="flex gap-2 mt-2">
-          <Button onClick={handleDecode} className="flex-1">
+          <Button onClick={handleDecode} variant="primary" className="flex-1">
             Decode Transaction
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -108,7 +107,7 @@ export function TransactionDecoderTool() {
 
       {/* Error Message */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
           <div className="text-sm font-medium">Error: {error}</div>
         </div>
       )}
@@ -116,7 +115,7 @@ export function TransactionDecoderTool() {
       {/* Decoded Fields */}
       {decoded && (
         <div className="space-y-4">
-          <div className="text-sm font-medium text-green-400 border-b border-green-500/30 pb-2">
+          <div className="text-sm font-medium text-[var(--color-green-500)] border-b border-green-500/30 pb-2">
             Decoded Transaction Fields
           </div>
 
@@ -126,7 +125,7 @@ export function TransactionDecoderTool() {
               value={decoded.hash}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           )}
 
@@ -135,14 +134,14 @@ export function TransactionDecoderTool() {
               label="Type"
               value={decoded.type}
               readOnly
-              className="text-sm bg-[#0f0f0f]"
+              className="text-sm bg-[var(--color-gray-0)]"
             />
 
             <Input
               label="Chain ID"
               value={decoded.chainId}
               readOnly
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           </div>
 
@@ -151,7 +150,7 @@ export function TransactionDecoderTool() {
             value={decoded.from}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
 
           <Input
@@ -159,7 +158,7 @@ export function TransactionDecoderTool() {
             value={decoded.to}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
 
           <div className="grid grid-cols-2 gap-4">
@@ -168,7 +167,7 @@ export function TransactionDecoderTool() {
               value={decoded.value}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
 
             <Input
@@ -176,7 +175,7 @@ export function TransactionDecoderTool() {
               value={decoded.valueInEth}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           </div>
 
@@ -185,7 +184,7 @@ export function TransactionDecoderTool() {
             value={decoded.data}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f] min-h-[80px]"
+            className="font-mono text-sm bg-[var(--color-gray-0)] min-h-[80px]"
           />
 
           <div className="grid grid-cols-2 gap-4">
@@ -193,14 +192,14 @@ export function TransactionDecoderTool() {
               label="Nonce"
               value={decoded.nonce}
               readOnly
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
 
             <Input
               label="Gas Limit"
               value={decoded.gasLimit}
               readOnly
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           </div>
 
@@ -210,14 +209,14 @@ export function TransactionDecoderTool() {
                 label="Gas Price (Wei)"
                 value={decoded.gasPrice}
                 readOnly
-                className="font-mono text-sm bg-[#0f0f0f]"
+                className="font-mono text-sm bg-[var(--color-gray-0)]"
               />
 
               <Input
                 label="Gas Price (Gwei)"
                 value={decoded.gasPriceInGwei}
                 readOnly
-                className="font-mono text-sm bg-[#0f0f0f]"
+                className="font-mono text-sm bg-[var(--color-gray-0)]"
               />
             </div>
           )}
@@ -228,7 +227,7 @@ export function TransactionDecoderTool() {
                 label="Max Fee Per Gas"
                 value={decoded.maxFeePerGas}
                 readOnly
-                className="font-mono text-sm bg-[#0f0f0f]"
+                className="font-mono text-sm bg-[var(--color-gray-0)]"
               />
 
               {decoded.maxPriorityFeePerGas && (
@@ -236,7 +235,7 @@ export function TransactionDecoderTool() {
                   label="Max Priority Fee"
                   value={decoded.maxPriorityFeePerGas}
                   readOnly
-                  className="font-mono text-sm bg-[#0f0f0f]"
+                  className="font-mono text-sm bg-[var(--color-gray-0)]"
                 />
               )}
             </div>
@@ -245,9 +244,9 @@ export function TransactionDecoderTool() {
       )}
 
       {/* Info Box */}
-      <div className="p-4 rounded border border-green-500/30 bg-green-500/5">
-        <div className="text-sm text-green-400">
-          <strong>✓ Real RLP Decoding:</strong> This tool uses viem's parseTransaction
+      <div className="p-4 rounded-[12px] border border-green-500/30 bg-green-500/5">
+        <div className="text-sm text-[var(--color-green-500)]">
+          <strong className="flex items-center gap-1"><MdCheck className="w-4 h-4" /> Real RLP Decoding:</strong> This tool uses viem's parseTransaction
           to properly decode signed transactions. It supports all transaction types
           (legacy, EIP-2930, EIP-1559) and extracts all transaction fields.
         </div>

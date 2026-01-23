@@ -81,10 +81,10 @@ export function RemoveDuplicatesTool() {
 
       {/* Action Buttons */}
       <div className="flex gap-2">
-        <Button onClick={handleRemoveDuplicates} className="flex-1">
+        <Button onClick={handleRemoveDuplicates} variant="primary" className="flex-1">
           Remove Duplicates
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
@@ -92,15 +92,15 @@ export function RemoveDuplicatesTool() {
       {/* Statistics */}
       {output && (
         <div className="grid grid-cols-3 gap-4">
-          <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+          <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
             <div className="text-lg font-bold">{stats.original}</div>
             <div className="text-sm text-muted-foreground">Original Lines</div>
           </div>
-          <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+          <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
             <div className="text-lg font-bold">{stats.unique}</div>
             <div className="text-sm text-muted-foreground">Unique Lines</div>
           </div>
-          <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+          <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
             <div className="text-lg font-bold text-blue-400">{stats.removed}</div>
             <div className="text-sm text-muted-foreground">Duplicates Removed</div>
           </div>
@@ -114,7 +114,7 @@ export function RemoveDuplicatesTool() {
           value={output}
           readOnly
           showCopy
-          className="min-h-[200px] bg-[#0f0f0f]"
+          className="min-h-[200px] bg-[var(--color-gray-0)]"
         />
       )}
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MdClose } from "react-icons/md";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -153,51 +154,51 @@ export function Eip712HasherTool() {
         </div>
 
         <div className="flex gap-2">
-          <Button onClick={handleCalculate} className="flex-1">
+          <Button onClick={handleCalculate} className="flex-1" variant="primary">
             Calculate Hash
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
       </div>
 
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-1"><MdClose className="inline" /> {error}</div>
         </div>
       )}
 
       {/* Output Section */}
       {finalHash && (
         <div className="space-y-4">
-          <div className="p-4 rounded border border-green-500/30 bg-green-500/10">
-            <Label className="mb-2 block text-sm text-green-400">Step 1: Domain Separator</Label>
+          <div className="p-4 rounded-[12px] border border-green-500/30 bg-[var(--color-green-50)]">
+            <Label className="mb-2 block text-sm text-[var(--color-green-500)]">Step 1: Domain Separator</Label>
             <Input
               value={domainSeparator}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           </div>
 
-          <div className="p-4 rounded border border-blue-500/30 bg-blue-500/10">
+          <div className="p-4 rounded-[12px] border border-blue-500/30 bg-blue-500/10">
             <Label className="mb-2 block text-sm text-blue-400">Step 2: Message Hash</Label>
             <Input
               value={messageHash}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           </div>
 
-          <div className="p-4 rounded border border-purple-500/30 bg-purple-500/10">
+          <div className="p-4 rounded-[12px] border border-purple-500/30 bg-purple-500/10">
             <Label className="mb-2 block text-sm text-purple-400">Step 3: Final EIP-712 Hash</Label>
             <Input
               value={finalHash}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <p className="mt-2 text-xs text-muted-foreground">
               This is the hash that should be signed by the user's wallet
@@ -208,7 +209,7 @@ export function Eip712HasherTool() {
 
       {/* Usage Example */}
       {finalHash && (
-        <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+        <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
           <Label className="mb-2 block text-sm">Usage Example (viem)</Label>
           <Code language="javascript">
 {`import { signTypedData } from 'viem/accounts';

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MdClose } from "react-icons/md";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -96,17 +97,17 @@ export function AbiEncoderTool() {
           </div>
 
           <div className="flex gap-2">
-            <Button onClick={handleEncode} className="flex-1">
+            <Button onClick={handleEncode} variant="primary" className="flex-1">
               Encode
             </Button>
-            <Button onClick={handleResetEncode} variant="secondary">
+            <Button onClick={handleResetEncode}>
               Reset
             </Button>
           </div>
 
           {error && (
-            <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-              <div className="text-sm font-medium">✗ {error}</div>
+            <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+              <div className="text-sm font-medium flex items-center gap-1"><MdClose className="inline" /> {error}</div>
             </div>
           )}
 
@@ -116,7 +117,7 @@ export function AbiEncoderTool() {
               value={encoded}
               readOnly
               showCopy
-              className="font-mono min-h-[100px] bg-[#0f0f0f]"
+              className="font-mono min-h-[100px] bg-[var(--color-gray-0)]"
             />
           )}
         </div>
@@ -149,17 +150,17 @@ export function AbiEncoderTool() {
           </div>
 
           <div className="flex gap-2">
-            <Button onClick={handleDecode} className="flex-1">
+            <Button onClick={handleDecode} variant="primary" className="flex-1">
               Decode
             </Button>
-            <Button onClick={handleResetDecode} variant="secondary">
+            <Button onClick={handleResetDecode}>
               Reset
             </Button>
           </div>
 
           {decodeError && (
-            <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-              <div className="text-sm font-medium">✗ {decodeError}</div>
+            <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+              <div className="text-sm font-medium flex items-center gap-1"><MdClose className="inline" /> {decodeError}</div>
             </div>
           )}
 
@@ -169,7 +170,7 @@ export function AbiEncoderTool() {
               value={decoded}
               readOnly
               showCopy
-              className="font-mono min-h-[100px] bg-[#0f0f0f]"
+              className="font-mono min-h-[100px] bg-[var(--color-gray-0)]"
             />
           )}
         </div>

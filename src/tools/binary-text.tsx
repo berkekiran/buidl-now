@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
+import { MdClose } from "react-icons/md";
 
 export function BinaryTextTool() {
   const [input, setInput] = useState("");
@@ -62,7 +63,7 @@ export function BinaryTextTool() {
       {/* Mode Selection */}
       <div className="flex gap-2">
         <Button
-          variant={mode === "encode" ? "default" : "secondary"}
+          variant={mode === "encode" ? "primary" : "secondary"}
           onClick={() => {
             setMode("encode");
             setOutput("");
@@ -73,7 +74,7 @@ export function BinaryTextTool() {
           Encode
         </Button>
         <Button
-          variant={mode === "decode" ? "default" : "secondary"}
+          variant={mode === "decode" ? "primary" : "secondary"}
           onClick={() => {
             setMode("decode");
             setOutput("");
@@ -102,10 +103,10 @@ export function BinaryTextTool() {
           className="text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={handleConvert} className="flex-1">
+          <Button onClick={handleConvert} variant="primary" className="flex-1">
             {mode === "encode" ? "Encode" : "Decode"}
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -113,8 +114,8 @@ export function BinaryTextTool() {
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-1"><MdClose className="w-4 h-4" /> {error}</div>
         </div>
       )}
 
@@ -125,7 +126,7 @@ export function BinaryTextTool() {
           value={output}
           readOnly
           showCopy
-          className="bg-[#0f0f0f] text-sm"
+          className="bg-[var(--color-gray-0)] text-sm"
           rows={8}
         />
       )}

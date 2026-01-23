@@ -116,7 +116,7 @@ export function EthUnitConverterTool() {
         <div className="text-xs text-muted-foreground mb-2">
           1 ETH = 10⁹ Gwei = 10¹⁸ Wei
         </div>
-        <Button onClick={handleReset} variant="secondary" className="w-full">
+        <Button onClick={handleReset} className="w-full">
           Reset
         </Button>
       </div>

@@ -78,16 +78,16 @@ export function ImageBase64Tool() {
           type="file"
           accept="image/*"
           onChange={handleFileSelect}
-          className="block w-full text-sm text-white/60 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium file:bg-white/10 file:text-white hover:file:bg-white/20 file:cursor-pointer"
+          className="block w-full text-sm text-[var(--color-gray-500)] file:mr-4 file:py-2.5 file:px-4 file:rounded-[var(--radius-10)] file:border file:border-[var(--color-gray-200)] file:text-sm file:font-medium file:bg-[var(--color-gray-0)] file:text-[var(--color-gray-950)] hover:file:bg-[var(--color-gray-50)] file:cursor-pointer file:transition-colors"
         />
-        <p className="mt-2 text-xs text-white/40">
+        <p className="mt-2 text-xs text-[var(--color-gray-400)]">
           Maximum file size: 5MB. Supported formats: PNG, JPG, GIF, SVG, WebP
         </p>
       </div>
 
       {/* Error Display */}
       {error && (
-        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
+        <div className="p-3 bg-[var(--color-red-50)] border border-[var(--color-red-200)] rounded-[12px] text-[var(--color-red-500)] text-sm">
           {error}
         </div>
       )}
@@ -98,7 +98,7 @@ export function ImageBase64Tool() {
           {/* Image Preview */}
           <div>
             <Label className="mb-2 block text-sm">Image Preview</Label>
-            <div className="border border-white/10 rounded p-4 bg-[#0f0f0f] flex items-center justify-center">
+            <div className="border border-[var(--color-gray-200)] rounded-[12px] p-4 bg-[var(--color-gray-0)] flex items-center justify-center">
               <img
                 src={previewUrl}
                 alt="Preview"
@@ -109,12 +109,12 @@ export function ImageBase64Tool() {
 
           {/* File Information */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-3 bg-[#0f0f0f] border border-white/10 rounded">
-              <Label className="text-xs text-white/60 mb-1 block">Original Size</Label>
+            <div className="p-3 bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] rounded-[12px]">
+              <Label className="text-xs text-[var(--color-gray-500)] mb-1 block">Original Size</Label>
               <p className="text-sm font-mono">{formatBytes(originalSize)}</p>
             </div>
-            <div className="p-3 bg-[#0f0f0f] border border-white/10 rounded">
-              <Label className="text-xs text-white/60 mb-1 block">Encoded Size</Label>
+            <div className="p-3 bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] rounded-[12px]">
+              <Label className="text-xs text-[var(--color-gray-500)] mb-1 block">Encoded Size</Label>
               <p className="text-sm font-mono">{formatBytes(encodedSize)}</p>
             </div>
           </div>
@@ -125,18 +125,18 @@ export function ImageBase64Tool() {
             value={base64String}
             readOnly
             showCopy
-            className="font-mono text-xs bg-[#0f0f0f]"
+            className="font-mono text-xs bg-[var(--color-gray-0)]"
           />
 
           {/* Size Warning */}
           {encodedSize > originalSize * 1.5 && (
-            <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded text-yellow-400 text-sm">
+            <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-[12px] text-yellow-400 text-sm">
               Note: Base64 encoding increases file size by approximately 33%. Consider using direct file references for large images.
             </div>
           )}
 
           {/* Reset Button */}
-          <Button onClick={handleReset} variant="secondary" className="w-full">
+          <Button onClick={handleReset} className="w-full">
             Reset
           </Button>
         </div>

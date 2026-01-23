@@ -129,7 +129,7 @@ export function LoremIpsumTool() {
           <Label className="mb-2 block text-sm">Type</Label>
           <div className="flex gap-2">
             <Button
-              variant={type === "paragraphs" ? "default" : "secondary"}
+              variant={type === "paragraphs" ? "primary" : "secondary"}
               onClick={() => setType("paragraphs")}
               className="flex-1"
               size="sm"
@@ -137,7 +137,7 @@ export function LoremIpsumTool() {
               Paragraphs
             </Button>
             <Button
-              variant={type === "sentences" ? "default" : "secondary"}
+              variant={type === "sentences" ? "primary" : "secondary"}
               onClick={() => setType("sentences")}
               className="flex-1"
               size="sm"
@@ -145,7 +145,7 @@ export function LoremIpsumTool() {
               Sentences
             </Button>
             <Button
-              variant={type === "words" ? "default" : "secondary"}
+              variant={type === "words" ? "primary" : "secondary"}
               onClick={() => setType("words")}
               className="flex-1"
               size="sm"
@@ -167,7 +167,7 @@ export function LoremIpsumTool() {
       </div>
 
       {/* Generate Button */}
-      <Button onClick={handleGenerate} className="w-full">
+      <Button onClick={handleGenerate} variant="primary" className="w-full">
         Generate Lorem Ipsum
       </Button>
 

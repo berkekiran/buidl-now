@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { recoverMessageAddress, isAddress } from "viem";
 import { ToolConfig } from "@/types/tool";
+import { MdCheck, MdClose } from "react-icons/md";
 
 export function SignatureVerifierTool() {
   const [message, setMessage] = useState("");
@@ -85,10 +86,10 @@ export function SignatureVerifierTool() {
           className="font-mono text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={handleVerify} className="flex-1">
+          <Button onClick={handleVerify} variant="primary" className="flex-1">
             Verify Signature
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -101,23 +102,23 @@ export function SignatureVerifierTool() {
           value={recoveredAddress}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
         />
       )}
 
       {/* Verification Result */}
       {isMatch !== null && (
         <div
-          className={`p-3 rounded border ${
+          className={`p-3 rounded-[12px] border ${
             isMatch
-              ? "bg-green-500/10 border-green-500/30 text-green-400"
-              : "bg-red-500/10 border-red-500/30 text-red-400"
+              ? "bg-[var(--color-green-50)] border-green-500/30 text-[var(--color-green-500)]"
+              : "bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]"
           }`}
         >
-          <div className="text-sm font-medium">
+          <div className="text-sm font-medium flex items-center gap-1">
             {isMatch
-              ? "✓ Signature matches expected address"
-              : "✗ Signature does not match expected address"}
+              ? <><MdCheck className="w-4 h-4" /> Signature matches expected address</>
+              : <><MdClose className="w-4 h-4" /> Signature does not match expected address</>}
           </div>
         </div>
       )}

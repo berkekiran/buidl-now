@@ -243,10 +243,10 @@ export function ColorConverterTool() {
           className="text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={handleConvert} className="flex-1">
+          <Button onClick={handleConvert} variant="primary" className="flex-1">
             Convert
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -254,7 +254,7 @@ export function ColorConverterTool() {
 
       {/* Error Display */}
       {error && (
-        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
+        <div className="p-3 bg-[var(--color-red-50)] border border-[var(--color-red-200)] rounded-[12px] text-[var(--color-red-500)] text-sm">
           {error}
         </div>
       )}
@@ -266,7 +266,7 @@ export function ColorConverterTool() {
           <div>
             <Label className="mb-2 block text-sm">Color Preview</Label>
             <div
-              className="h-32 w-full rounded border border-white/10"
+              className="h-32 w-full rounded-[12px] border border-[var(--color-gray-200)]"
               style={{ backgroundColor: colors.hex }}
             />
           </div>
@@ -277,7 +277,7 @@ export function ColorConverterTool() {
             value={colors.hex}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
 
           {/* RGB */}
@@ -286,7 +286,7 @@ export function ColorConverterTool() {
             value={colors.rgb}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
 
           {/* HSL */}
@@ -295,7 +295,7 @@ export function ColorConverterTool() {
             value={colors.hsl}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
 
           {/* HSV */}
@@ -304,7 +304,7 @@ export function ColorConverterTool() {
             value={colors.hsv}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
         </div>
       )}

@@ -354,14 +354,14 @@ export function AccessControlVisualizerTool() {
         <div className="flex gap-2">
           <Button
             onClick={() => setMode("abi")}
-            variant={mode === "abi" ? "default" : "secondary"}
+            variant={mode === "abi" ? "primary" : "secondary"}
             className="flex-1"
           >
             Direct ABI
           </Button>
           <Button
             onClick={() => setMode("address")}
-            variant={mode === "address" ? "default" : "secondary"}
+            variant={mode === "address" ? "primary" : "secondary"}
             className="flex-1"
           >
             Contract Address
@@ -404,17 +404,17 @@ export function AccessControlVisualizerTool() {
 
       {/* Actions */}
       <div className="flex gap-2">
-        <Button onClick={handleAnalyze} className="flex-1" disabled={loading}>
+        <Button onClick={handleAnalyze} variant="primary" className="flex-1" disabled={loading}>
           {loading ? "Analyzing..." : "Analyze Access Control"}
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
           <div className="text-sm font-medium">{error}</div>
         </div>
       )}
@@ -423,14 +423,14 @@ export function AccessControlVisualizerTool() {
       {result && (
         <div className="space-y-4">
           {/* Access Control Type */}
-          <div className="p-4 rounded border bg-[#0f0f0f] border-[#2a2a2a]">
+          <div className="p-4 rounded-[12px] border bg-[var(--color-gray-0)] border-[#2a2a2a]">
             <Label className="text-sm mb-2 block">Access Control Type</Label>
             <div className="text-base font-bold text-blue-400">{result.type}</div>
           </div>
 
           {/* Security Warnings */}
           {result.securityWarnings.length > 0 && (
-            <div className="p-4 rounded border bg-yellow-500/10 border-yellow-500/30">
+            <div className="p-4 rounded-[12px] border bg-yellow-500/10 border-yellow-500/30">
               <Label className="text-sm mb-3 block text-yellow-400 font-semibold">
                 Security Warnings
               </Label>
@@ -447,13 +447,13 @@ export function AccessControlVisualizerTool() {
 
           {/* Role Hierarchy */}
           {result.hierarchy.length > 0 && (
-            <div className="p-4 rounded border bg-[#0f0f0f] border-[#2a2a2a]">
+            <div className="p-4 rounded-[12px] border bg-[var(--color-gray-0)] border-[#2a2a2a]">
               <Label className="text-sm mb-3 block">Role Hierarchy</Label>
               <div className="space-y-2">
                 {result.hierarchy.map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-3 p-3 rounded bg-[#1a1a1a] border border-[#2a2a2a]"
+                    className="flex items-center gap-3 p-3 rounded-[12px] bg-[#1a1a1a] border border-[#2a2a2a]"
                     style={{ marginLeft: `${item.level * 20}px` }}
                   >
                     <div className="flex-1">
@@ -475,17 +475,17 @@ export function AccessControlVisualizerTool() {
 
           {/* Roles and Functions */}
           {result.roles.length > 0 && (
-            <div className="p-4 rounded border bg-[#0f0f0f] border-[#2a2a2a]">
+            <div className="p-4 rounded-[12px] border bg-[var(--color-gray-0)] border-[#2a2a2a]">
               <Label className="text-sm mb-3 block">Roles and Functions</Label>
               <div className="space-y-4">
                 {result.roles.map((role, idx) => (
                   <div
                     key={idx}
-                    className="p-3 rounded bg-[#1a1a1a] border border-[#2a2a2a]"
+                    className="p-3 rounded-[12px] bg-[#1a1a1a] border border-[#2a2a2a]"
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <div className="font-mono text-sm font-semibold text-green-400">
+                        <div className="font-mono text-sm font-semibold text-[var(--color-green-500)]">
                           {role.name}
                         </div>
                         <div className="font-mono text-xs text-gray-500 mt-1">
@@ -493,7 +493,7 @@ export function AccessControlVisualizerTool() {
                         </div>
                       </div>
                       {role.adminRole && (
-                        <div className="text-xs text-gray-400 bg-[#0f0f0f] px-2 py-1 rounded">
+                        <div className="text-xs text-gray-400 bg-[var(--color-gray-0)] px-2 py-1 rounded-[12px]">
                           Admin: {role.adminRole}
                         </div>
                       )}
@@ -505,7 +505,7 @@ export function AccessControlVisualizerTool() {
                           {role.functions.map((func, funcIdx) => (
                             <span
                               key={funcIdx}
-                              className="text-xs font-mono bg-[#0f0f0f] px-2 py-1 rounded text-gray-300"
+                              className="text-xs font-mono bg-[var(--color-gray-0)] px-2 py-1 rounded-[12px] text-gray-300"
                             >
                               {func}()
                             </span>
@@ -521,7 +521,7 @@ export function AccessControlVisualizerTool() {
 
           {/* Public Admin Functions */}
           {result.publicAdminFunctions.length > 0 && (
-            <div className="p-4 rounded border bg-[#0f0f0f] border-[#2a2a2a]">
+            <div className="p-4 rounded-[12px] border bg-[var(--color-gray-0)] border-[#2a2a2a]">
               <Label className="text-sm mb-3 block">State-Changing Functions</Label>
               <div className="text-xs text-gray-400 mb-3">
                 Verify these functions have proper access control modifiers
@@ -530,7 +530,7 @@ export function AccessControlVisualizerTool() {
                 {result.publicAdminFunctions.map((func, idx) => (
                   <span
                     key={idx}
-                    className="text-xs font-mono bg-orange-500/10 border border-orange-500/30 text-orange-400 px-2 py-1 rounded"
+                    className="text-xs font-mono bg-orange-500/10 border border-orange-500/30 text-orange-400 px-2 py-1 rounded-[12px]"
                   >
                     {func}()
                   </span>
