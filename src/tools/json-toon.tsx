@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
+import { MdSwapVert, MdInfo } from "react-icons/md";
 
 /**
  * Converts JSON to TOON (Token-Oriented Object Notation) format
@@ -250,85 +249,98 @@ function parseValue(value: string): any {
 
 export function JsonToonTool() {
   const [jsonInput, setJsonInput] = useState("");
-  const [toonOutput, setToonOutput] = useState("");
+  const [toonInput, setToonInput] = useState("");
   const [error, setError] = useState("");
+  const [lastEdited, setLastEdited] = useState<"json" | "toon" | null>(null);
 
-  const handleJsonToToon = () => {
-    try {
-      setError("");
-      const toon = jsonToToon(jsonInput);
-      setToonOutput(toon);
-    } catch (err) {
-      setError(`JSON to TOON error: ${err instanceof Error ? err.message : String(err)}`);
+  // Auto-convert when JSON input changes
+  useEffect(() => {
+    if (lastEdited === "json" && jsonInput) {
+      try {
+        const toon = jsonToToon(jsonInput);
+        setToonInput(toon);
+        setError("");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Invalid JSON");
+      }
     }
-  };
+  }, [jsonInput, lastEdited]);
 
-  const handleToonToJson = () => {
-    try {
-      setError("");
-      const json = toonToJson(toonOutput);
-      setJsonInput(json);
-    } catch (err) {
-      setError(`TOON to JSON error: ${err instanceof Error ? err.message : String(err)}`);
+  // Auto-convert when TOON input changes
+  useEffect(() => {
+    if (lastEdited === "toon" && toonInput) {
+      try {
+        const json = toonToJson(toonInput);
+        setJsonInput(json);
+        setError("");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Invalid TOON");
+      }
     }
-  };
+  }, [toonInput, lastEdited]);
 
-  const handleReset = () => {
-    setJsonInput("");
-    setToonOutput("");
-    setError("");
+  const handleSwap = () => {
+    const tempJson = jsonInput;
+    const tempToon = toonInput;
+    setJsonInput(tempToon);
+    setToonInput(tempJson);
+    setLastEdited(null);
   };
-
 
   return (
-    <div className="space-y-6">
-      <div>
-        <Label htmlFor="json-input">JSON Input</Label>
-        <Textarea
-          id="json-input"
-          value={jsonInput}
-          onChange={(e) => setJsonInput(e.target.value)}
-          placeholder='{"key": "value"}'
-          className="font-mono min-h-[200px]"
-        />
+    <div className="space-y-4">
+      {/* JSON Input */}
+      <Textarea
+        label="JSON"
+        value={jsonInput}
+        onChange={(e) => {
+          setJsonInput(e.target.value);
+          setLastEdited("json");
+        }}
+        placeholder='{"key": "value"}'
+        className="font-mono text-sm"
+        rows={8}
+      />
+
+      {/* Swap Button */}
+      <div className="flex justify-center">
+        <button
+          onClick={handleSwap}
+          className="w-10 h-10 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+          title="Swap"
+        >
+          <MdSwapVert className="w-5 h-5" />
+        </button>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <Button onClick={handleJsonToToon} className="flex-1 sm:flex-none">
-          JSON → TOON
-        </Button>
-        <Button onClick={handleToonToJson} className="flex-1 sm:flex-none">
-          TOON → JSON
-        </Button>
-        <Button onClick={handleReset} variant="secondary" className="flex-1 sm:flex-none">
-          Reset
-        </Button>
-      </div>
-
+      {/* Error */}
       {error && (
-        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium">{error}</div>
         </div>
       )}
 
-      <div>
-        <Label htmlFor="toon-output">TOON Output</Label>
-        <Textarea
-          id="toon-output"
-          value={toonOutput}
-          onChange={(e) => setToonOutput(e.target.value)}
-          placeholder="key: value"
-          className="font-mono min-h-[200px]"
-        />
-      </div>
+      {/* TOON Input */}
+      <Textarea
+        label="TOON"
+        value={toonInput}
+        onChange={(e) => {
+          setToonInput(e.target.value);
+          setLastEdited("toon");
+        }}
+        placeholder="key: value"
+        className="font-mono text-sm"
+        rows={8}
+      />
 
-      <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
-        <h3 className="font-semibold text-sm mb-2">💡 About TOON Format</h3>
-        <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
-          <li>• <strong>30-60% fewer tokens</strong> on large uniform arrays vs JSON</li>
-          <li>• <strong>Tabular arrays:</strong> Declare keys once, stream data as rows</li>
-          <li>• <strong>Indentation-based:</strong> Like YAML, uses whitespace instead of braces</li>
-          <li>• <strong>Minimal syntax:</strong> Removes redundant punctuation</li>
+      {/* Info Box */}
+      <div className="p-4 rounded-[12px] border bg-[var(--color-blue-50)] border-[var(--color-blue-500)]/30">
+        <h3 className="font-semibold text-sm mb-2 flex items-center gap-2"><MdInfo className="w-5 h-5" /> About TOON Format</h3>
+        <ul className="text-sm space-y-1 text-muted-foreground">
+          <li>30-60% fewer tokens on large uniform arrays vs JSON</li>
+          <li>Tabular arrays: Declare keys once, stream data as rows</li>
+          <li>Indentation-based: Like YAML, uses whitespace instead of braces</li>
+          <li>Minimal syntax: Removes redundant punctuation</li>
         </ul>
       </div>
     </div>

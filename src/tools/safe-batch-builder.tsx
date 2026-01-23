@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Code } from "@/components/ui/code";
 import { Textarea } from "@/components/ui/textarea";
 import { ToolConfig } from "@/types/tool";
+import { MdClose, MdContentCopy, MdCheck } from "react-icons/md";
 
 interface Transaction {
   id: string;
@@ -109,13 +110,13 @@ export function SafeBatchBuilderTool() {
       {/* Transactions Section */}
       <div className="space-y-4">
         {transactions.map((tx, index) => (
-          <div key={tx.id} className="p-4 rounded border border-border bg-[#0f0f0f] space-y-3">
+          <div key={tx.id} className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)] space-y-3">
             <div className="flex justify-between items-center mb-2">
               <Label className="text-sm font-semibold">Transaction #{index + 1}</Label>
               {transactions.length > 1 && (
                 <Button
                   onClick={() => removeTransaction(tx.id)}
-                  variant="secondary"
+                 
                   className="text-xs h-7 px-2"
                 >
                   Remove
@@ -148,7 +149,7 @@ export function SafeBatchBuilderTool() {
               <div className="flex gap-2">
                 <Button
                   onClick={() => updateTransaction(tx.id, "operation", "0")}
-                  variant={tx.operation === "0" ? "default" : "secondary"}
+                  variant={tx.operation === "0" ? "primary" : "secondary"}
                   size="sm"
                   className="flex-1"
                 >
@@ -156,7 +157,7 @@ export function SafeBatchBuilderTool() {
                 </Button>
                 <Button
                   onClick={() => updateTransaction(tx.id, "operation", "1")}
-                  variant={tx.operation === "1" ? "default" : "secondary"}
+                  variant={tx.operation === "1" ? "primary" : "secondary"}
                   size="sm"
                   className="flex-1"
                 >
@@ -178,46 +179,55 @@ export function SafeBatchBuilderTool() {
         ))}
 
         <div className="flex gap-2">
-          <Button onClick={addTransaction} variant="secondary" className="flex-1">
+          <Button onClick={addTransaction} variant="primary" className="flex-1">
             + Add Transaction
           </Button>
-          <Button onClick={generateBatch} className="flex-1">
+          <Button onClick={generateBatch} variant="primary" className="flex-1">
             Generate Batch
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
       </div>
 
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-2"><MdClose className="w-5 h-5" /> {error}</div>
         </div>
       )}
 
       {/* Output Section */}
       {jsonOutput && (
         <>
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <div className="flex justify-between items-center mb-2">
               <Label className="text-sm">Batch JSON Output</Label>
-              <Button onClick={handleCopy} variant="secondary" className="text-xs h-7 px-3">
-                {copied ? "Copied!" : "Copy JSON"}
-              </Button>
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                title={copied ? "Copied!" : "Copy to clipboard"}
+              >
+                {copied ? (
+                  <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
+                ) : (
+                  <MdContentCopy style={{ width: 16, height: 16 }} />
+                )}
+              </button>
             </div>
             <div className="relative">
               <Code language="json">{jsonOutput}</Code>
             </div>
           </div>
 
-          <div className="p-4 rounded border border-yellow-500/30 bg-yellow-500/10 text-yellow-200">
+          <div className="p-4 rounded-[12px] border border-yellow-500/30 bg-yellow-500/10 text-yellow-200">
             <div className="text-sm">
-              <strong>Note:</strong> Update the <code className="bg-black/30 px-1 py-0.5 rounded">chainId</code> field to match your target network before importing to Safe UI.
+              <strong>Note:</strong> Update the <code className="bg-[var(--color-gray-100)] px-1 py-0.5 rounded-[12px]">chainId</code> field to match your target network before importing to Safe UI.
             </div>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">How to use with Safe UI</Label>
             <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
               <li>Copy the JSON output above</li>

@@ -111,7 +111,7 @@ export function TokenDecimalsConverterTool() {
           placeholder="1.0"
           className="font-mono text-sm"
         />
-        <Button onClick={toRaw} className="w-full">
+        <Button onClick={toRaw} variant="primary" className="w-full">
           Convert to Raw
         </Button>
         <Input
@@ -127,7 +127,7 @@ export function TokenDecimalsConverterTool() {
       {/* Raw to Human Readable */}
       <div className="space-y-3">
         <div className="text-sm font-medium">Raw → Human Readable</div>
-        <Button onClick={toHuman} className="w-full">
+        <Button onClick={toHuman} variant="primary" className="w-full">
           Convert to Human Readable
         </Button>
         <Input
@@ -141,7 +141,7 @@ export function TokenDecimalsConverterTool() {
       </div>
 
       {/* Reset */}
-      <Button onClick={handleReset} variant="secondary" className="w-full">
+      <Button onClick={handleReset} className="w-full">
         Reset
       </Button>
     </div>

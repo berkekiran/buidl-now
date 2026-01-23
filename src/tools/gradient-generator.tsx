@@ -77,14 +77,14 @@ export function GradientGeneratorTool() {
         <Label className="mb-2 block text-sm">Gradient Type</Label>
         <div className="grid grid-cols-2 gap-2">
           <Button
-            variant={gradientType === "linear" ? "default" : "secondary"}
+            variant={gradientType === "linear" ? "primary" : "secondary"}
             onClick={() => setGradientType("linear")}
             className="w-full"
           >
             Linear
           </Button>
           <Button
-            variant={gradientType === "radial" ? "default" : "secondary"}
+            variant={gradientType === "radial" ? "primary" : "secondary"}
             onClick={() => setGradientType("radial")}
             className="w-full"
           >
@@ -103,9 +103,9 @@ export function GradientGeneratorTool() {
             max="360"
             value={angle}
             onChange={(e) => setAngle(e.target.value)}
-            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-white"
+            className="w-full h-2 bg-[var(--color-gray-100)] rounded-[12px] appearance-none cursor-pointer accent-[var(--color-blue-500)]"
           />
-          <div className="flex justify-between text-xs text-white/40 mt-1">
+          <div className="flex justify-between text-xs text-[var(--color-gray-400)] mt-1">
             <span>0°</span>
             <span>90°</span>
             <span>180°</span>
@@ -120,7 +120,7 @@ export function GradientGeneratorTool() {
         <div className="flex items-center justify-between mb-2">
           <Label className="text-sm">Color Stops</Label>
           {colorStops.length < 5 && (
-            <Button onClick={addColorStop} variant="secondary" size="sm">
+            <Button onClick={addColorStop} size="sm">
               Add Color Stop
             </Button>
           )}
@@ -130,14 +130,14 @@ export function GradientGeneratorTool() {
           {colorStops.map((stop, index) => (
             <div
               key={stop.id}
-              className="flex items-center gap-3 p-3 bg-[#0f0f0f] border border-white/10 rounded"
+              className="flex items-center gap-3 p-3 bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] rounded-[12px]"
             >
               <div className="flex-shrink-0">
                 <input
                   type="color"
                   value={stop.color}
                   onChange={(e) => updateColorStop(stop.id, "color", e.target.value)}
-                  className="w-12 h-12 rounded cursor-pointer border border-white/10"
+                  className="w-12 h-12 rounded-[12px] cursor-pointer border border-[var(--color-gray-200)]"
                 />
               </div>
               <div className="flex-1 space-y-2">
@@ -156,9 +156,9 @@ export function GradientGeneratorTool() {
                     onChange={(e) =>
                       updateColorStop(stop.id, "position", parseInt(e.target.value))
                     }
-                    className="flex-1 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-white"
+                    className="flex-1 h-2 bg-[var(--color-gray-100)] rounded-[12px] appearance-none cursor-pointer accent-[var(--color-blue-500)]"
                   />
-                  <span className="text-xs text-white/60 w-12 text-right">
+                  <span className="text-xs text-[var(--color-gray-500)] w-12 text-right">
                     {stop.position}%
                   </span>
                 </div>
@@ -166,7 +166,7 @@ export function GradientGeneratorTool() {
               {colorStops.length > 2 && (
                 <Button
                   onClick={() => removeColorStop(stop.id)}
-                  variant="secondary"
+                 
                   size="sm"
                 >
                   Remove
@@ -178,7 +178,7 @@ export function GradientGeneratorTool() {
       </div>
 
       {/* Random Gradient Button */}
-      <Button onClick={generateRandomGradient} variant="secondary" className="w-full">
+      <Button onClick={generateRandomGradient} className="w-full" variant="primary">
         Generate Random Gradient
       </Button>
 
@@ -186,7 +186,7 @@ export function GradientGeneratorTool() {
       <div>
         <Label className="mb-2 block text-sm">Gradient Preview</Label>
         <div
-          className="h-48 w-full rounded border border-white/10"
+          className="h-48 w-full rounded-[12px] border border-[var(--color-gray-200)]"
           style={{ background: cssCode }}
         />
       </div>
@@ -197,7 +197,7 @@ export function GradientGeneratorTool() {
         value={`background: ${cssCode};`}
         readOnly
         showCopy
-        className="font-mono text-sm bg-[#0f0f0f]"
+        className="font-mono text-sm bg-[var(--color-gray-0)]"
       />
 
       {/* Additional CSS Formats */}
@@ -207,14 +207,14 @@ export function GradientGeneratorTool() {
           value={cssCode}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
         />
         <Input
           label="Background Image"
           value={`background-image: ${cssCode};`}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
         />
       </div>
     </div>

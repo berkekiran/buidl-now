@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Code } from "@/components/ui/code";
 import { keccak256, encodePacked, pad, toHex } from "viem";
 import { ToolConfig } from "@/types/tool";
+import { MdClose } from "react-icons/md";
 
 export function ContractStorageSlotTool() {
   const [mappingKey, setMappingKey] = useState("");
@@ -83,18 +84,18 @@ export function ContractStorageSlotTool() {
         />
 
         <div className="flex gap-2">
-          <Button onClick={calculateSlot} className="flex-1">
+          <Button onClick={calculateSlot} variant="primary" className="flex-1">
             Calculate
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
       </div>
 
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-1"><MdClose className="w-4 h-4" /> {error}</div>
         </div>
       )}
 
@@ -106,10 +107,10 @@ export function ContractStorageSlotTool() {
             value={storageSlot}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">How to use with eth_getStorageAt</Label>
             <Code language="javascript">
 {`// Using viem
@@ -166,10 +167,10 @@ export const contractStorageSlotConfig: ToolConfig = {
       content: (
         <>
           <p className="text-sm mb-4">
-            For mappings, the storage slot is calculated as: <code className="text-xs bg-[#0f0f0f] px-1 py-0.5 rounded">keccak256(key . slot)</code>
+            For mappings, the storage slot is calculated as: <code className="text-xs bg-[var(--color-gray-0)] px-1 py-0.5 rounded-[6px]">keccak256(key . slot)</code>
           </p>
           <p className="text-sm mb-4">
-            Where <code className="text-xs bg-[#0f0f0f] px-1 py-0.5 rounded">key</code> is the mapping key (padded to 32 bytes) and <code className="text-xs bg-[#0f0f0f] px-1 py-0.5 rounded">slot</code> is the base slot number of the mapping.
+            Where <code className="text-xs bg-[var(--color-gray-0)] px-1 py-0.5 rounded-[6px]">key</code> is the mapping key (padded to 32 bytes) and <code className="text-xs bg-[var(--color-gray-0)] px-1 py-0.5 rounded-[6px]">slot</code> is the base slot number of the mapping.
           </p>
           <div className="mb-4">
             <Code language="solidity">

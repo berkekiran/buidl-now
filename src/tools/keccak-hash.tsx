@@ -58,14 +58,14 @@ export function KeccakHashTool() {
       {/* Mode Selection */}
       <div className="flex gap-2">
         <Button
-          variant={inputType === "text" ? "default" : "secondary"}
+          variant={inputType === "text" ? "primary" : "secondary"}
           onClick={() => handleTypeChange("text")}
           className="flex-1"
         >
           Text
         </Button>
         <Button
-          variant={inputType === "hex" ? "default" : "secondary"}
+          variant={inputType === "hex" ? "primary" : "secondary"}
           onClick={() => handleTypeChange("hex")}
           className="flex-1"
         >
@@ -90,10 +90,10 @@ export function KeccakHashTool() {
           className="text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={() => calculateHash(input, inputType)} className="flex-1">
+          <Button onClick={() => calculateHash(input, inputType)} variant="primary" className="flex-1">
             Hash
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -105,7 +105,7 @@ export function KeccakHashTool() {
         value={hash}
         readOnly
         showCopy
-        className="font-mono text-sm bg-[#0f0f0f]"
+        className="font-mono text-sm bg-[var(--color-gray-0)]"
       />
     </div>
   );

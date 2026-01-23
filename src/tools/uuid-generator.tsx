@@ -49,7 +49,7 @@ export function UuidGeneratorTool() {
           placeholder="1"
           className="mb-2"
         />
-        <Button onClick={handleGenerate} className="w-full">
+        <Button onClick={handleGenerate} variant="primary" className="w-full">
           Generate UUID{parseInt(count) > 1 ? "s" : ""}
         </Button>
       </div>
@@ -61,7 +61,7 @@ export function UuidGeneratorTool() {
           value={uuid}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
         />
       )}
 
@@ -72,7 +72,7 @@ export function UuidGeneratorTool() {
           value={uuids.join("\n")}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
           rows={Math.min(uuids.length, 15)}
         />
       )}

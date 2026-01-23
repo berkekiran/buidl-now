@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { keccak256, encodePacked, getAddress } from "viem";
 import { ToolConfig } from "@/types/tool";
+import { MdClose } from "react-icons/md";
 
 export function Create2AddressPredictorTool() {
   const [deployerAddress, setDeployerAddress] = useState("");
@@ -198,14 +199,14 @@ export function Create2AddressPredictorTool() {
       <div className="flex gap-2">
         <Button
           onClick={() => setVanityMode(false)}
-          variant={!vanityMode ? "default" : "secondary"}
+          variant={!vanityMode ? "primary" : "secondary"}
           className="flex-1"
         >
           Calculate Address
         </Button>
         <Button
           onClick={() => setVanityMode(true)}
-          variant={vanityMode ? "default" : "secondary"}
+          variant={vanityMode ? "primary" : "secondary"}
           className="flex-1"
         >
           Vanity Mode
@@ -294,30 +295,30 @@ export function Create2AddressPredictorTool() {
 
         <div className="flex gap-2">
           {!vanityMode ? (
-            <Button onClick={calculateAddress} className="flex-1">
+            <Button onClick={calculateAddress} variant="primary" className="flex-1">
               Calculate Address
             </Button>
           ) : (
-            <Button onClick={searchVanityAddress} className="flex-1" disabled={vanitySearching}>
+            <Button onClick={searchVanityAddress} variant="primary" className="flex-1" disabled={vanitySearching}>
               {vanitySearching ? "Searching..." : "Find Vanity Salt"}
             </Button>
           )}
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
       </div>
 
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-1"><MdClose className="w-4 h-4" /> {error}</div>
         </div>
       )}
 
       {/* Vanity Result */}
       {vanityResult && (
-        <div className="p-4 rounded border border-green-500/30 bg-green-500/10">
-          <Label className="mb-2 block text-sm font-semibold text-green-400">
+        <div className="p-4 rounded-[12px] border border-green-500/30 bg-[var(--color-green-50)]">
+          <Label className="mb-2 block text-sm font-semibold text-[var(--color-green-500)]">
             Vanity Address Found!
           </Label>
           <div className="space-y-2">
@@ -326,14 +327,14 @@ export function Create2AddressPredictorTool() {
               value={vanityResult.salt}
               readOnly
               showCopy
-              className="font-mono text-sm bg-black/30"
+              className="font-mono text-sm"
             />
             <Input
               label="Address"
               value={vanityResult.address}
               readOnly
               showCopy
-              className="font-mono text-sm bg-black/30"
+              className="font-mono text-sm"
             />
           </div>
         </div>
@@ -347,10 +348,10 @@ export function Create2AddressPredictorTool() {
             value={predictedAddress}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-3 block text-sm">Calculation Steps</Label>
             <div className="space-y-2">
               {calculationSteps.map((step, index) => (
@@ -361,7 +362,7 @@ export function Create2AddressPredictorTool() {
             </div>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">CREATE2 Formula</Label>
             <Code language="javascript">
 {`// The CREATE2 address is calculated as:
@@ -376,7 +377,7 @@ address = keccak256(0xff ++ deployer ++ salt ++ keccak256(initCode))[12:]
             </Code>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">Deploy with CREATE2 (Solidity)</Label>
             <Code language="solidity">
 {`contract Factory {

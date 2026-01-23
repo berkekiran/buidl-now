@@ -6,16 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ToolConfig } from "@/types/tool";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { MdContentCopy, MdCheck } from "react-icons/md";
+import { Code } from "@/components/ui/code";
 
 export function SvgViewerTool() {
   const [svgCode, setSvgCode] = useState("");
   const [width, setWidth] = useState("300");
   const [height, setHeight] = useState("300");
   const [error, setError] = useState("");
-  const [copied, setCopied] = useState(false);
 
   const validateSvg = (code: string): boolean => {
     if (!code.trim()) {
@@ -49,12 +46,6 @@ export function SvgViewerTool() {
 </svg>`;
     setSvgCode(sample);
     setError("");
-  };
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(svgCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -97,17 +88,17 @@ export function SvgViewerTool() {
 
       {/* Action Buttons */}
       <div className="flex gap-2">
-        <Button onClick={loadSampleSvg} variant="secondary" className="flex-1">
+        <Button onClick={loadSampleSvg} variant="primary" className="flex-1">
           Load Sample SVG
         </Button>
-        <Button onClick={handleReset} variant="secondary" className="flex-1">
+        <Button onClick={handleReset} className="flex-1">
           Reset
         </Button>
       </div>
 
       {/* Error Display */}
       {error && (
-        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
+        <div className="p-3 bg-[var(--color-red-50)] border border-[var(--color-red-200)] rounded-[12px] text-[var(--color-red-500)] text-sm">
           {error}
         </div>
       )}
@@ -119,7 +110,7 @@ export function SvgViewerTool() {
           <div>
             <Label className="mb-2 block text-sm">SVG Preview</Label>
             <div
-              className="border border-white/10 rounded p-6 bg-white/5 flex items-center justify-center"
+              className="border border-[var(--color-gray-200)] rounded-[12px] p-6 bg-[var(--color-gray-50)] flex items-center justify-center"
               style={{
                 minHeight: `${parseInt(height) || 300}px`,
               }}
@@ -136,52 +127,20 @@ export function SvgViewerTool() {
 
           {/* Code View with Syntax Highlighting */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <Label className="text-sm">SVG Code</Label>
-              <Button
-                onClick={handleCopy}
-                variant="secondary"
-                size="sm"
-                className="flex items-center gap-1.5"
-              >
-                {copied ? (
-                  <>
-                    <MdCheck className="w-4 h-4 text-blue-400" />
-                    <span>Copied</span>
-                  </>
-                ) : (
-                  <>
-                    <MdContentCopy className="w-4 h-4" />
-                    <span>Copy Code</span>
-                  </>
-                )}
-              </Button>
-            </div>
-            <div className="border border-white/10 rounded overflow-hidden">
-              <SyntaxHighlighter
-                language="xml"
-                style={vscDarkPlus}
-                customStyle={{
-                  margin: 0,
-                  padding: "1rem",
-                  fontSize: "0.875rem",
-                  background: "#0f0f0f",
-                }}
-                showLineNumbers
-              >
-                {svgCode}
-              </SyntaxHighlighter>
-            </div>
+            <Label className="text-sm mb-2 block">SVG Code</Label>
+            <Code language="xml" showLineNumbers={true} showCopy={true}>
+              {svgCode}
+            </Code>
           </div>
 
           {/* SVG Information */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-3 bg-[#0f0f0f] border border-white/10 rounded">
-              <Label className="text-xs text-white/60 mb-1 block">Code Length</Label>
+            <div className="p-3 bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] rounded-[12px]">
+              <Label className="text-xs text-[var(--color-gray-500)] mb-1 block">Code Length</Label>
               <p className="text-sm font-mono">{svgCode.length} characters</p>
             </div>
-            <div className="p-3 bg-[#0f0f0f] border border-white/10 rounded">
-              <Label className="text-xs text-white/60 mb-1 block">File Size</Label>
+            <div className="p-3 bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] rounded-[12px]">
+              <Label className="text-xs text-[var(--color-gray-500)] mb-1 block">File Size</Label>
               <p className="text-sm font-mono">
                 {(new Blob([svgCode]).size / 1024).toFixed(2)} KB
               </p>

@@ -79,9 +79,9 @@ export function TokenLaunchCalculatorTool() {
     const remaining = 100 - liqPercent;
 
     return (
-      <div className="bg-[#0f0f0f] rounded border border-border p-4 space-y-3">
+      <div className="bg-[var(--color-gray-0)] rounded-[12px] border border-border p-4 space-y-3">
         <div className="text-xs font-semibold text-blue-400 mb-2">Token Distribution</div>
-        <div className="flex h-8 rounded overflow-hidden">
+        <div className="flex h-8 rounded-[12px] overflow-hidden">
           <div
             className="bg-blue-500 flex items-center justify-center text-xs font-semibold"
             style={{ width: `${liqPercent}%` }}
@@ -97,11 +97,11 @@ export function TokenLaunchCalculatorTool() {
         </div>
         <div className="flex justify-between text-xs">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-blue-500 rounded"></div>
+            <div className="w-3 h-3 bg-blue-500 rounded-[12px]"></div>
             <span className="text-muted-foreground">Liquidity Pool: {liqPercent}%</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-[#1a1a1a] border border-border rounded"></div>
+            <div className="w-3 h-3 bg-[#1a1a1a] border border-border rounded-[12px]"></div>
             <span className="text-muted-foreground">Remaining: {remaining.toFixed(1)}%</span>
           </div>
         </div>
@@ -174,7 +174,7 @@ export function TokenLaunchCalculatorTool() {
       {liquidityPercent && calculateLiquidityVisuals()}
 
       {/* Calculate Button */}
-      <Button onClick={calculateLaunch} className="w-full">
+      <Button onClick={calculateLaunch} variant="primary" className="w-full">
         Calculate Launch Metrics
       </Button>
 
@@ -187,7 +187,7 @@ export function TokenLaunchCalculatorTool() {
               value={tokenForPool}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               Amount of tokens to add to the pool
@@ -200,7 +200,7 @@ export function TokenLaunchCalculatorTool() {
               value={pricePerToken}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               Calculated price based on ETH amount and token allocation
@@ -213,7 +213,7 @@ export function TokenLaunchCalculatorTool() {
               value={initialMarketCap}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               Market cap of circulating supply
@@ -226,7 +226,7 @@ export function TokenLaunchCalculatorTool() {
               value={fullyDilutedValue}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               Total value if all tokens were in circulation
@@ -239,7 +239,7 @@ export function TokenLaunchCalculatorTool() {
               value={lpTokenValue}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               Total value of LP position (ETH + Token value)
@@ -247,7 +247,7 @@ export function TokenLaunchCalculatorTool() {
           </div>
 
           {/* Formula Display */}
-          <div className="bg-[#0f0f0f] rounded border border-border p-4 space-y-3">
+          <div className="bg-[var(--color-gray-0)] rounded-[12px] border border-border p-4 space-y-3">
             <div>
               <div className="text-xs font-semibold text-blue-400 mb-1">Calculations</div>
               <div className="text-xs font-mono text-muted-foreground space-y-1">
@@ -261,7 +261,7 @@ export function TokenLaunchCalculatorTool() {
           </div>
 
           {/* Launch Checklist */}
-          <div className="bg-blue-500/10 border border-blue-500/20 rounded p-4">
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-[12px] p-4">
             <div className="text-xs font-semibold text-blue-400 mb-2">Launch Checklist</div>
             <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
               <li>Verify token contract is audited and tested</li>
@@ -272,7 +272,7 @@ export function TokenLaunchCalculatorTool() {
             </ul>
           </div>
 
-          <Button onClick={handleReset} variant="secondary" className="w-full">
+          <Button onClick={handleReset} className="w-full">
             Reset Calculator
           </Button>
         </div>

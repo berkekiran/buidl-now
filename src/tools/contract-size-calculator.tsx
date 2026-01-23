@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Code } from "@/components/ui/code";
 import { Textarea } from "@/components/ui/textarea";
 import { ToolConfig } from "@/types/tool";
+import { MdClose } from "react-icons/md";
 
 interface SizeResult {
   bytes: number;
@@ -113,11 +114,11 @@ export function ContractSizeCalculatorTool() {
   const getStatusColor = (status: "safe" | "warning" | "danger") => {
     switch (status) {
       case "safe":
-        return "text-green-400 border-green-500/30 bg-green-500/10";
+        return "text-[var(--color-green-500)] border-green-500/30 bg-[var(--color-green-50)]";
       case "warning":
         return "text-yellow-400 border-yellow-500/30 bg-yellow-500/10";
       case "danger":
-        return "text-red-400 border-red-500/30 bg-red-500/10";
+        return "text-[var(--color-red-500)] border-red-500/30 bg-[var(--color-red-50)]";
     }
   };
 
@@ -149,14 +150,14 @@ export function ContractSizeCalculatorTool() {
       <div className="flex gap-2 mb-4">
         <Button
           onClick={() => setInputMode("bytecode")}
-          variant={inputMode === "bytecode" ? "default" : "secondary"}
+          variant={inputMode === "bytecode" ? "primary" : "secondary"}
           className="flex-1"
         >
           Bytecode
         </Button>
         <Button
           onClick={() => setInputMode("solidity")}
-          variant={inputMode === "solidity" ? "default" : "secondary"}
+          variant={inputMode === "solidity" ? "primary" : "secondary"}
           className="flex-1"
         >
           Solidity Code
@@ -191,25 +192,25 @@ export function ContractSizeCalculatorTool() {
         )}
 
         <div className="flex gap-2">
-          <Button onClick={calculateSize} className="flex-1">
+          <Button onClick={calculateSize} variant="primary" className="flex-1">
             Calculate Size
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
       </div>
 
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-2"><MdClose className="w-5 h-5" /> {error}</div>
         </div>
       )}
 
       {/* Output Section */}
       {sizeResult && (
         <>
-          <div className={`p-4 rounded border ${getStatusColor(sizeResult.status)}`}>
+          <div className={`p-4 rounded-[12px] border ${getStatusColor(sizeResult.status)}`}>
             <Label className="mb-2 block text-sm font-semibold">
               {getStatusMessage(sizeResult.status)}
             </Label>
@@ -224,7 +225,7 @@ export function ContractSizeCalculatorTool() {
               <Label>Size Limit Progress</Label>
               <span className="font-mono">{sizeResult.percentage.toFixed(1)}%</span>
             </div>
-            <div className="w-full h-6 bg-border rounded-full overflow-hidden">
+            <div className="w-full h-6 bg-border rounded-[12px] overflow-hidden">
               <div
                 className={`h-full transition-all duration-500 ${getProgressBarColor(sizeResult.status)}`}
                 style={{ width: `${Math.min(sizeResult.percentage, 100)}%` }}
@@ -237,11 +238,11 @@ export function ContractSizeCalculatorTool() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+            <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
               <Label className="mb-1 block text-xs text-muted-foreground">Current Size</Label>
               <div className="font-mono text-base font-semibold">{sizeResult.bytes} bytes</div>
             </div>
-            <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+            <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
               <Label className="mb-1 block text-xs text-muted-foreground">Remaining</Label>
               <div className="font-mono text-base font-semibold">
                 {sizeResult.remainingBytes > 0 ? sizeResult.remainingBytes : 0} bytes
@@ -250,7 +251,7 @@ export function ContractSizeCalculatorTool() {
           </div>
 
           {sizeResult.status !== "safe" && (
-            <div className="p-4 rounded border border-blue-500/30 bg-blue-500/10">
+            <div className="p-4 rounded-[12px] border border-blue-500/30 bg-blue-500/10">
               <Label className="mb-3 block text-sm font-semibold text-blue-400">
                 Optimization Tips
               </Label>
@@ -307,7 +308,7 @@ export function ContractSizeCalculatorTool() {
             </div>
           )}
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">Get Contract Bytecode</Label>
             <Code language="javascript">
 {`// Using Hardhat
@@ -327,7 +328,7 @@ console.log("Size:", (code.length - 2) / 2, "bytes");`}
             </Code>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">Hardhat Config for Optimization</Label>
             <Code language="javascript">
 {`// hardhat.config.js
@@ -346,7 +347,7 @@ module.exports = {
             </Code>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">Example: Using Custom Errors (Saves Space)</Label>
             <Code language="solidity">
 {`// ❌ Before (uses more bytecode)

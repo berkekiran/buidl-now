@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ToolConfig } from "@/types/tool";
 import { privateKeyToAccount, mnemonicToAccount, HDKey } from "viem/accounts";
+import { MdWarning } from "react-icons/md";
 
 interface ChainAddress {
   chain: string;
@@ -136,15 +137,11 @@ export function MultiChainAddressDeriverTool() {
     setError("");
   };
 
-  const copyToClipboard = async (text: string) => {
-    await navigator.clipboard.writeText(text);
-  };
-
   return (
     <div className="space-y-6">
       {/* Security Warning */}
-      <div className="bg-red-500/10 border border-red-500/20 rounded p-4">
-        <div className="text-xs font-semibold text-red-400 mb-2">⚠️ Security Warning</div>
+      <div className="bg-[var(--color-red-50)] border border-[var(--color-red-200)] rounded-[12px] p-4">
+        <div className="text-xs font-semibold text-[var(--color-red-500)] mb-2 flex items-center gap-2"><MdWarning className="w-5 h-5" /> Security Warning</div>
         <div className="text-xs text-muted-foreground space-y-1">
           <p>This tool runs entirely in your browser. Your keys never leave your device.</p>
           <p>Never share your private key or mnemonic phrase with anyone.</p>
@@ -158,7 +155,7 @@ export function MultiChainAddressDeriverTool() {
         <div className="flex gap-2">
           <Button
             onClick={() => setInputType("mnemonic")}
-            variant={inputType === "mnemonic" ? "default" : "secondary"}
+            variant={inputType === "mnemonic" ? "primary" : "secondary"}
             size="sm"
             className="flex-1"
           >
@@ -166,7 +163,7 @@ export function MultiChainAddressDeriverTool() {
           </Button>
           <Button
             onClick={() => setInputType("private")}
-            variant={inputType === "private" ? "default" : "secondary"}
+            variant={inputType === "private" ? "primary" : "secondary"}
             size="sm"
             className="flex-1"
           >
@@ -185,7 +182,7 @@ export function MultiChainAddressDeriverTool() {
                 value={mnemonic}
                 onChange={(e) => setMnemonic(e.target.value)}
                 placeholder="word1 word2 word3 ... word12"
-                className="flex w-full rounded border border-border bg-[#1a1a1a] px-3 py-2 text-sm font-mono
+                className="flex w-full rounded-[12px] border border-border bg-[#1a1a1a] px-3 py-2 text-sm font-mono
                   shadow-[0_1px_2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]
                   placeholder:text-muted-foreground
                   focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-500
@@ -230,13 +227,13 @@ export function MultiChainAddressDeriverTool() {
 
       {/* Error Display */}
       {error && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded p-3">
-          <div className="text-xs text-red-400">{error}</div>
+        <div className="bg-[var(--color-red-50)] border border-[var(--color-red-200)] rounded-[12px] p-3">
+          <div className="text-xs text-[var(--color-red-500)]">{error}</div>
         </div>
       )}
 
       {/* Derive Button */}
-      <Button onClick={deriveAddresses} className="w-full">
+      <Button onClick={deriveAddresses} variant="primary" className="w-full">
         Derive Addresses
       </Button>
 
@@ -246,7 +243,7 @@ export function MultiChainAddressDeriverTool() {
           <div className="text-sm font-semibold text-blue-400">Addresses Across Chains</div>
 
           {addresses.map((chain) => (
-            <div key={chain.chainId} className="bg-[#0f0f0f] rounded border border-border p-4">
+            <div key={chain.chainId} className="bg-[var(--color-gray-0)] rounded-[12px] border border-border p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <Image
@@ -254,7 +251,7 @@ export function MultiChainAddressDeriverTool() {
                     alt={chain.chain}
                     width={32}
                     height={32}
-                    className="rounded"
+                    className="rounded-[12px]"
                   />
                   <div>
                     <div className="text-sm font-semibold">{chain.chain}</div>
@@ -264,22 +261,12 @@ export function MultiChainAddressDeriverTool() {
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={chain.address}
-                    readOnly
-                    className="flex-1 h-8 rounded border border-border bg-[#1a1a1a] px-2 text-xs font-mono
-                      focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  />
-                  <Button
-                    onClick={() => copyToClipboard(chain.address)}
-                    variant="ghost"
-                    size="sm"
-                  >
-                    Copy
-                  </Button>
-                </div>
+                <Input
+                  value={chain.address}
+                  readOnly
+                  showCopy
+                  className="h-8 text-xs font-mono"
+                />
 
                 <div className="flex gap-2">
                   <a
@@ -296,7 +283,7 @@ export function MultiChainAddressDeriverTool() {
           ))}
 
           {/* Information Box */}
-          <div className="bg-blue-500/10 border border-blue-500/20 rounded p-4">
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-[12px] p-4">
             <div className="text-xs font-semibold text-blue-400 mb-2">Why Same Address?</div>
             <div className="text-xs text-muted-foreground">
               All EVM-compatible chains use the same address format. Your private key or mnemonic
@@ -307,7 +294,7 @@ export function MultiChainAddressDeriverTool() {
 
           {/* Derivation Info */}
           {inputType === "mnemonic" && (
-            <div className="bg-[#0f0f0f] rounded border border-border p-4">
+            <div className="bg-[var(--color-gray-0)] rounded-[12px] border border-border p-4">
               <div className="text-xs font-semibold text-blue-400 mb-2">BIP44 Derivation Path</div>
               <div className="text-xs font-mono text-muted-foreground space-y-1">
                 <div>m / purpose' / coin_type' / account' / change / address_index</div>
@@ -324,7 +311,7 @@ export function MultiChainAddressDeriverTool() {
 
           {/* Common Paths */}
           {inputType === "mnemonic" && (
-            <div className="bg-[#0f0f0f] rounded border border-border p-4">
+            <div className="bg-[var(--color-gray-0)] rounded-[12px] border border-border p-4">
               <div className="text-xs font-semibold text-blue-400 mb-2">Common Derivation Paths</div>
               <div className="space-y-2">
                 {[
@@ -340,7 +327,7 @@ export function MultiChainAddressDeriverTool() {
                     </div>
                     <Button
                       onClick={() => setDerivationPath(item.path)}
-                      variant="ghost"
+                     
                       size="sm"
                     >
                       Use
@@ -351,7 +338,7 @@ export function MultiChainAddressDeriverTool() {
             </div>
           )}
 
-          <Button onClick={handleReset} variant="secondary" className="w-full">
+          <Button onClick={handleReset} className="w-full">
             Reset & Clear Data
           </Button>
         </div>

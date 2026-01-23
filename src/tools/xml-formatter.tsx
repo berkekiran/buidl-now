@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
+import { MdClose } from "react-icons/md";
 
 export function XmlFormatterTool() {
   const [input, setInput] = useState("");
@@ -114,10 +115,10 @@ export function XmlFormatterTool() {
           className="font-mono text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={handleFormat} className="flex-1">
+          <Button onClick={handleFormat} variant="primary" className="flex-1">
             Format XML
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -125,8 +126,8 @@ export function XmlFormatterTool() {
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-1"><MdClose className="w-4 h-4" /> {error}</div>
         </div>
       )}
 
@@ -137,7 +138,7 @@ export function XmlFormatterTool() {
           value={output}
           readOnly
           showCopy
-          className="bg-[#0f0f0f] font-mono text-sm"
+          className="bg-[var(--color-gray-0)] font-mono text-sm"
           rows={10}
         />
       )}

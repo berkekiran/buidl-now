@@ -75,13 +75,13 @@ export function QrCodeGeneratorTool() {
       </div>
 
       {/* Generate Button */}
-      <Button onClick={handleGenerate} className="w-full">
+      <Button onClick={handleGenerate} variant="primary" className="w-full">
         Generate QR Code
       </Button>
 
       {/* Error Display */}
       {error && (
-        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
+        <div className="p-3 bg-[var(--color-red-50)] border border-[var(--color-red-200)] rounded-[12px] text-[var(--color-red-500)] text-sm">
           {error}
         </div>
       )}
@@ -89,10 +89,10 @@ export function QrCodeGeneratorTool() {
       {/* QR Code Display */}
       {qrDataUrl && (
         <div className="space-y-4">
-          <div className="flex flex-col items-center justify-center p-6 bg-white rounded">
+          <div className="flex flex-col items-center justify-center p-6 bg-[var(--color-gray-0)] rounded-[12px]">
             <img src={qrDataUrl} alt="QR Code" className="max-w-full" />
           </div>
-          <Button onClick={handleDownload} variant="secondary" className="w-full">
+          <Button onClick={handleDownload} className="w-full">
             Download QR Code
           </Button>
         </div>

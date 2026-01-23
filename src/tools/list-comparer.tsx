@@ -104,10 +104,10 @@ export function ListComparerTool() {
 
       {/* Buttons */}
       <div className="flex gap-2">
-        <Button onClick={handleCompare} className="flex-1">
+        <Button onClick={handleCompare} variant="primary" className="flex-1">
           Compare Lists
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
@@ -122,28 +122,21 @@ export function ListComparerTool() {
                 Only in List 1 ({onlyInList1.length})
               </Label>
               {onlyInList1.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
+                <button
+                  type="button"
                   onClick={handleCopyList1}
-                  className="h-auto px-2 py-1 text-xs"
-                  title="Copy to clipboard"
+                  className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                  title={copiedList1 ? "Copied!" : "Copy to clipboard"}
                 >
                   {copiedList1 ? (
-                    <>
-                      <MdCheck className="w-3.5 h-3.5 text-blue-400" />
-                      <span className="text-blue-400">Copied</span>
-                    </>
+                    <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                   ) : (
-                    <>
-                      <MdContentCopy className="w-3.5 h-3.5" />
-                      <span>Copy</span>
-                    </>
+                    <MdContentCopy style={{ width: 16, height: 16 }} />
                   )}
-                </Button>
+                </button>
               )}
             </div>
-            <div className="p-3 bg-[#0f0f0f] border border-border rounded min-h-[80px]">
+            <div className="p-3 bg-[var(--color-gray-0)] border border-border rounded-[12px] min-h-[80px]">
               {onlyInList1.length > 0 ? (
                 onlyInList1.map((item, i) => (
                   <div key={i} className="text-sm py-1">
@@ -163,28 +156,21 @@ export function ListComparerTool() {
                 Only in List 2 ({onlyInList2.length})
               </Label>
               {onlyInList2.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
+                <button
+                  type="button"
                   onClick={handleCopyList2}
-                  className="h-auto px-2 py-1 text-xs"
-                  title="Copy to clipboard"
+                  className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                  title={copiedList2 ? "Copied!" : "Copy to clipboard"}
                 >
                   {copiedList2 ? (
-                    <>
-                      <MdCheck className="w-3.5 h-3.5 text-blue-400" />
-                      <span className="text-blue-400">Copied</span>
-                    </>
+                    <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                   ) : (
-                    <>
-                      <MdContentCopy className="w-3.5 h-3.5" />
-                      <span>Copy</span>
-                    </>
+                    <MdContentCopy style={{ width: 16, height: 16 }} />
                   )}
-                </Button>
+                </button>
               )}
             </div>
-            <div className="p-3 bg-[#0f0f0f] border border-border rounded min-h-[80px]">
+            <div className="p-3 bg-[var(--color-gray-0)] border border-border rounded-[12px] min-h-[80px]">
               {onlyInList2.length > 0 ? (
                 onlyInList2.map((item, i) => (
                   <div key={i} className="text-sm py-1">
@@ -204,28 +190,21 @@ export function ListComparerTool() {
                 In Both Lists ({inBoth.length})
               </Label>
               {inBoth.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
+                <button
+                  type="button"
                   onClick={handleCopyBoth}
-                  className="h-auto px-2 py-1 text-xs"
-                  title="Copy to clipboard"
+                  className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                  title={copiedBoth ? "Copied!" : "Copy to clipboard"}
                 >
                   {copiedBoth ? (
-                    <>
-                      <MdCheck className="w-3.5 h-3.5 text-blue-400" />
-                      <span className="text-blue-400">Copied</span>
-                    </>
+                    <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                   ) : (
-                    <>
-                      <MdContentCopy className="w-3.5 h-3.5" />
-                      <span>Copy</span>
-                    </>
+                    <MdContentCopy style={{ width: 16, height: 16 }} />
                   )}
-                </Button>
+                </button>
               )}
             </div>
-            <div className="p-3 bg-[#0f0f0f] border border-border rounded min-h-[80px]">
+            <div className="p-3 bg-[var(--color-gray-0)] border border-border rounded-[12px] min-h-[80px]">
               {inBoth.length > 0 ? (
                 inBoth.map((item, i) => (
                   <div key={i} className="text-sm py-1">

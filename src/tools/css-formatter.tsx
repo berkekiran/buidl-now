@@ -90,7 +90,7 @@ export function CssFormatterTool() {
       {/* Mode Selection */}
       <div className="flex gap-2">
         <Button
-          variant={mode === "format" ? "default" : "secondary"}
+          variant={mode === "format" ? "primary" : "secondary"}
           onClick={() => {
             setMode("format");
             setOutput("");
@@ -100,7 +100,7 @@ export function CssFormatterTool() {
           Format
         </Button>
         <Button
-          variant={mode === "minify" ? "default" : "secondary"}
+          variant={mode === "minify" ? "primary" : "secondary"}
           onClick={() => {
             setMode("minify");
             setOutput("");
@@ -126,10 +126,10 @@ export function CssFormatterTool() {
           className="font-mono text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={handleConvert} className="flex-1">
+          <Button onClick={handleConvert} variant="primary" className="flex-1">
             {mode === "format" ? "Format" : "Minify"}
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -142,7 +142,7 @@ export function CssFormatterTool() {
           value={output}
           readOnly
           showCopy
-          className="bg-[#0f0f0f] font-mono text-sm"
+          className="bg-[var(--color-gray-0)] font-mono text-sm"
           rows={10}
         />
       )}

@@ -146,10 +146,10 @@ export function SqlFormatterTool() {
           className="font-mono text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={handleFormat} className="flex-1">
+          <Button onClick={handleFormat} variant="primary" className="flex-1">
             Format SQL
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -162,7 +162,7 @@ export function SqlFormatterTool() {
           value={output}
           readOnly
           showCopy
-          className="bg-[#0f0f0f] font-mono text-sm"
+          className="bg-[var(--color-gray-0)] font-mono text-sm"
           rows={10}
         />
       )}
