@@ -54,10 +54,10 @@ export function EventTopicTool() {
           className="font-mono text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={() => calculateTopic(eventSig)} className="flex-1">
+          <Button onClick={() => calculateTopic(eventSig)} className="flex-1" variant="primary">
             Calculate
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -69,7 +69,7 @@ export function EventTopicTool() {
         value={topic}
         readOnly
         showCopy
-        className="font-mono text-sm bg-[#0f0f0f]"
+        className="font-mono text-sm bg-[var(--color-gray-0)]"
       />
     </div>
   );

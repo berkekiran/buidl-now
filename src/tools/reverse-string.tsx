@@ -44,10 +44,10 @@ export function ReverseStringTool() {
 
       {/* Buttons */}
       <div className="flex gap-2">
-        <Button onClick={handleSwap} className="flex-1" disabled={!output}>
+        <Button onClick={handleSwap} variant="primary" className="flex-1" disabled={!output}>
           Swap Input/Output
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
@@ -66,12 +66,12 @@ export function ReverseStringTool() {
       {/* Stats */}
       {input && (
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+          <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
             <div className="text-lg font-bold">{input.length}</div>
             <div className="text-sm text-muted-foreground">Characters</div>
           </div>
 
-          <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+          <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
             <div className="text-lg font-bold">
               {input.split(/\s+/).filter((w) => w.length > 0).length}
             </div>

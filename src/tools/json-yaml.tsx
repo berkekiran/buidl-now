@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
+import { MdSwapVert } from "react-icons/md";
 
 // Simple YAML to JSON converter (handles basic YAML)
 function yamlToJson(yaml: string): string {
@@ -94,92 +94,86 @@ export function JsonYamlTool() {
   const [jsonInput, setJsonInput] = useState("");
   const [yamlInput, setYamlInput] = useState("");
   const [error, setError] = useState("");
+  const [lastEdited, setLastEdited] = useState<"json" | "yaml" | null>(null);
 
-  const handleJsonToYaml = () => {
-    if (!jsonInput) {
-      setYamlInput("");
-      setError("");
-      return;
+  // Auto-convert when input changes
+  useEffect(() => {
+    if (lastEdited === "json" && jsonInput) {
+      try {
+        const yaml = jsonToYaml(jsonInput);
+        setYamlInput(yaml);
+        setError("");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Invalid JSON");
+      }
     }
+  }, [jsonInput, lastEdited]);
 
-    try {
-      const yaml = jsonToYaml(jsonInput);
-      setYamlInput(yaml);
-      setError("");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Invalid JSON");
-      setYamlInput("");
+  useEffect(() => {
+    if (lastEdited === "yaml" && yamlInput) {
+      try {
+        const json = yamlToJson(yamlInput);
+        setJsonInput(json);
+        setError("");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Invalid YAML");
+      }
     }
-  };
+  }, [yamlInput, lastEdited]);
 
-  const handleYamlToJson = () => {
-    if (!yamlInput) {
-      setJsonInput("");
-      setError("");
-      return;
-    }
-
-    try {
-      const json = yamlToJson(yamlInput);
-      setJsonInput(json);
-      setError("");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Invalid YAML");
-      setJsonInput("");
-    }
-  };
-
-  const handleReset = () => {
-    setJsonInput("");
-    setYamlInput("");
-    setError("");
+  const handleSwap = () => {
+    const tempJson = jsonInput;
+    const tempYaml = yamlInput;
+    setJsonInput(tempYaml);
+    setYamlInput(tempJson);
+    setLastEdited(null);
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* JSON Input */}
-      <div>
-        <Label className="mb-2 block text-sm">JSON</Label>
-        <Textarea
-          value={jsonInput}
-          onChange={(e) => setJsonInput(e.target.value)}
-          placeholder='{"name":"John","age":30}'
-          className="font-mono min-h-[200px]"
-        />
-      </div>
+      <Textarea
+        label="JSON"
+        value={jsonInput}
+        onChange={(e) => {
+          setJsonInput(e.target.value);
+          setLastEdited("json");
+        }}
+        placeholder='{"name":"John","age":30}'
+        className="font-mono text-sm"
+        rows={8}
+      />
 
-      {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2">
-        <Button onClick={handleJsonToYaml} className="flex-1">
-          <span className="hidden sm:inline">JSON → YAML</span>
-          <span className="sm:hidden">To YAML</span>
-        </Button>
-        <Button onClick={handleYamlToJson} className="flex-1 sm:flex-none">
-          <span className="hidden sm:inline">YAML → JSON</span>
-          <span className="sm:hidden">To JSON</span>
-        </Button>
-        <Button onClick={handleReset} variant="secondary" className="sm:flex-none">
-          Reset
-        </Button>
+      {/* Swap Button */}
+      <div className="flex justify-center">
+        <button
+          onClick={handleSwap}
+          className="w-10 h-10 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+          title="Swap"
+        >
+          <MdSwapVert className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium">{error}</div>
         </div>
       )}
 
       {/* YAML Input */}
-      <div>
-        <Label className="mb-2 block text-sm">YAML</Label>
-        <Textarea
-          value={yamlInput}
-          onChange={(e) => setYamlInput(e.target.value)}
-          placeholder="name: John\nage: 30"
-          className="font-mono min-h-[200px]"
-        />
-      </div>
+      <Textarea
+        label="YAML"
+        value={yamlInput}
+        onChange={(e) => {
+          setYamlInput(e.target.value);
+          setLastEdited("yaml");
+        }}
+        placeholder="name: John&#10;age: 30"
+        className="font-mono text-sm"
+        rows={8}
+      />
     </div>
   );
 }

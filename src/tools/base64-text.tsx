@@ -35,7 +35,7 @@ export function Base64TextTool() {
       {/* Mode Selection */}
       <div className="flex gap-2">
         <Button
-          variant={mode === "encode" ? "default" : "secondary"}
+          variant={mode === "encode" ? "primary" : "secondary"}
           onClick={() => {
             setMode("encode");
             setOutput("");
@@ -45,7 +45,7 @@ export function Base64TextTool() {
           Encode
         </Button>
         <Button
-          variant={mode === "decode" ? "default" : "secondary"}
+          variant={mode === "decode" ? "primary" : "secondary"}
           onClick={() => {
             setMode("decode");
             setOutput("");
@@ -73,10 +73,10 @@ export function Base64TextTool() {
           className="text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={handleConvert} className="flex-1">
+          <Button onClick={handleConvert} variant="primary" className="flex-1">
             {mode === "encode" ? "Encode" : "Decode"}
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -88,7 +88,7 @@ export function Base64TextTool() {
         value={output}
         readOnly
         showCopy
-        className="bg-[#0f0f0f] text-sm"
+        className="bg-[var(--color-gray-0)] text-sm"
         rows={8}
       />
     </div>

@@ -72,13 +72,13 @@ export function HtmlEncoderTool() {
 
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-2">
-        <Button onClick={handleEncode} className="flex-1">
+        <Button onClick={handleEncode} className="flex-1" variant="primary">
           Encode
         </Button>
         <Button onClick={handleDecode} className="flex-1 sm:flex-none">
           Decode
         </Button>
-        <Button onClick={handleReset} variant="secondary" className="sm:flex-none">
+        <Button onClick={handleReset} className="sm:flex-none">
           Reset
         </Button>
       </div>

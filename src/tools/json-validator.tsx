@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
+import { MdCheck, MdClose } from "react-icons/md";
 
 export function JsonValidatorTool() {
   const [input, setInput] = useState("");
@@ -74,14 +75,14 @@ export function JsonValidatorTool() {
 
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-2">
-        <Button onClick={handleFormat} className="flex-1">
+        <Button onClick={handleFormat} variant="primary" className="flex-1">
           <span className="hidden sm:inline">Format (Pretty)</span>
           <span className="sm:hidden">Format</span>
         </Button>
-        <Button onClick={handleMinify} className="flex-1 sm:flex-none">
+        <Button onClick={handleMinify} variant="primary" className="flex-1 sm:flex-none">
           Minify
         </Button>
-        <Button onClick={handleReset} variant="secondary" className="sm:flex-none">
+        <Button onClick={handleReset} className="sm:flex-none">
           Reset
         </Button>
       </div>
@@ -89,14 +90,14 @@ export function JsonValidatorTool() {
       {/* Validation Result */}
       {isValid !== null && (
         <div
-          className={`p-3 rounded border ${
+          className={`p-3 rounded-[12px] border ${
             isValid
-              ? "bg-green-500/10 border-green-500/30 text-green-400"
-              : "bg-red-500/10 border-red-500/30 text-red-400"
+              ? "bg-[var(--color-green-50)] border-green-500/30 text-[var(--color-green-500)]"
+              : "bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]"
           }`}
         >
-          <div className="text-sm font-medium">
-            {isValid ? "✓ Valid JSON" : `✗ Invalid JSON: ${error}`}
+          <div className="text-sm font-medium flex items-center gap-1">
+            {isValid ? <><MdCheck className="w-4 h-4" /> Valid JSON</> : <><MdClose className="w-4 h-4" /> Invalid JSON: {error}</>}
           </div>
         </div>
       )}
@@ -108,7 +109,7 @@ export function JsonValidatorTool() {
           value={parsed}
           readOnly
           showCopy
-          className="font-mono min-h-[200px] bg-[#0f0f0f]"
+          className="font-mono min-h-[200px] bg-[var(--color-gray-0)]"
         />
       )}
     </div>

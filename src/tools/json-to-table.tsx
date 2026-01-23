@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
+import { MdClose } from "react-icons/md";
 
 export function JsonToTableTool() {
   const [jsonInput, setJsonInput] = useState("");
@@ -85,18 +86,18 @@ export function JsonToTableTool() {
 
       {/* Buttons */}
       <div className="flex gap-2">
-        <Button onClick={handleConvert} className="flex-1">
+        <Button onClick={handleConvert} variant="primary" className="flex-1">
           Convert to CSV
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-1"><MdClose className="w-4 h-4" /> {error}</div>
         </div>
       )}
 
@@ -107,7 +108,7 @@ export function JsonToTableTool() {
           value={csvOutput}
           readOnly
           showCopy
-          className="font-mono min-h-[200px] bg-[#0f0f0f]"
+          className="font-mono min-h-[200px] bg-[var(--color-gray-0)]"
         />
       )}
     </div>

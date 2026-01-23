@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MdCheck, MdClose } from "react-icons/md";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -65,10 +66,10 @@ export function AddressChecksumTool() {
           className="font-mono text-sm mb-2"
         />
         <div className="flex gap-2">
-          <Button onClick={handleConvert} className="flex-1">
+          <Button onClick={handleConvert} variant="primary" className="flex-1">
             Convert to Checksum
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -77,23 +78,23 @@ export function AddressChecksumTool() {
       {/* Validation Status */}
       {isValid !== null && (
         <div
-          className={`p-3 rounded border ${
+          className={`p-3 rounded-[12px] border ${
             isValid
               ? hasCorrectChecksum
-                ? "bg-green-500/10 border-green-500/30 text-green-400"
+                ? "bg-[var(--color-green-50)] border-green-500/30 text-[var(--color-green-500)]"
                 : "bg-blue-500/10 border-blue-500/30 text-blue-400"
-              : "bg-red-500/10 border-red-500/30 text-red-400"
+              : "bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]"
           }`}
         >
-          <div className="text-sm font-medium">
+          <div className="text-sm font-medium flex items-center gap-1">
             {isValid ? (
               hasCorrectChecksum ? (
-                "✓ Already in correct checksum format (EIP-55)"
+                <><MdCheck className="inline" /> Already in correct checksum format (EIP-55)</>
               ) : (
-                "✓ Converted to checksum format (EIP-55)"
+                <><MdCheck className="inline" /> Converted to checksum format (EIP-55)</>
               )
             ) : (
-              "✗ Invalid Ethereum Address"
+              <><MdClose className="inline" /> Invalid Ethereum Address</>
             )}
           </div>
         </div>
@@ -106,7 +107,7 @@ export function AddressChecksumTool() {
           value={checksumAddress}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
         />
       )}
     </div>

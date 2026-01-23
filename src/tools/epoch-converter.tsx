@@ -164,7 +164,7 @@ export function EpochConverterTool() {
   return (
     <div className="space-y-8">
       {/* Current Time Display */}
-      <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+      <div className="p-4 bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] rounded-[var(--radius-12)]">
         <div className="text-sm text-muted-foreground mb-1">
           The current Unix epoch time is
         </div>
@@ -190,7 +190,7 @@ export function EpochConverterTool() {
               showCopy
               className="font-mono text-sm mb-2"
             />
-            <Button onClick={handleCurrentTime} className="w-full mb-2">
+            <Button onClick={handleCurrentTime} className="w-full mb-2" variant="primary">
               Timestamp to Human date
             </Button>
             <div className="text-xs text-muted-foreground">
@@ -290,10 +290,10 @@ export function EpochConverterTool() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button onClick={handleManualDateConvert} className="flex-1">
+          <Button onClick={handleManualDateConvert} className="flex-1" variant="primary">
             Human date to Timestamp
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
@@ -314,7 +314,7 @@ export function EpochConverterTool() {
               className="font-mono min-h-[100px]"
             />
           </div>
-          <Button onClick={handleBatchConvert} className="w-full">
+          <Button onClick={handleBatchConvert} className="w-full" variant="primary">
             Batch Convert
           </Button>
           {batchOutput && (
@@ -323,7 +323,7 @@ export function EpochConverterTool() {
               value={batchOutput}
               readOnly
               showCopy
-              className="font-mono min-h-[100px] bg-[#0f0f0f]"
+              className="font-mono min-h-[100px] bg-[var(--color-gray-0)]"
             />
           )}
         </div>
@@ -346,7 +346,7 @@ export function EpochConverterTool() {
               className="font-mono text-sm"
             />
           </div>
-          <Button onClick={handleSecondsConvert} className="w-full">
+          <Button onClick={handleSecondsConvert} className="w-full" variant="primary">
             Seconds to days, hours, minutes
           </Button>
           {timeBreakdown && (
@@ -355,7 +355,7 @@ export function EpochConverterTool() {
               value={timeBreakdown}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           )}
         </div>

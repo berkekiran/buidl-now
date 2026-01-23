@@ -124,7 +124,7 @@ export function UniswapPriceCalculatorTool() {
               <Button
                 key={fee}
                 onClick={() => setPoolFee(fee)}
-                variant={poolFee === fee ? "default" : "secondary"}
+                variant={poolFee === fee ? "primary" : "secondary"}
                 size="sm"
                 className="flex-1"
               >
@@ -139,7 +139,7 @@ export function UniswapPriceCalculatorTool() {
       </div>
 
       {/* Calculate Button */}
-      <Button onClick={calculateUniswapV2} className="w-full">
+      <Button onClick={calculateUniswapV2} variant="primary" className="w-full">
         Calculate Price & Output
       </Button>
 
@@ -152,7 +152,7 @@ export function UniswapPriceCalculatorTool() {
               value={price}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               Current exchange rate
@@ -165,7 +165,7 @@ export function UniswapPriceCalculatorTool() {
               value={amountOut}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               Expected output after swap
@@ -178,7 +178,7 @@ export function UniswapPriceCalculatorTool() {
               value={priceImpact}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               How much the price moves due to your trade
@@ -191,7 +191,7 @@ export function UniswapPriceCalculatorTool() {
               value={impermanentLoss}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <div className="text-xs text-muted-foreground mt-1">
               Estimated IL from price change
@@ -199,7 +199,7 @@ export function UniswapPriceCalculatorTool() {
           </div>
 
           {/* Formula Display */}
-          <div className="bg-[#0f0f0f] rounded border border-border p-4 space-y-3">
+          <div className="bg-[var(--color-gray-0)] rounded-[12px] border border-border p-4 space-y-3">
             <div>
               <div className="text-xs font-semibold text-blue-400 mb-1">Uniswap V2 Formula (x * y = k)</div>
               <div className="text-xs font-mono text-muted-foreground">
@@ -220,7 +220,7 @@ export function UniswapPriceCalculatorTool() {
             </div>
           </div>
 
-          <Button onClick={handleReset} variant="secondary" className="w-full">
+          <Button onClick={handleReset} className="w-full">
             Reset Calculator
           </Button>
         </div>

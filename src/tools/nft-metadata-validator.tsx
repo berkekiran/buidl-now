@@ -252,9 +252,9 @@ export function NftMetadataValidatorTool() {
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-green-400";
+    if (score >= 80) return "text-[var(--color-green-500)]";
     if (score >= 60) return "text-yellow-400";
-    return "text-red-400";
+    return "text-[var(--color-red-500)]";
   };
 
   return (
@@ -263,14 +263,14 @@ export function NftMetadataValidatorTool() {
       <div className="flex gap-2">
         <Button
           onClick={() => setInputType("json")}
-          variant={inputType === "json" ? "default" : "secondary"}
+          variant={inputType === "json" ? "primary" : "secondary"}
           className="flex-1"
         >
           JSON Input
         </Button>
         <Button
           onClick={() => setInputType("uri")}
-          variant={inputType === "uri" ? "default" : "secondary"}
+          variant={inputType === "uri" ? "primary" : "secondary"}
           className="flex-1"
         >
           URI Input
@@ -285,8 +285,6 @@ export function NftMetadataValidatorTool() {
           onChange={(e) => setMetadataInput(e.target.value)}
           placeholder='{\n  "name": "My NFT",\n  "description": "...",\n  "image": "ipfs://..."\n}'
           rows={12}
-          showClear
-          onClearClick={() => setMetadataInput("")}
         />
       )}
 
@@ -298,17 +296,15 @@ export function NftMetadataValidatorTool() {
           onChange={(e) => setMetadataUri(e.target.value)}
           placeholder="ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1"
           className="font-mono text-sm"
-          showClear
-          onClearClick={() => setMetadataUri("")}
         />
       )}
 
       {/* Actions */}
       <div className="flex gap-3">
-        <Button onClick={handleValidate} className="flex-1" disabled={loading}>
+        <Button onClick={handleValidate} variant="primary" className="flex-1" disabled={loading}>
           {loading ? "Validating..." : "Validate Metadata"}
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
@@ -317,14 +313,14 @@ export function NftMetadataValidatorTool() {
       {validationResult && (
         <div className="space-y-4">
           {/* Score */}
-          <div className="p-4 rounded border border-border bg-[#1a1a1a]">
+          <div className="p-4 rounded-[12px] border border-border bg-[#1a1a1a]">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Compliance Score</span>
               <span className={`text-lg font-bold ${getScoreColor(validationResult.score)}`}>
                 {validationResult.score}%
               </span>
             </div>
-            <div className="mt-2 h-2 bg-[#0a0a0a] rounded-full overflow-hidden">
+            <div className="mt-2 h-2 bg-[#0a0a0a] rounded-[12px] overflow-hidden">
               <div
                 className={`h-full transition-all ${
                   validationResult.score >= 80
@@ -341,14 +337,14 @@ export function NftMetadataValidatorTool() {
           {/* Errors */}
           {validationResult.errors.length > 0 && (
             <div className="space-y-2">
-              <div className="text-sm font-medium text-red-400">
+              <div className="text-sm font-medium text-[var(--color-red-500)]">
                 Errors ({validationResult.errors.length})
               </div>
               <div className="space-y-1">
                 {validationResult.errors.map((error, idx) => (
                   <div
                     key={idx}
-                    className="p-2 rounded border border-red-500/30 bg-red-500/5 text-red-400 text-sm"
+                    className="p-2 rounded-[12px] border border-red-500/30 bg-red-500/5 text-[var(--color-red-500)] text-sm"
                   >
                     {error}
                   </div>
@@ -367,7 +363,7 @@ export function NftMetadataValidatorTool() {
                 {validationResult.warnings.map((warning, idx) => (
                   <div
                     key={idx}
-                    className="p-2 rounded border border-yellow-500/30 bg-yellow-500/5 text-yellow-400 text-sm"
+                    className="p-2 rounded-[12px] border border-yellow-500/30 bg-yellow-500/5 text-yellow-400 text-sm"
                   >
                     {warning}
                   </div>
@@ -378,7 +374,7 @@ export function NftMetadataValidatorTool() {
 
           {/* Success */}
           {validationResult.valid && validationResult.errors.length === 0 && (
-            <div className="p-3 rounded border border-green-500/30 bg-green-500/5 text-green-400 text-sm">
+            <div className="p-3 rounded-[12px] border border-green-500/30 bg-green-500/5 text-[var(--color-green-500)] text-sm">
               Metadata is valid and follows OpenSea/ERC-721/ERC-1155 standards!
             </div>
           )}
@@ -387,10 +383,10 @@ export function NftMetadataValidatorTool() {
           {validationResult.metadata && (
             <div className="space-y-3">
               <div className="text-sm font-medium">OpenSea Preview</div>
-              <div className="p-4 rounded border border-border bg-[#1a1a1a]">
+              <div className="p-4 rounded-[12px] border border-border bg-[#1a1a1a]">
                 {/* Image */}
                 {validationResult.metadata.image && (
-                  <div className="mb-3 p-3 bg-[#0a0a0a] rounded text-center">
+                  <div className="mb-3 p-3 bg-[#0a0a0a] rounded-[12px] text-center">
                     <div className="text-xs text-muted-foreground">
                       Image: {validationResult.metadata.image.substring(0, 50)}...
                     </div>
@@ -418,7 +414,7 @@ export function NftMetadataValidatorTool() {
                           (attr: MetadataAttribute, idx: number) => (
                             <div
                               key={idx}
-                              className="p-2 rounded bg-[#0a0a0a] border border-border"
+                              className="p-2 rounded-[12px] bg-[#0a0a0a] border border-border"
                             >
                               <div className="text-xs text-blue-400">
                                 {attr.trait_type || "Unnamed"}
@@ -437,7 +433,7 @@ export function NftMetadataValidatorTool() {
       )}
 
       {/* Reset */}
-      <Button onClick={handleReset} variant="secondary" className="w-full">
+      <Button onClick={handleReset} className="w-full">
         Reset
       </Button>
     </div>
