@@ -131,21 +131,21 @@ export function TokenUriGeneratorTool() {
         <div className="grid grid-cols-3 gap-2">
           <Button
             onClick={() => setStorageType("ipfs")}
-            variant={storageType === "ipfs" ? "default" : "secondary"}
+            variant={storageType === "ipfs" ? "primary" : "secondary"}
             size="sm"
           >
             IPFS
           </Button>
           <Button
             onClick={() => setStorageType("arweave")}
-            variant={storageType === "arweave" ? "default" : "secondary"}
+            variant={storageType === "arweave" ? "primary" : "secondary"}
             size="sm"
           >
             Arweave
           </Button>
           <Button
             onClick={() => setStorageType("data")}
-            variant={storageType === "data" ? "default" : "secondary"}
+            variant={storageType === "data" ? "primary" : "secondary"}
             size="sm"
           >
             Data URI
@@ -160,23 +160,21 @@ export function TokenUriGeneratorTool() {
         onChange={(e) => setMetadataJson(e.target.value)}
         placeholder='{\n  "name": "My NFT",\n  "description": "...",\n  "image": "ipfs://..."\n}'
         rows={12}
-        showClear
-        onClearClick={() => setMetadataJson("")}
       />
 
       {/* Actions */}
       <div className="flex gap-3">
-        <Button onClick={handleGenerate} className="flex-1">
+        <Button onClick={handleGenerate} variant="primary" className="flex-1">
           Generate URIs
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border border-red-500/30 bg-red-500/5 text-red-400 text-sm">
+        <div className="p-3 rounded-[12px] border border-red-500/30 bg-red-500/5 text-[var(--color-red-500)] text-sm">
           {error}
         </div>
       )}
@@ -185,7 +183,7 @@ export function TokenUriGeneratorTool() {
       {generatedUris && (
         <div className="space-y-6">
           {/* Info Note */}
-          <div className="p-3 rounded border border-blue-500/30 bg-blue-500/5 text-blue-400 text-xs">
+          <div className="p-3 rounded-[12px] border border-blue-500/30 bg-blue-500/5 text-blue-400 text-xs">
             Note: CID and Arweave ID are simulated for demonstration. In production, upload your
             metadata to IPFS/Arweave to get real identifiers.
           </div>
@@ -303,21 +301,21 @@ export function TokenUriGeneratorTool() {
           {/* Format Conversion Guide */}
           <div className="space-y-3">
             <div className="text-sm font-medium">Format Conversion Examples</div>
-            <div className="p-4 rounded border border-border bg-[#1a1a1a] space-y-2 text-xs font-mono">
+            <div className="p-4 rounded-[12px] border border-border bg-[#1a1a1a] space-y-2 text-xs font-mono">
               <div>
                 <span className="text-blue-400">ipfs://</span>
                 <span className="text-muted-foreground"> → </span>
-                <span className="text-green-400">https://ipfs.io/ipfs/</span>
+                <span className="text-[var(--color-green-500)]">https://ipfs.io/ipfs/</span>
               </div>
               <div>
                 <span className="text-blue-400">ipfs://Qm...</span>
                 <span className="text-muted-foreground"> → </span>
-                <span className="text-green-400">https://gateway.pinata.cloud/ipfs/Qm...</span>
+                <span className="text-[var(--color-green-500)]">https://gateway.pinata.cloud/ipfs/Qm...</span>
               </div>
               <div>
                 <span className="text-blue-400">ar://</span>
                 <span className="text-muted-foreground"> → </span>
-                <span className="text-green-400">https://arweave.net/</span>
+                <span className="text-[var(--color-green-500)]">https://arweave.net/</span>
               </div>
             </div>
           </div>
@@ -338,7 +336,7 @@ export function TokenUriGeneratorTool() {
           <div className="space-y-3">
             <div className="text-sm font-medium">Storage Type Comparison</div>
             <div className="grid gap-3">
-              <div className="p-3 rounded border border-border bg-[#1a1a1a]">
+              <div className="p-3 rounded-[12px] border border-border bg-[#1a1a1a]">
                 <div className="font-medium text-sm mb-1">IPFS</div>
                 <div className="text-xs text-muted-foreground">
                   Pros: Decentralized, content-addressed, widely supported
@@ -346,7 +344,7 @@ export function TokenUriGeneratorTool() {
                   Cons: Requires pinning service, not permanent by default
                 </div>
               </div>
-              <div className="p-3 rounded border border-border bg-[#1a1a1a]">
+              <div className="p-3 rounded-[12px] border border-border bg-[#1a1a1a]">
                 <div className="font-medium text-sm mb-1">Arweave</div>
                 <div className="text-xs text-muted-foreground">
                   Pros: Permanent storage, pay once
@@ -354,7 +352,7 @@ export function TokenUriGeneratorTool() {
                   Cons: Higher upfront cost, less mature ecosystem
                 </div>
               </div>
-              <div className="p-3 rounded border border-border bg-[#1a1a1a]">
+              <div className="p-3 rounded-[12px] border border-border bg-[#1a1a1a]">
                 <div className="font-medium text-sm mb-1">Data URI</div>
                 <div className="text-xs text-muted-foreground">
                   Pros: Fully on-chain, immutable, no external dependencies
@@ -368,7 +366,7 @@ export function TokenUriGeneratorTool() {
       )}
 
       {/* Reset */}
-      <Button onClick={handleReset} variant="secondary" className="w-full">
+      <Button onClick={handleReset} className="w-full">
         Reset
       </Button>
     </div>

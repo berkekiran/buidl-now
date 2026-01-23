@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
+import { MdSwapVert } from "react-icons/md";
 
 // Simple XML to JSON converter
 function xmlToJson(xml: string): string {
@@ -134,92 +133,87 @@ export function XmlJsonTool() {
   const [xmlInput, setXmlInput] = useState("");
   const [jsonInput, setJsonInput] = useState("");
   const [error, setError] = useState("");
+  const [lastEdited, setLastEdited] = useState<"xml" | "json" | null>(null);
 
-  const handleXmlToJson = () => {
-    if (!xmlInput) {
-      setJsonInput("");
-      setError("");
-      return;
+  // Auto-convert when XML input changes
+  useEffect(() => {
+    if (lastEdited === "xml" && xmlInput) {
+      try {
+        const json = xmlToJson(xmlInput);
+        setJsonInput(json);
+        setError("");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Invalid XML");
+      }
     }
+  }, [xmlInput, lastEdited]);
 
-    try {
-      const json = xmlToJson(xmlInput);
-      setJsonInput(json);
-      setError("");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Invalid XML");
-      setJsonInput("");
+  // Auto-convert when JSON input changes
+  useEffect(() => {
+    if (lastEdited === "json" && jsonInput) {
+      try {
+        const xml = jsonToXml(jsonInput);
+        setXmlInput(xml);
+        setError("");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Invalid JSON");
+      }
     }
-  };
+  }, [jsonInput, lastEdited]);
 
-  const handleJsonToXml = () => {
-    if (!jsonInput) {
-      setXmlInput("");
-      setError("");
-      return;
-    }
-
-    try {
-      const xml = jsonToXml(jsonInput);
-      setXmlInput(xml);
-      setError("");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Invalid JSON");
-      setXmlInput("");
-    }
-  };
-
-  const handleReset = () => {
-    setXmlInput("");
-    setJsonInput("");
-    setError("");
+  const handleSwap = () => {
+    const tempXml = xmlInput;
+    const tempJson = jsonInput;
+    setXmlInput(tempJson);
+    setJsonInput(tempXml);
+    setLastEdited(null);
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* XML Input */}
-      <div>
-        <Label className="mb-2 block text-sm">XML</Label>
-        <Textarea
-          value={xmlInput}
-          onChange={(e) => setXmlInput(e.target.value)}
-          placeholder='<person><name>John</name><age>30</age></person>'
-          className="font-mono min-h-[200px]"
-        />
-      </div>
+      <Textarea
+        label="XML"
+        value={xmlInput}
+        onChange={(e) => {
+          setXmlInput(e.target.value);
+          setLastEdited("xml");
+        }}
+        placeholder='<person><name>John</name><age>30</age></person>'
+        className="font-mono text-sm"
+        rows={8}
+      />
 
-      {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2">
-        <Button onClick={handleXmlToJson} className="flex-1">
-          <span className="hidden sm:inline">XML → JSON</span>
-          <span className="sm:hidden">To JSON</span>
-        </Button>
-        <Button onClick={handleJsonToXml} className="flex-1 sm:flex-none">
-          <span className="hidden sm:inline">JSON → XML</span>
-          <span className="sm:hidden">To XML</span>
-        </Button>
-        <Button onClick={handleReset} variant="secondary" className="sm:flex-none">
-          Reset
-        </Button>
+      {/* Swap Button */}
+      <div className="flex justify-center">
+        <button
+          onClick={handleSwap}
+          className="w-10 h-10 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+          title="Swap"
+        >
+          <MdSwapVert className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium">{error}</div>
         </div>
       )}
 
       {/* JSON Input */}
-      <div>
-        <Label className="mb-2 block text-sm">JSON</Label>
-        <Textarea
-          value={jsonInput}
-          onChange={(e) => setJsonInput(e.target.value)}
-          placeholder='{"person":{"name":"John","age":"30"}}'
-          className="font-mono min-h-[200px]"
-        />
-      </div>
+      <Textarea
+        label="JSON"
+        value={jsonInput}
+        onChange={(e) => {
+          setJsonInput(e.target.value);
+          setLastEdited("json");
+        }}
+        placeholder='{"person":{"name":"John","age":"30"}}'
+        className="font-mono text-sm"
+        rows={8}
+      />
     </div>
   );
 }

@@ -4,9 +4,8 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { ToolConfig } from "@/types/tool";
-import { MdContentCopy, MdCheck } from "react-icons/md";
+import { MdContentCopy, MdCheck, MdClose } from "react-icons/md";
 
 export function RegexTesterTool() {
   const [pattern, setPattern] = useState("");
@@ -125,8 +124,8 @@ export function RegexTesterTool() {
 
       {/* Error */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-1"><MdClose className="w-4 h-4" /> {error}</div>
         </div>
       )}
 
@@ -138,31 +137,24 @@ export function RegexTesterTool() {
               Matches ({matches.length})
             </Label>
             {matches.length > 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
+              <button
+                type="button"
                 onClick={handleCopy}
-                className="h-auto px-2 py-1 text-xs"
-                title="Copy to clipboard"
+                className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                title={copied ? "Copied!" : "Copy to clipboard"}
               >
                 {copied ? (
-                  <>
-                    <MdCheck className="w-3.5 h-3.5 text-blue-400" />
-                    <span className="text-blue-400">Copied</span>
-                  </>
+                  <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                 ) : (
-                  <>
-                    <MdContentCopy className="w-3.5 h-3.5" />
-                    <span>Copy</span>
-                  </>
+                  <MdContentCopy style={{ width: 16, height: 16 }} />
                 )}
-              </Button>
+              </button>
             )}
           </div>
-          <div className="p-3 bg-[#0f0f0f] border border-border rounded max-h-[300px] overflow-y-auto space-y-2">
+          <div className="p-3 bg-[var(--color-gray-0)] border border-border rounded-[12px] max-h-[300px] overflow-y-auto space-y-2">
             {matches.map((match, index) => (
               <div key={index} className="pb-2 border-b border-border last:border-0">
-                <div className="text-sm font-mono text-green-400">
+                <div className="text-sm font-mono text-[var(--color-green-500)]">
                   Match {index + 1}: "{match[0]}"
                 </div>
                 {match.index !== undefined && (
@@ -183,7 +175,7 @@ export function RegexTesterTool() {
 
       {/* No Matches */}
       {pattern && testString && matches.length === 0 && !error && (
-        <div className="p-3 rounded border bg-yellow-500/10 border-yellow-500/30 text-yellow-400">
+        <div className="p-3 rounded-[12px] border bg-yellow-500/10 border-yellow-500/30 text-yellow-400">
           <div className="text-sm font-medium">No matches found</div>
         </div>
       )}

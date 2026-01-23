@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ToolConfig } from "@/types/tool";
+import { MdClose } from "react-icons/md";
 
 export function EcdsaSignatureTool() {
   const [signature, setSignature] = useState("");
@@ -113,68 +114,68 @@ export function EcdsaSignatureTool() {
           className="font-mono min-h-[100px]"
         />
         <div className="flex gap-2 mt-2">
-          <Button onClick={() => parseSignature(signature)} className="flex-1">
+          <Button onClick={() => parseSignature(signature)} className="flex-1" variant="primary">
             Parse
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
       </div>
 
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-2"><MdClose className="w-5 h-5" /> {error}</div>
         </div>
       )}
 
       {/* Output Section */}
       {r && (
         <div className="space-y-4">
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">Component: r</Label>
             <Input
               value={r}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <p className="mt-2 text-xs text-muted-foreground">
               First 32 bytes - X coordinate of the signature point
             </p>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">Component: s</Label>
             <Input
               value={s}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <p className="mt-2 text-xs text-muted-foreground">
               Second 32 bytes - Signature proof value
             </p>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">Component: v</Label>
             <Input
               value={v}
               readOnly
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <p className="mt-2 text-xs text-muted-foreground">
               Recovery ID - Used to recover the public key from the signature
             </p>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">Y Parity</Label>
             <Input
               value={yParity}
               readOnly
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
             <p className="mt-2 text-xs text-muted-foreground">
               Indicates whether the Y coordinate is even (0) or odd (1)
@@ -184,7 +185,7 @@ export function EcdsaSignatureTool() {
       )}
 
       {/* Info Section */}
-      <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+      <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
         <Label className="mb-2 block text-sm">About ECDSA Signatures</Label>
         <div className="text-sm text-muted-foreground space-y-2">
           <p>
@@ -267,7 +268,7 @@ export const ecdsaSignatureConfig: ToolConfig = {
             <li><strong>35+:</strong> EIP-155 with chain ID protection</li>
           </ul>
           <p className="text-sm">
-            Formula for EIP-155: <code className="text-xs bg-[#0f0f0f] px-1 py-0.5 rounded">v = chainId * 2 + 35 + yParity</code>
+            Formula for EIP-155: <code className="text-xs bg-[var(--color-gray-0)] px-1 py-0.5 rounded-[12px]">v = chainId * 2 + 35 + yParity</code>
           </p>
         </>
       ),

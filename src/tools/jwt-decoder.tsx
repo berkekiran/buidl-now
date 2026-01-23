@@ -114,7 +114,7 @@ export function JwtDecoderTool() {
 
       {/* Error */}
       {error && (
-        <div className="p-4 bg-red-950/20 border border-red-800/30 rounded text-red-400 text-sm">
+        <div className="p-4 bg-red-950/20 border border-red-800/30 rounded-[12px] text-[var(--color-red-500)] text-sm">
           {error}
         </div>
       )}
@@ -127,7 +127,7 @@ export function JwtDecoderTool() {
             <div className="flex items-center justify-between mb-2">
               <Label className="text-sm font-semibold text-blue-400">Header</Label>
             </div>
-            <div className="p-3 bg-[#0f0f0f] border border-border rounded space-y-2">
+            <div className="p-3 bg-[var(--color-gray-0)] border border-border rounded-[12px] space-y-2">
               <div>
                 <div className="text-xs text-muted-foreground mb-1">Encoded:</div>
                 <Input
@@ -153,7 +153,7 @@ export function JwtDecoderTool() {
             <div className="flex items-center justify-between mb-2">
               <Label className="text-sm font-semibold text-blue-400">Payload</Label>
             </div>
-            <div className="p-3 bg-[#0f0f0f] border border-border rounded space-y-2">
+            <div className="p-3 bg-[var(--color-gray-0)] border border-border rounded-[12px] space-y-2">
               <div>
                 <div className="text-xs text-muted-foreground mb-1">Encoded:</div>
                 <Input
@@ -210,7 +210,7 @@ export function JwtDecoderTool() {
             <div className="flex items-center justify-between mb-2">
               <Label className="text-sm font-semibold text-blue-400">Signature</Label>
             </div>
-            <div className="p-3 bg-[#0f0f0f] border border-border rounded">
+            <div className="p-3 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
               <Input
                 value={decoded.signature}
                 readOnly

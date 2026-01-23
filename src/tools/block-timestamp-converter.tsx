@@ -203,7 +203,7 @@ export function BlockTimestampConverterTool() {
             <Button
               key={chain.id}
               onClick={() => setSelectedChain(chain)}
-              variant={selectedChain.id === chain.id ? "default" : "outline"}
+              variant={selectedChain.id === chain.id ? "primary" : "secondary"}
               className="p-3 h-auto flex flex-col items-center justify-center text-center"
             >
               <Image
@@ -211,7 +211,7 @@ export function BlockTimestampConverterTool() {
                 alt={chain.name}
                 width={32}
                 height={32}
-                className="mb-2 rounded"
+                className="mb-2 rounded-[12px]"
               />
               <div className="text-sm font-medium">{chain.name}</div>
               <div className="text-xs text-muted-foreground">
@@ -231,7 +231,7 @@ export function BlockTimestampConverterTool() {
               setMode("block-to-time");
               handleReset();
             }}
-            variant={mode === "block-to-time" ? "default" : "outline"}
+            variant={mode === "block-to-time" ? "primary" : "secondary"}
             className="p-3 h-auto flex flex-col items-start justify-start text-left"
           >
             <div className="text-sm font-medium">Block → Timestamp</div>
@@ -242,7 +242,7 @@ export function BlockTimestampConverterTool() {
               setMode("time-to-block");
               handleReset();
             }}
-            variant={mode === "time-to-block" ? "default" : "outline"}
+            variant={mode === "time-to-block" ? "primary" : "secondary"}
             className="p-3 h-auto flex flex-col items-start justify-start text-left"
           >
             <div className="text-sm font-medium">Timestamp → Block</div>
@@ -252,7 +252,7 @@ export function BlockTimestampConverterTool() {
       </div>
 
       {/* Reference Point (Optional but recommended) */}
-      <div className="p-4 rounded border border-yellow-500/30 bg-yellow-500/5">
+      <div className="p-4 rounded-[12px] border border-yellow-500/30 bg-yellow-500/5">
         <div className="text-sm font-medium text-yellow-400 mb-3">
           Reference Point (Optional - for better accuracy)
         </div>
@@ -279,7 +279,7 @@ export function BlockTimestampConverterTool() {
               <div className="flex items-end">
                 <Button
                   onClick={useCurrentTime}
-                  variant="outline"
+                 
                   size="sm"
                   className="text-xs h-9 whitespace-nowrap"
                 >
@@ -343,7 +343,7 @@ export function BlockTimestampConverterTool() {
           </div>
           <Button
             onClick={useTodayDate}
-            variant="outline"
+           
             size="sm"
             className="text-xs h-9 whitespace-nowrap"
           >
@@ -354,17 +354,17 @@ export function BlockTimestampConverterTool() {
 
       {/* Convert Button */}
       <div className="flex gap-2">
-        <Button onClick={handleConvert} className="flex-1">
+        <Button onClick={handleConvert} variant="primary" className="flex-1">
           Convert
         </Button>
-        <Button onClick={handleReset} variant="secondary">
+        <Button onClick={handleReset}>
           Reset
         </Button>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
           <div className="text-sm font-medium">Error: {error}</div>
         </div>
       )}
@@ -372,7 +372,7 @@ export function BlockTimestampConverterTool() {
       {/* Results */}
       {result && (
         <div className="space-y-4">
-          <div className="text-sm font-medium text-green-400 border-b border-green-500/30 pb-2">
+          <div className="text-sm font-medium text-[var(--color-green-500)] border-b border-green-500/30 pb-2">
             Conversion Results
           </div>
 
@@ -382,7 +382,7 @@ export function BlockTimestampConverterTool() {
               value={result.estimatedBlock.toLocaleString()}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           )}
 
@@ -392,7 +392,7 @@ export function BlockTimestampConverterTool() {
               value={result.estimatedTimestamp.toString()}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           )}
 
@@ -403,7 +403,7 @@ export function BlockTimestampConverterTool() {
                 value={formatDate(result.estimatedDate)}
                 readOnly
                 showCopy
-                className="text-sm bg-[#0f0f0f]"
+                className="text-sm bg-[var(--color-gray-0)]"
               />
               <div className="text-xs text-muted-foreground mt-1 ml-1">
                 ISO: {result.estimatedDate}
@@ -413,13 +413,13 @@ export function BlockTimestampConverterTool() {
 
           {result.blocksPerDay !== undefined && (
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-3 rounded border border-border bg-[#0f0f0f]">
+              <div className="p-3 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
                 <div className="text-xs text-muted-foreground mb-1">Blocks per Day</div>
                 <div className="text-lg font-mono">
                   {result.blocksPerDay.toLocaleString()}
                 </div>
               </div>
-              <div className="p-3 rounded border border-border bg-[#0f0f0f]">
+              <div className="p-3 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
                 <div className="text-xs text-muted-foreground mb-1">Block Time</div>
                 <div className="text-lg font-mono">
                   {selectedChain.blockTime}s
@@ -429,7 +429,7 @@ export function BlockTimestampConverterTool() {
           )}
 
           {!referenceBlock && (
-            <div className="p-3 rounded border border-yellow-500/30 bg-yellow-500/5 text-xs text-yellow-400">
+            <div className="p-3 rounded-[12px] border border-yellow-500/30 bg-yellow-500/5 text-xs text-yellow-400">
               Note: This is an estimate. For accurate results, provide a reference block and timestamp.
             </div>
           )}
@@ -437,7 +437,7 @@ export function BlockTimestampConverterTool() {
       )}
 
       {/* Info Box */}
-      <div className="p-4 rounded border border-blue-500/30 bg-blue-500/5">
+      <div className="p-4 rounded-[12px] border border-blue-500/30 bg-blue-500/5">
         <div className="text-sm text-blue-400 space-y-2">
           <div>
             <strong>How it works:</strong> Block times vary by chain. This tool calculates

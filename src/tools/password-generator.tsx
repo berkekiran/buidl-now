@@ -86,7 +86,7 @@ export function PasswordGeneratorTool() {
       </div>
 
       {/* Generate Button */}
-      <Button onClick={handleGenerate} className="w-full">
+      <Button onClick={handleGenerate} variant="primary" className="w-full">
         Generate Password
       </Button>
 
@@ -97,7 +97,7 @@ export function PasswordGeneratorTool() {
           value={password}
           readOnly
           showCopy
-          className="font-mono text-sm bg-[#0f0f0f]"
+          className="font-mono text-sm bg-[var(--color-gray-0)]"
         />
       )}
     </div>

@@ -14,11 +14,11 @@ import {
   MdOutlineCurrencyExchange,
   MdCode,
 } from "react-icons/md";
-import Image from "next/image";
 import {
   WebsiteStructuredData,
   OrganizationStructuredData,
 } from "@/components/structured-data";
+// Image removed - logo now only in header
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -114,65 +114,41 @@ function HomeContent() {
       <WebsiteStructuredData />
       <OrganizationStructuredData />
 
-      <div className="flex flex-col items-center justify-center h-[72vh]">
-        {/* Hero Section */}
-        <div className="flex items-end gap-4 text-white mb-8">
-          <Image
-            src="/buidl-now-logo.svg"
-            alt="Buidl Now"
-            width={80}
-            height={80}
-            className="w-24 h-24 sm:w-32 sm:h-32"
+      <div className="h-screen w-screen overflow-hidden">
+        {/* Search Bar - Exactly centered */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] md:w-full max-w-xl px-4 z-50">
+          <MdSearch className="absolute left-7 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
+          <Input
+            ref={searchInputRef}
+            type="text"
+            placeholder="Search tools..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyDown}
+            className="pl-10 pr-24 h-12 text-base"
           />
-          <div className="flex flex-col items-start justify-end gap-2">
-            <div className="flex flex-row items-center gap-2">
-              <span className="text-3xl sm:text-4xl font-medium">Buidl</span>
-              <span className="text-3xl sm:text-4xl font-normal italic">
-                Now!
-              </span>
-            </div>
-            <span className="text-sm sm:text-base text-muted-foreground">
-              Developer tools for builders who ship fast
-            </span>
-          </div>
-        </div>
-
-        {/* Search Bar */}
-        <div className="w-full max-w-2xl px-4 relative">
-          <div className="relative">
-            <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <Input
-              ref={searchInputRef}
-              type="text"
-              placeholder="Search tools..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              onKeyDown={handleKeyDown}
-              className="pl-10 pr-24 h-12 text-base"
-            />
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
-              {searchQuery && filteredTools.length > 0 && (
-                <kbd className="hidden sm:inline-flex items-center justify-center px-2 h-7 text-muted-foreground rounded border border-muted-foreground/30 min-w-8">
-                  <MdKeyboardReturn className="w-4 h-4" />
-                </kbd>
-              )}
-              {searchQuery && (
-                <Button
-                  onClick={() => setSearchQuery("")}
-                  variant="ghost"
-                  size="sm"
-                  className="text-muted-foreground hover:text-foreground h-auto p-1 min-h-0"
-                >
-                  <MdClose className="w-5 h-5" />
-                </Button>
-              )}
-            </div>
+          <div className="absolute right-7 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            {searchQuery && filteredTools.length > 0 && (
+              <kbd className="hidden sm:inline-flex items-center justify-center px-2 h-7 text-muted-foreground rounded border border-muted-foreground/30 min-w-8">
+                <MdKeyboardReturn className="w-4 h-4" />
+              </kbd>
+            )}
+            {searchQuery && (
+              <Button
+                onClick={() => setSearchQuery("")}
+               
+                size="sm"
+                className="text-muted-foreground hover:text-foreground h-auto p-1 min-h-0"
+              >
+                <MdClose className="w-5 h-5" />
+              </Button>
+            )}
           </div>
 
-          {/* Search Results - Below Search Box (Absolute) */}
+          {/* Search Results - Below Search Box */}
           <div
             data-scrollable
-            className={`absolute left-4 right-4 top-full mt-2 bg-background/95 backdrop-blur-sm rounded-md border border-border shadow-lg max-h-[40vh] overflow-y-auto z-50 transition-all duration-300 ease-out ${
+            className={`absolute left-0 right-0 top-full mt-2 bg-[var(--color-gray-0)] rounded-[16px] max-h-[40vh] overflow-y-auto z-[100] transition-all duration-200 ease-out border border-[var(--color-gray-200)] shadow-xl shadow-black/5 ${
               searchQuery
                 ? "opacity-100 translate-y-0 pointer-events-auto"
                 : "opacity-0 -translate-y-2 pointer-events-none"
@@ -191,21 +167,23 @@ function HomeContent() {
                     key={tool.id}
                     ref={index === selectedIndex ? selectedItemRef : null}
                     href={tool.path}
-                    className={`block px-3 py-2.5 rounded-md transition-colors ${
-                      index === selectedIndex ? "bg-accent" : "hover:bg-accent"
+                    className={`block px-4 py-3 rounded-[12px] transition-all duration-200 border ring-2 ${
+                      index === selectedIndex
+                        ? "bg-[var(--color-gray-0)] border-[var(--color-blue-500)] ring-[var(--color-blue-500)]/20"
+                        : "border-transparent ring-transparent hover:bg-[var(--color-gray-100)]/50"
                     }`}
                     onClick={() => setSearchQuery("")}
                     onMouseEnter={() => setSelectedIndex(index)}
                   >
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2.5 mb-0.5">
                       {tool.icon && (
-                        <tool.icon className="w-3.5 h-3.5 text-muted-foreground" />
+                        <tool.icon className="w-4 h-4 text-[var(--color-gray-400)]" />
                       )}
-                      <div className="font-medium text-foreground">
+                      <div className="font-medium text-[var(--color-gray-950)]">
                         {tool.name}
                       </div>
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-[var(--color-gray-400)]">
                       {tool.description}
                     </div>
                   </Link>
@@ -215,8 +193,8 @@ function HomeContent() {
           </div>
         </div>
 
-        {/* Featured Tools */}
-        <div className="w-full max-w-2xl px-4 mt-6">
+        {/* Featured Tools - Below center */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 mt-10 w-[90%] md:w-full max-w-xl px-4 z-10">
           <div className="flex flex-wrap gap-2 justify-center">
             {[
               {
@@ -236,7 +214,7 @@ function HomeContent() {
               .map(({ tool, icon: Icon }) => (
                 <Link key={tool!.id} href={tool!.path}>
                   <Button
-                    variant="outline"
+                   
                     size="sm"
                     className="text-xs gap-1.5"
                   >
@@ -262,15 +240,8 @@ export default function Home() {
 
 function HomeLoading() {
   return (
-    <div className="flex flex-col items-center justify-center h-[60vh]">
-      <div className="flex items-end gap-4 text-white mb-8">
-        <div className="w-24 h-24 sm:w-32 sm:h-32 bg-muted/20 rounded-lg animate-pulse" />
-        <div className="flex flex-col items-start justify-end gap-2">
-          <div className="h-9 w-32 bg-muted/20 rounded animate-pulse" />
-          <div className="h-4 w-48 bg-muted/20 rounded animate-pulse" />
-        </div>
-      </div>
-      <div className="w-full max-w-2xl px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4">
+      <div className="w-full max-w-xl">
         <div className="h-12 bg-muted/20 rounded-md animate-pulse" />
       </div>
     </div>

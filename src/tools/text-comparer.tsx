@@ -146,7 +146,7 @@ export function TextComparerTool() {
         <Label className="mb-2 block text-sm">Diff Mode</Label>
         <div className="flex gap-2">
           <Button
-            variant={diffMode === "word" ? "default" : "secondary"}
+            variant={diffMode === "word" ? "primary" : "secondary"}
             onClick={() => setDiffMode("word")}
             className="flex-1"
             size="sm"
@@ -154,7 +154,7 @@ export function TextComparerTool() {
             Word Level
           </Button>
           <Button
-            variant={diffMode === "character" ? "default" : "secondary"}
+            variant={diffMode === "character" ? "primary" : "secondary"}
             onClick={() => setDiffMode("character")}
             className="flex-1"
             size="sm"
@@ -165,7 +165,7 @@ export function TextComparerTool() {
       </div>
 
       {/* Compare Button */}
-      <Button onClick={handleCompare} className="w-full">
+      <Button onClick={handleCompare} variant="primary" className="w-full">
         Compare Texts
       </Button>
 
@@ -173,15 +173,15 @@ export function TextComparerTool() {
       {diff.length > 0 && (
         <div className="space-y-4">
           {/* Statistics */}
-          <div className="p-4 bg-[#0f0f0f] border border-border rounded">
+          <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px]">
             <Label className="text-sm mb-2 block">Statistics</Label>
             <div className="grid grid-cols-3 gap-4 text-sm">
               <div>
-                <span className="text-green-400">Additions:</span>{" "}
+                <span className="text-[var(--color-green-500)]">Additions:</span>{" "}
                 <span className="font-mono">{stats.additions}</span>
               </div>
               <div>
-                <span className="text-red-400">Deletions:</span>{" "}
+                <span className="text-[var(--color-red-500)]">Deletions:</span>{" "}
                 <span className="font-mono">{stats.deletions}</span>
               </div>
               <div>
@@ -194,15 +194,15 @@ export function TextComparerTool() {
           {/* Diff Display */}
           <div>
             <Label className="text-sm mb-2 block">Differences</Label>
-            <div className="p-4 bg-[#0f0f0f] border border-border rounded min-h-[150px] font-mono text-sm whitespace-pre-wrap break-words">
+            <div className="p-4 bg-[var(--color-gray-0)] border border-border rounded-[12px] min-h-[150px] font-mono text-sm whitespace-pre-wrap break-words">
               {diff.map((part, index) => (
                 <span
                   key={index}
                   className={
                     part.type === "added"
-                      ? "bg-green-500/20 text-green-400"
+                      ? "bg-green-500/20 text-[var(--color-green-500)]"
                       : part.type === "removed"
-                      ? "bg-red-500/20 text-red-400 line-through"
+                      ? "bg-red-500/20 text-[var(--color-red-500)] line-through"
                       : ""
                   }
                 >

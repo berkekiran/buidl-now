@@ -192,28 +192,28 @@ export function ColorPaletteGeneratorTool() {
         <Label className="mb-2 block text-sm">Palette Type</Label>
         <div className="grid grid-cols-2 gap-2">
           <Button
-            variant={paletteType === "random" ? "default" : "secondary"}
+            variant={paletteType === "random" ? "primary" : "secondary"}
             onClick={() => setPaletteType("random")}
             className="w-full"
           >
             Random
           </Button>
           <Button
-            variant={paletteType === "complementary" ? "default" : "secondary"}
+            variant={paletteType === "complementary" ? "primary" : "secondary"}
             onClick={() => setPaletteType("complementary")}
             className="w-full"
           >
             Complementary
           </Button>
           <Button
-            variant={paletteType === "analogous" ? "default" : "secondary"}
+            variant={paletteType === "analogous" ? "primary" : "secondary"}
             onClick={() => setPaletteType("analogous")}
             className="w-full"
           >
             Analogous
           </Button>
           <Button
-            variant={paletteType === "monochromatic" ? "default" : "secondary"}
+            variant={paletteType === "monochromatic" ? "primary" : "secondary"}
             onClick={() => setPaletteType("monochromatic")}
             className="w-full"
           >
@@ -238,7 +238,7 @@ export function ColorPaletteGeneratorTool() {
       )}
 
       {/* Generate Button */}
-      <Button onClick={handleGenerate} className="w-full">
+      <Button onClick={handleGenerate} variant="primary" className="w-full">
         Generate Palette
       </Button>
 
@@ -247,7 +247,7 @@ export function ColorPaletteGeneratorTool() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <Label className="text-sm">Generated Palette</Label>
-            <Button onClick={copyAllColors} variant="secondary" size="sm">
+            <Button onClick={copyAllColors} size="sm">
               Copy All Hex Codes
             </Button>
           </div>
@@ -256,38 +256,32 @@ export function ColorPaletteGeneratorTool() {
             {colors.map((color, index) => (
               <div
                 key={index}
-                className="border border-white/10 rounded overflow-hidden"
+                className="border border-[var(--color-gray-200)] rounded-[12px] overflow-hidden"
               >
                 <div
                   className="h-20 w-full"
                   style={{ backgroundColor: color.hex }}
                 />
-                <div className="p-3 bg-[#0f0f0f] space-y-1">
+                <div className="p-3 bg-[var(--color-gray-0)] space-y-1">
                   <div className="flex items-center justify-between">
                     <code className="text-sm font-mono">{color.hex}</code>
-                    <Button
+                    <button
+                      type="button"
                       onClick={() => copyColor(color.hex, index)}
-                      variant="ghost"
-                      size="sm"
-                      className="flex items-center gap-1 h-auto px-2 py-1 text-xs"
+                      className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                      title={copiedIndex === index ? "Copied!" : "Copy to clipboard"}
                     >
                       {copiedIndex === index ? (
-                        <>
-                          <MdCheck className="w-3.5 h-3.5 text-blue-400" />
-                          <span className="text-blue-400">Copied</span>
-                        </>
+                        <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                       ) : (
-                        <>
-                          <MdContentCopy className="w-3.5 h-3.5" />
-                          <span>Copy</span>
-                        </>
+                        <MdContentCopy style={{ width: 16, height: 16 }} />
                       )}
-                    </Button>
+                    </button>
                   </div>
-                  <div className="text-xs text-white/60 font-mono">
+                  <div className="text-xs text-[var(--color-gray-500)] font-mono">
                     {color.rgb}
                   </div>
-                  <div className="text-xs text-white/60 font-mono">
+                  <div className="text-xs text-[var(--color-gray-500)] font-mono">
                     {color.hsl}
                   </div>
                 </div>

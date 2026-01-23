@@ -188,16 +188,16 @@ export function ImageColorPickerTool() {
           type="file"
           accept="image/*"
           onChange={handleFileSelect}
-          className="block w-full text-sm text-white/60 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium file:bg-white/10 file:text-white hover:file:bg-white/20 file:cursor-pointer"
+          className="block w-full text-sm text-[var(--color-gray-500)] file:mr-4 file:py-2.5 file:px-4 file:rounded-[var(--radius-10)] file:border file:border-[var(--color-gray-200)] file:text-sm file:font-medium file:bg-[var(--color-gray-0)] file:text-[var(--color-gray-950)] hover:file:bg-[var(--color-gray-50)] file:cursor-pointer file:transition-colors"
         />
-        <p className="mt-2 text-xs text-white/40">
+        <p className="mt-2 text-xs text-[var(--color-gray-400)]">
           Maximum file size: 5MB. Click on the image to pick a color.
         </p>
       </div>
 
       {/* Error Display */}
       {error && (
-        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
+        <div className="p-3 bg-[var(--color-red-50)] border border-[var(--color-red-200)] rounded-[12px] text-[var(--color-red-500)] text-sm">
           {error}
         </div>
       )}
@@ -209,7 +209,7 @@ export function ImageColorPickerTool() {
             <Label className="mb-2 block text-sm">
               Click on the image to pick a color
             </Label>
-            <div className="border border-white/10 rounded p-4 bg-[#0f0f0f] flex items-center justify-center">
+            <div className="border border-[var(--color-gray-200)] rounded-[12px] p-4 bg-[var(--color-gray-0)] flex items-center justify-center">
               <img
                 ref={imageRef}
                 src={imageUrl}
@@ -223,7 +223,7 @@ export function ImageColorPickerTool() {
           {/* Extract Dominant Colors Button */}
           <Button
             onClick={extractDominantColors}
-            variant="secondary"
+            variant="primary"
             className="w-full"
             disabled={isExtracting}
           >
@@ -234,32 +234,32 @@ export function ImageColorPickerTool() {
           {pickedColor && (
             <div className="space-y-3">
               <Label className="text-sm">Picked Color</Label>
-              <div className="border border-white/10 rounded overflow-hidden">
+              <div className="border border-[var(--color-gray-200)] rounded-[12px] overflow-hidden">
                 <div
                   className="h-24 w-full"
                   style={{ backgroundColor: pickedColor.hex }}
                 />
-                <div className="p-3 bg-[#0f0f0f] space-y-2">
+                <div className="p-3 bg-[var(--color-gray-0)] space-y-2">
                   <Input
                     label="HEX"
                     value={pickedColor.hex}
                     readOnly
                     showCopy
-                    className="font-mono text-sm bg-black/40"
+                    className="font-mono text-sm"
                   />
                   <Input
                     label="RGB"
                     value={pickedColor.rgb}
                     readOnly
                     showCopy
-                    className="font-mono text-sm bg-black/40"
+                    className="font-mono text-sm"
                   />
                   <Input
                     label="HSL"
                     value={pickedColor.hsl}
                     readOnly
                     showCopy
-                    className="font-mono text-sm bg-black/40"
+                    className="font-mono text-sm"
                   />
                 </div>
               </div>
@@ -274,35 +274,29 @@ export function ImageColorPickerTool() {
                 {dominantColors.map((color, index) => (
                   <div
                     key={index}
-                    className="border border-white/10 rounded overflow-hidden"
+                    className="border border-[var(--color-gray-200)] rounded-[12px] overflow-hidden"
                   >
                     <div
                       className="h-16 w-full"
                       style={{ backgroundColor: color.hex }}
                     />
-                    <div className="p-2 bg-[#0f0f0f] flex items-center justify-between">
+                    <div className="p-2 bg-[var(--color-gray-0)] flex items-center justify-between">
                       <div className="space-y-0.5">
                         <code className="text-xs font-mono block">{color.hex}</code>
-                        <code className="text-xs font-mono text-white/60 block">{color.rgb}</code>
+                        <code className="text-xs font-mono text-[var(--color-gray-500)] block">{color.rgb}</code>
                       </div>
-                      <Button
+                      <button
+                        type="button"
                         onClick={() => copyColor(color.hex, index)}
-                        variant="ghost"
-                        size="sm"
-                        className="flex items-center gap-1 h-auto px-2 py-1 text-xs"
+                        className="w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+                        title={copiedIndex === index ? "Copied!" : "Copy to clipboard"}
                       >
                         {copiedIndex === index ? (
-                          <>
-                            <MdCheck className="w-3.5 h-3.5 text-blue-400" />
-                            <span className="text-blue-400">Copied</span>
-                          </>
+                          <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
                         ) : (
-                          <>
-                            <MdContentCopy className="w-3.5 h-3.5" />
-                            <span>Copy</span>
-                          </>
+                          <MdContentCopy style={{ width: 16, height: 16 }} />
                         )}
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -311,7 +305,7 @@ export function ImageColorPickerTool() {
           )}
 
           {/* Reset Button */}
-          <Button onClick={handleReset} variant="secondary" className="w-full">
+          <Button onClick={handleReset} className="w-full">
             Reset
           </Button>
         </div>

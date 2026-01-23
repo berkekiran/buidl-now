@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MdClose } from "react-icons/md";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -206,26 +207,26 @@ export function ProxyImplementationCheckerTool() {
         />
 
         <div className="flex gap-2">
-          <Button onClick={checkProxy} className="flex-1" disabled={loading}>
+          <Button onClick={checkProxy} variant="primary" className="flex-1" disabled={loading}>
             {loading ? "Checking..." : "Check Proxy"}
           </Button>
-          <Button onClick={handleReset} variant="secondary">
+          <Button onClick={handleReset}>
             Reset
           </Button>
         </div>
       </div>
 
       {error && (
-        <div className="p-3 rounded border bg-red-500/10 border-red-500/30 text-red-400">
-          <div className="text-sm font-medium">✗ {error}</div>
+        <div className="p-3 rounded-[12px] border bg-[var(--color-red-50)] border-red-500/30 text-[var(--color-red-500)]">
+          <div className="text-sm font-medium flex items-center gap-1"><MdClose className="inline" /> {error}</div>
         </div>
       )}
 
       {/* Output Section */}
       {proxyInfo && (
         <>
-          <div className="p-4 rounded border border-green-500/30 bg-green-500/10">
-            <Label className="mb-2 block text-sm font-semibold text-green-400">
+          <div className="p-4 rounded-[12px] border border-green-500/30 bg-[var(--color-green-50)]">
+            <Label className="mb-2 block text-sm font-semibold text-[var(--color-green-500)]">
               Proxy Type Detected
             </Label>
             <div className="text-sm font-mono">{proxyInfo.proxyType}</div>
@@ -236,7 +237,7 @@ export function ProxyImplementationCheckerTool() {
             value={proxyInfo.implementationAddress}
             readOnly
             showCopy
-            className="font-mono text-sm bg-[#0f0f0f]"
+            className="font-mono text-sm bg-[var(--color-gray-0)]"
           />
 
           {proxyInfo.adminAddress && (
@@ -245,11 +246,11 @@ export function ProxyImplementationCheckerTool() {
               value={proxyInfo.adminAddress}
               readOnly
               showCopy
-              className="font-mono text-sm bg-[#0f0f0f]"
+              className="font-mono text-sm bg-[var(--color-gray-0)]"
             />
           )}
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-3 block text-sm">Storage Slots</Label>
             <div className="space-y-2 text-sm font-mono">
               <div>
@@ -271,7 +272,7 @@ export function ProxyImplementationCheckerTool() {
             </div>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-3 block text-sm">Explorer Links</Label>
             <div className="space-y-2">
               <a
@@ -303,7 +304,7 @@ export function ProxyImplementationCheckerTool() {
             </div>
           </div>
 
-          <div className="p-4 rounded border border-border bg-[#0f0f0f]">
+          <div className="p-4 rounded-[12px] border border-border bg-[var(--color-gray-0)]">
             <Label className="mb-2 block text-sm">Read Implementation with viem</Label>
             <Code language="javascript">
 {`import { createPublicClient, http } from 'viem';
