@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
 import { MdCheck, MdClose } from "react-icons/md";
 
-export function JsonValidatorTool() {
+export function JsonFormatterTool() {
   const [input, setInput] = useState("");
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [error, setError] = useState("");
@@ -116,12 +116,12 @@ export function JsonValidatorTool() {
   );
 }
 
-export const jsonValidatorConfig: ToolConfig = {
-  id: "json-validator",
+export const jsonFormatterConfig: ToolConfig = {
+  id: "json-formatter",
   name: "JSON Formatter",
   description: "Format, minify, and validate JSON data",
   category: "formatters",
-  component: JsonValidatorTool,
+  component: JsonFormatterTool,
   seo: {
     keywords: [
       "json formatter",

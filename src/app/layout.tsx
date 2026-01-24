@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Albert_Sans } from "next/font/google";
+import { Albert_Sans, Turret_Road } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -11,6 +11,13 @@ const albertSans = Albert_Sans({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-albert-sans",
+});
+
+const turretRoad = Turret_Road({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-turret",
+  weight: ["400", "500", "700"],
 });
 
 export const viewport: Viewport = {
@@ -101,7 +108,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${albertSans.variable} antialiased overflow-x-hidden`}>
+      <body className={`${albertSans.variable} ${turretRoad.variable} antialiased overflow-x-hidden`}>
         <GeometricBackground />
         <div className="relative z-10 min-h-screen w-full">
           <Header />

@@ -206,12 +206,12 @@ export const tools: Tool[] = [
     icon: MdCompare,
   },
   {
-    id: "text-statistics",
+    id: "text-analyzer",
     name: "Text Analyzer",
     description: "Comprehensive text analysis with word count, character count, reading time, and advanced statistics",
     category: "text",
     subcategory: "analysis",
-    path: "/tools/text-statistics",
+    path: "/tools/text-analyzer",
     icon: MdAnalytics,
   },
   {
@@ -363,12 +363,12 @@ export const tools: Tool[] = [
     icon: MdCheckCircle,
   },
   {
-    id: "json-validator",
+    id: "json-formatter",
     name: "JSON Formatter",
     description: "Format, minify, and validate JSON data",
     category: "formatters",
     subcategory: "code-formatters",
-    path: "/tools/json-validator",
+    path: "/tools/json-formatter",
     icon: MdDataObject,
   },
 
