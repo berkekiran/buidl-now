@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ToolConfig } from "@/types/tool";
 
-export function TextStatisticsTool() {
+export function TextAnalyzerTool() {
   const [text, setText] = useState("");
   const [stats, setStats] = useState({
     characters: 0,
@@ -284,12 +284,12 @@ export function TextStatisticsTool() {
   );
 }
 
-export const textStatisticsConfig: ToolConfig = {
-  id: "text-statistics",
+export const textAnalyzerConfig: ToolConfig = {
+  id: "text-analyzer",
   name: "Text Analyzer",
   description: "Comprehensive text analysis with word count, character count, reading time, and advanced statistics",
   category: "text",
-  component: TextStatisticsTool,
+  component: TextAnalyzerTool,
   seo: {
     keywords: [
       "text analyzer",

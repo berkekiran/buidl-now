@@ -265,7 +265,7 @@ export default function ToolPage({
           >
             <div className="flex items-center gap-3 px-4 py-3 rounded-[16px] bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] shadow-lg shadow-black/5 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-2 group-hover:translate-x-0">
               <div className="text-right overflow-hidden max-w-48">
-                <div className="text-xs text-muted-foreground mb-0.5">Previous</div>
+                <div className="text-xs text-muted-foreground mb-0.5" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>Previous tool</div>
                 <div className="text-sm font-medium truncate">{prevTool.name}</div>
               </div>
             </div>
@@ -286,7 +286,7 @@ export default function ToolPage({
             </div>
             <div className="flex items-center gap-3 px-4 py-3 rounded-[16px] bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] shadow-lg shadow-black/5 opacity-0 group-hover:opacity-100 transition-all duration-200 -translate-x-2 group-hover:translate-x-0">
               <div className="text-left overflow-hidden max-w-48">
-                <div className="text-xs text-muted-foreground mb-0.5">Next</div>
+                <div className="text-xs text-muted-foreground mb-0.5" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>Next tool</div>
                 <div className="text-sm font-medium truncate">{nextTool.name}</div>
               </div>
             </div>

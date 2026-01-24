@@ -7,7 +7,7 @@ export function Footer() {
     <>
       {/* Mobile Footer - Centered */}
       <div className="global-footer lg:hidden fixed bottom-6 left-0 right-0 flex flex-col items-center gap-4 z-50">
-        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+        <div className="flex items-center gap-3 text-sm text-muted-foreground font-semibold" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
           <span>
             Built by{" "}
             <a
@@ -35,7 +35,7 @@ export function Footer() {
 
       {/* Desktop Footer - Left: Built by, Right: GitHub */}
       <div className="hidden lg:block fixed bottom-10 left-10 z-50">
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-muted-foreground font-semibold" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
           Built by{" "}
           <a
             href="https://berkekiran.com"
@@ -53,7 +53,8 @@ export function Footer() {
           href="https://github.com/berkekiran/buidl-now"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1 text-sm text-foreground hover:opacity-50 transition-opacity"
+          className="flex items-center gap-1 text-sm text-foreground hover:opacity-50 transition-opacity font-semibold"
+          style={{ fontFamily: 'var(--font-turret), sans-serif' }}
           aria-label="GitHub Repository"
         >
           <FaGithub className="w-4 h-4" />

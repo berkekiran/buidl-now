@@ -18,7 +18,6 @@ import {
   WebsiteStructuredData,
   OrganizationStructuredData,
 } from "@/components/structured-data";
-// Image removed - logo now only in header
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -115,6 +114,102 @@ function HomeContent() {
       <OrganizationStructuredData />
 
       <div className="h-screen w-screen overflow-hidden">
+        {/* Left side content - Desktop only */}
+        <div className="hidden xl:flex fixed left-0 top-0 bottom-0 w-[calc(50%-300px)] z-10 justify-center items-center py-32">
+          <div className="max-w-xs px-6 overflow-y-auto max-h-full no-scrollbar">
+            <h1 className="text-4xl 2xl:text-5xl font-normal text-[var(--color-gray-950)] mb-4 tracking-tight leading-tight" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
+              Buidl <span className="italic">Now!</span>
+            </h1>
+            <p className="text-base text-[var(--color-gray-600)] leading-relaxed mb-6">
+              Essential developer tools for builders who ship fast. No ads, no tracking.
+              Just tools that work.
+            </p>
+
+            <p className="text-xs font-medium tracking-[0.2em] text-[var(--color-gray-400)] mb-3 uppercase" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
+              What's inside
+            </p>
+            <div className="space-y-2 text-sm text-[var(--color-gray-600)] mb-6">
+              <p>
+                <span className="font-medium text-[var(--color-gray-900)]">
+                  70+ developer tools
+                </span>{" "}
+                built for speed. ABI encoder/decoder, function selectors, keccak
+                hash, unit converters, and everything else you need when
+                building on Ethereum.
+              </p>
+              <p>
+                <span className="font-medium text-[var(--color-gray-900)]">
+                  Format, convert, generate.
+                </span>{" "}
+                JSON/YAML/XML converters, SQL formatter, hash generators,
+                UUID/nanoid generators, color tools, and more.
+              </p>
+              <p>
+                <span className="font-medium text-[var(--color-gray-900)]">
+                  DeFi & Protocol tools.
+                </span>{" "}
+                Uniswap price calculator, token launch calculator, gas
+                estimator, timelock transaction builder, Safe batch builder.
+              </p>
+            </div>
+
+            <p className="text-xs font-medium tracking-[0.2em] text-[var(--color-gray-400)] mb-3 uppercase" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
+              Why this exists
+            </p>
+            <div className="space-y-2 text-sm text-[var(--color-gray-600)] mb-6">
+              <p>
+                Tired of googling "keccak256 online" every time you need to hash
+                something. Tired of jumping between 10 different sites for basic
+                operations.
+              </p>
+              <p>
+                So we built one place with everything. Fast, keyboard-friendly.
+                Start typing anywhere to search.
+              </p>
+            </div>
+
+            <p className="text-xs font-medium tracking-[0.2em] text-[var(--color-gray-400)] mb-3 uppercase" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
+              Popular tools
+            </p>
+            <div className="space-y-1.5 text-sm">
+              <Link
+                href="/tools/abi-encoder"
+                className="block text-[var(--color-gray-600)] hover:text-[var(--color-gray-900)] transition-colors"
+              >
+                ABI Encoder/Decoder
+              </Link>
+              <Link
+                href="/tools/keccak-hash"
+                className="block text-[var(--color-gray-600)] hover:text-[var(--color-gray-900)] transition-colors"
+              >
+                Keccak-256 Hash
+              </Link>
+              <Link
+                href="/tools/eth-unit-converter"
+                className="block text-[var(--color-gray-600)] hover:text-[var(--color-gray-900)] transition-colors"
+              >
+                ETH Unit Converter
+              </Link>
+              <Link
+                href="/tools/json-formatter"
+                className="block text-[var(--color-gray-600)] hover:text-[var(--color-gray-900)] transition-colors"
+              >
+                JSON Formatter
+              </Link>
+              <Link
+                href="/tools/function-selector"
+                className="block text-[var(--color-gray-600)] hover:text-[var(--color-gray-900)] transition-colors"
+              >
+                Function Selector
+              </Link>
+            </div>
+
+            <p className="mt-6 text-xs text-[var(--color-gray-400)]" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
+              100% free and open source.
+            </p>
+          </div>
+        </div>
+
         {/* Search Bar - Exactly centered */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] md:w-full max-w-xl px-4 z-50">
           <MdSearch className="absolute left-7 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
@@ -136,7 +231,6 @@ function HomeContent() {
             {searchQuery && (
               <Button
                 onClick={() => setSearchQuery("")}
-               
                 size="sm"
                 className="text-muted-foreground hover:text-foreground h-auto p-1 min-h-0"
               >
@@ -206,18 +300,14 @@ function HomeContent() {
                 icon: MdOutlineCurrencyExchange,
               },
               {
-                tool: tools.find((t) => t.id === "json-validator"),
+                tool: tools.find((t) => t.id === "json-formatter"),
                 icon: MdCode,
               },
             ]
               .filter((item) => item.tool)
               .map(({ tool, icon: Icon }) => (
                 <Link key={tool!.id} href={tool!.path}>
-                  <Button
-                   
-                    size="sm"
-                    className="text-xs gap-1.5"
-                  >
+                  <Button size="sm" className="text-xs gap-1.5">
                     <Icon className="w-3.5 h-3.5" />
                     {tool!.name}
                   </Button>

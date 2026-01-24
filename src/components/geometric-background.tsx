@@ -17,7 +17,7 @@ export function GeometricBackground() {
         <circle
           cx="720"
           cy="450"
-          r="320"
+          r="160"
           fill="none"
           stroke="var(--color-gray-200)"
           strokeWidth="1"
@@ -25,7 +25,7 @@ export function GeometricBackground() {
         <circle
           cx="720"
           cy="450"
-          r="180"
+          r="90"
           fill="none"
           stroke="var(--color-gray-200)"
           strokeWidth="1"
