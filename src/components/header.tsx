@@ -30,9 +30,9 @@ export function Header() {
           className="w-8 h-8"
           style={{ filter: isDark ? "invert(1)" : "none" }}
         />
-        <div className="flex flex-row items-center gap-1">
-          <span className="text-md font-medium">Buidl</span>
-          <span className="text-md font-normal italic">Now!</span>
+        <div className="flex flex-row items-center gap-1 font-semibold" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
+          <span className="text-md">Buidl</span>
+          <span className="text-md italic">Now!</span>
         </div>
       </Link>
     </div>

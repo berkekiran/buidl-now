@@ -14,7 +14,7 @@ import { uuidGeneratorConfig } from "./uuid-generator";
 import { passwordGeneratorConfig } from "./password-generator";
 import { loremIpsumConfig } from "./lorem-ipsum";
 import { regexTesterConfig } from "./regex-tester";
-import { jsonValidatorConfig } from "./json-validator";
+import { jsonFormatterConfig } from "./json-formatter";
 import { numberBaseConfig } from "./number-base";
 import { jsonYamlConfig } from "./json-yaml";
 import { jsonToTableConfig } from "./json-to-table";
@@ -56,7 +56,7 @@ import { contractStorageSlotConfig } from "./contract-storage-slot";
 import { eip712HasherConfig } from "./eip712-hasher";
 import { ecdsaSignatureConfig } from "./ecdsa-signature";
 import { lineSorterConfig } from "./line-sorter";
-import { textStatisticsConfig } from "./text-statistics";
+import { textAnalyzerConfig } from "./text-analyzer";
 import { uniswapPriceCalculatorConfig } from "./uniswap-price-calculator";
 import { tokenLaunchCalculatorConfig } from "./token-launch-calculator";
 import { timelockTransactionBuilderConfig } from "./timelock-transaction-builder";
@@ -93,7 +93,7 @@ export const toolRegistry: Record<string, ToolConfig> = {
   "password-generator": passwordGeneratorConfig,
   "lorem-ipsum": loremIpsumConfig,
   "regex-tester": regexTesterConfig,
-  "json-validator": jsonValidatorConfig,
+  "json-formatter": jsonFormatterConfig,
   "number-base": numberBaseConfig,
   "json-yaml": jsonYamlConfig,
   "json-to-table": jsonToTableConfig,
@@ -135,7 +135,7 @@ export const toolRegistry: Record<string, ToolConfig> = {
   "eip712-hasher": eip712HasherConfig,
   "ecdsa-signature": ecdsaSignatureConfig,
   "line-sorter": lineSorterConfig,
-  "text-statistics": textStatisticsConfig,
+  "text-analyzer": textAnalyzerConfig,
   "uniswap-price-calculator": uniswapPriceCalculatorConfig,
   "token-launch-calculator": tokenLaunchCalculatorConfig,
   "timelock-transaction-builder": timelockTransactionBuilderConfig,
@@ -181,7 +181,7 @@ export { UuidGeneratorTool } from "./uuid-generator";
 export { PasswordGeneratorTool } from "./password-generator";
 export { LoremIpsumTool } from "./lorem-ipsum";
 export { RegexTesterTool } from "./regex-tester";
-export { JsonValidatorTool } from "./json-validator";
+export { JsonFormatterTool } from "./json-formatter";
 export { NumberBaseTool } from "./number-base";
 export { JsonYamlTool } from "./json-yaml";
 export { JsonToTableTool } from "./json-to-table";
@@ -223,7 +223,7 @@ export { ContractStorageSlotTool } from "./contract-storage-slot";
 export { Eip712HasherTool } from "./eip712-hasher";
 export { EcdsaSignatureTool } from "./ecdsa-signature";
 export { LineSorterTool } from "./line-sorter";
-export { TextStatisticsTool } from "./text-statistics";
+export { TextAnalyzerTool } from "./text-analyzer";
 export { UniswapPriceCalculatorTool } from "./uniswap-price-calculator";
 export { TokenLaunchCalculatorTool } from "./token-launch-calculator";
 export { TimelockTransactionBuilderTool } from "./timelock-transaction-builder";
