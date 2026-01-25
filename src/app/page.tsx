@@ -1,6 +1,7 @@
 "use client";
 
 import { tools } from "@/lib/tools-list";
+import { toolCategories } from "@/types/tools";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,16 +14,21 @@ import {
   MdAccessTime,
   MdOutlineCurrencyExchange,
   MdCode,
+  MdExpandMore,
 } from "react-icons/md";
 import {
   WebsiteStructuredData,
   OrganizationStructuredData,
 } from "@/components/structured-data";
+import { motion, AnimatePresence } from "framer-motion";
 
 function HomeContent() {
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
+    new Set()
+  );
   const selectedItemRef = useRef<HTMLAnchorElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -108,6 +114,24 @@ function HomeContent() {
     setSelectedIndex(0);
   };
 
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(categoryId)) {
+        newSet.delete(categoryId);
+      } else {
+        newSet.add(categoryId);
+      }
+      return newSet;
+    });
+  };
+
+  // Group tools by category
+  const toolsByCategory = toolCategories.map((category) => ({
+    ...category,
+    tools: tools.filter((tool) => tool.category === category.id),
+  }));
+
   return (
     <>
       <WebsiteStructuredData />
@@ -115,8 +139,11 @@ function HomeContent() {
 
       <div className="h-screen w-screen overflow-hidden">
         {/* Left side content - Desktop only */}
-        <div className="hidden xl:flex fixed left-0 top-0 bottom-0 w-[calc(50%-300px)] z-10 justify-center items-center py-32">
-          <div className="max-w-xs px-6 overflow-y-auto max-h-full no-scrollbar">
+        <div className="hidden xl:flex fixed left-0 top-0 bottom-0 w-[calc(50%-300px)] z-10 justify-center items-center py-32 overflow-hidden">
+          <div className="relative max-h-full flex flex-col">
+            {/* Bottom gradient fade */}
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[var(--color-gray-50)] to-transparent pointer-events-none z-20" />
+            <div className="max-w-xs px-6 overflow-y-auto no-scrollbar pb-20">
             <h1 className="text-4xl 2xl:text-5xl font-normal text-[var(--color-gray-950)] mb-4 tracking-tight leading-tight" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
               Buidl <span className="italic">Now!</span>
             </h1>
@@ -131,7 +158,7 @@ function HomeContent() {
             <div className="space-y-2 text-sm text-[var(--color-gray-600)] mb-6">
               <p>
                 <span className="font-medium text-[var(--color-gray-900)]">
-                  70+ developer tools
+                  100+ developer tools
                 </span>{" "}
                 built for speed. ABI encoder/decoder, function selectors, keccak
                 hash, unit converters, and everything else you need when
@@ -207,6 +234,7 @@ function HomeContent() {
             <p className="mt-6 text-xs text-[var(--color-gray-400)]" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
               100% free and open source.
             </p>
+          </div>
           </div>
         </div>
 
@@ -313,6 +341,74 @@ function HomeContent() {
                   </Button>
                 </Link>
               ))}
+          </div>
+        </div>
+
+        {/* Right side - All Tools List (Desktop only) */}
+        <div className="hidden xl:flex fixed right-0 top-0 bottom-0 w-[calc(50%-300px)] z-10 justify-center items-center py-32 overflow-hidden">
+          <div className="relative max-h-full flex flex-col w-72">
+            {/* Bottom gradient fade */}
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[var(--color-gray-50)] to-transparent pointer-events-none z-20" />
+            <div className="px-6 overflow-y-auto no-scrollbar relative pb-20">
+            <div className="sticky top-0 z-10 bg-[var(--color-gray-50)] pt-2 pb-4 -mx-6 px-6">
+              <p
+                className="text-xs font-medium tracking-[0.2em] text-[var(--color-gray-400)] uppercase"
+                style={{ fontFamily: "var(--font-turret), sans-serif" }}
+              >
+                All Tools ({tools.length})
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {toolsByCategory.map((category) => (
+                <div key={category.id} id={`category-${category.id}`}>
+                  <button
+                    onClick={() => toggleCategory(category.id)}
+                    className="flex items-center gap-2 w-full text-left mb-2 group cursor-pointer"
+                  >
+                    <category.icon className="w-4 h-4 text-[var(--color-gray-500)]" />
+                    <span className="text-sm font-medium text-[var(--color-gray-900)]">
+                      {category.name}
+                    </span>
+                    <span className="text-xs text-[var(--color-gray-400)]">
+                      ({category.tools.length})
+                    </span>
+                    <motion.span
+                      className="ml-auto text-[var(--color-gray-400)] group-hover:text-[var(--color-gray-600)] transition-colors"
+                      animate={{ rotate: expandedCategories.has(category.id) ? 180 : 0 }}
+                      transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                    >
+                      <MdExpandMore className="w-4 h-4" />
+                    </motion.span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {expandedCategories.has(category.id) && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="space-y-0.5 ml-6 pb-2">
+                          {category.tools.map((tool) => (
+                            <Link
+                              key={tool.id}
+                              href={tool.path}
+                              className="block w-fit py-1.5 px-2 -mx-2 rounded-lg text-sm text-[var(--color-gray-600)] bg-transparent hover:text-[var(--color-gray-900)] hover:bg-[var(--color-gray-200)] dark:hover:bg-[var(--color-gray-800)]"
+                            >
+                              {tool.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+            </div>
+          </div>
           </div>
         </div>
       </div>

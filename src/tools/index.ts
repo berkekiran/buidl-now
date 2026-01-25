@@ -76,6 +76,39 @@ import { bytecodeDifferConfig } from "./bytecode-differ";
 import { accessControlVisualizerConfig } from "./access-control-visualizer";
 import { delegatecallAnalyzerConfig } from "./delegatecall-analyzer";
 import { jsonToonConfig } from "./json-toon";
+// New tools
+import { markdownHtmlConfig } from "./markdown-html";
+import { tomlJsonConfig } from "./toml-json";
+import { cronParserConfig } from "./cron-parser";
+import { protobufJsonConfig } from "./protobuf-json";
+import { slugGeneratorConfig } from "./slug-generator";
+import { stringTruncatorConfig } from "./string-truncator";
+import { wordFrequencyConfig } from "./word-frequency";
+import { asciiArtConfig } from "./ascii-art";
+import { punycodeConfig } from "./punycode";
+import { unicodeEscapeConfig } from "./unicode-escape";
+import { morseCodeConfig } from "./morse-code";
+import { jsFormatterConfig } from "./js-formatter";
+import { htmlFormatterConfig } from "./html-formatter";
+import { graphqlFormatterConfig } from "./graphql-formatter";
+import { markdownPreviewConfig } from "./markdown-preview";
+import { cronGeneratorConfig } from "./cron-generator";
+import { gitignoreGeneratorConfig } from "./gitignore-generator";
+import { readmeGeneratorConfig } from "./readme-generator";
+import { licenseGeneratorConfig } from "./license-generator";
+import { regexGeneratorConfig } from "./regex-generator";
+import { boxShadowGeneratorConfig } from "./box-shadow-generator";
+import { borderRadiusGeneratorConfig } from "./border-radius-generator";
+import { faviconGeneratorConfig } from "./favicon-generator";
+import { jsonPathConfig } from "./json-path";
+import { diffViewerConfig } from "./diff-viewer";
+import { chmodCalculatorConfig } from "./chmod-calculator";
+import { httpStatusConfig } from "./http-status";
+import { asciiTableConfig } from "./ascii-table";
+import { ipCalculatorConfig } from "./ip-calculator";
+import { cidrCalculatorConfig } from "./cidr-calculator";
+import { userAgentParserConfig } from "./user-agent-parser";
+import { crontabGuruConfig } from "./crontab-guru";
 
 export const toolRegistry: Record<string, ToolConfig> = {
   "function-selector": functionSelectorConfig,
@@ -155,6 +188,39 @@ export const toolRegistry: Record<string, ToolConfig> = {
   "access-control-visualizer": accessControlVisualizerConfig,
   "delegatecall-analyzer": delegatecallAnalyzerConfig,
   "json-toon": jsonToonConfig,
+  // New tools
+  "markdown-html": markdownHtmlConfig,
+  "toml-json": tomlJsonConfig,
+  "cron-parser": cronParserConfig,
+  "protobuf-json": protobufJsonConfig,
+  "slug-generator": slugGeneratorConfig,
+  "string-truncator": stringTruncatorConfig,
+  "word-frequency": wordFrequencyConfig,
+  "ascii-art": asciiArtConfig,
+  "punycode": punycodeConfig,
+  "unicode-escape": unicodeEscapeConfig,
+  "morse-code": morseCodeConfig,
+  "js-formatter": jsFormatterConfig,
+  "html-formatter": htmlFormatterConfig,
+  "graphql-formatter": graphqlFormatterConfig,
+  "markdown-preview": markdownPreviewConfig,
+  "cron-generator": cronGeneratorConfig,
+  "gitignore-generator": gitignoreGeneratorConfig,
+  "readme-generator": readmeGeneratorConfig,
+  "license-generator": licenseGeneratorConfig,
+  "regex-generator": regexGeneratorConfig,
+  "box-shadow-generator": boxShadowGeneratorConfig,
+  "border-radius-generator": borderRadiusGeneratorConfig,
+  "favicon-generator": faviconGeneratorConfig,
+  "json-path": jsonPathConfig,
+  "diff-viewer": diffViewerConfig,
+  "chmod-calculator": chmodCalculatorConfig,
+  "http-status": httpStatusConfig,
+  "ascii-table": asciiTableConfig,
+  "ip-calculator": ipCalculatorConfig,
+  "cidr-calculator": cidrCalculatorConfig,
+  "user-agent-parser": userAgentParserConfig,
+  "crontab-guru": crontabGuruConfig,
 };
 
 export function getToolById(id: string): ToolConfig | undefined {
@@ -243,3 +309,36 @@ export { BytecodeDifferTool } from "./bytecode-differ";
 export { AccessControlVisualizerTool } from "./access-control-visualizer";
 export { DelegatecallAnalyzerTool } from "./delegatecall-analyzer";
 export { JsonToonTool } from "./json-toon";
+// New tools
+export { MarkdownHtmlTool } from "./markdown-html";
+export { TomlJsonTool } from "./toml-json";
+export { CronParserTool } from "./cron-parser";
+export { ProtobufJsonTool } from "./protobuf-json";
+export { SlugGeneratorTool } from "./slug-generator";
+export { StringTruncatorTool } from "./string-truncator";
+export { WordFrequencyTool } from "./word-frequency";
+export { AsciiArtTool } from "./ascii-art";
+export { PunycodeTool } from "./punycode";
+export { UnicodeEscapeTool } from "./unicode-escape";
+export { MorseCodeTool } from "./morse-code";
+export { JsFormatterTool } from "./js-formatter";
+export { HtmlFormatterTool } from "./html-formatter";
+export { GraphqlFormatterTool } from "./graphql-formatter";
+export { MarkdownPreviewTool } from "./markdown-preview";
+export { CronGeneratorTool } from "./cron-generator";
+export { GitignoreGeneratorTool } from "./gitignore-generator";
+export { ReadmeGeneratorTool } from "./readme-generator";
+export { LicenseGeneratorTool } from "./license-generator";
+export { RegexGeneratorTool } from "./regex-generator";
+export { BoxShadowGeneratorTool } from "./box-shadow-generator";
+export { BorderRadiusGeneratorTool } from "./border-radius-generator";
+export { FaviconGeneratorTool } from "./favicon-generator";
+export { JsonPathTool } from "./json-path";
+export { DiffViewerTool } from "./diff-viewer";
+export { ChmodCalculatorTool } from "./chmod-calculator";
+export { HttpStatusTool } from "./http-status";
+export { AsciiTableTool } from "./ascii-table";
+export { IpCalculatorTool } from "./ip-calculator";
+export { CidrCalculatorTool } from "./cidr-calculator";
+export { UserAgentParserTool } from "./user-agent-parser";
+export { CrontabGuruTool } from "./crontab-guru";

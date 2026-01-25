@@ -1,5 +1,11 @@
 import '@testing-library/jest-dom'
-import { vi } from 'vitest'
+import { vi, afterEach } from 'vitest'
+import { cleanup } from '@testing-library/react'
+
+// Cleanup after each test to ensure DOM is cleared
+afterEach(() => {
+  cleanup()
+})
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {

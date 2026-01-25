@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export function Header() {
+  const pathname = usePathname();
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -18,6 +20,11 @@ export function Header() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Hide on /tools page - has its own header
+  if (pathname === "/tools") {
+    return null;
+  }
 
   return (
     <div className="global-header fixed top-0 left-0 p-6 md:p-10 z-50">
