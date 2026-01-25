@@ -1,12 +1,18 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaGithub } from "react-icons/fa";
+import { MdApps } from "react-icons/md";
 
 export function Footer() {
+  const pathname = usePathname();
+  const isToolsPage = pathname === "/tools";
+
   return (
     <>
       {/* Mobile Footer - Centered */}
-      <div className="global-footer lg:hidden fixed bottom-6 left-0 right-0 flex flex-col items-center gap-4 z-50">
+      <div className={`global-footer lg:hidden ${isToolsPage ? "relative mt-4 pb-4" : "fixed bottom-6"} left-0 right-0 flex flex-col items-center gap-4 z-50`}>
         <div className="flex items-center gap-3 text-sm text-muted-foreground font-semibold" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
           <span>
             Built by{" "}
@@ -19,6 +25,18 @@ export function Footer() {
               Berke
             </a>
           </span>
+          {!isToolsPage && (
+            <>
+              <span>·</span>
+              <Link
+                href="/tools"
+                className="flex items-center gap-1 text-foreground hover:opacity-50 transition-opacity"
+              >
+                <MdApps className="w-4 h-4" />
+                <span>All Tools</span>
+              </Link>
+            </>
+          )}
           <span>·</span>
           <a
             href="https://github.com/berkekiran/buidl-now"

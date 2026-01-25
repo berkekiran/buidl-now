@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { FiSun, FiMoon } from "react-icons/fi";
 
 export function ThemeToggle() {
+  const pathname = usePathname();
+  const isToolsPage = pathname === "/tools";
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -34,6 +37,11 @@ export function ThemeToggle() {
       localStorage.setItem("theme", "dark");
     }
   };
+
+  // Hide on /tools page - it's shown in header there
+  if (isToolsPage) {
+    return null;
+  }
 
   return (
     <button
