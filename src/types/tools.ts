@@ -5,7 +5,8 @@ import {
   MdKey, MdLocalGasStation, MdToken, MdArticle, MdTag,
   MdFormatSize, MdCompareArrows, MdAnalytics, MdReorder,
   MdLock, MdFingerprint, MdTextFormat, MdPalette, MdSchedule, MdNumbers, MdDataObject,
-  MdAccountBalance, MdBallot, MdBugReport, MdSecurity
+  MdAccountBalance, MdBallot, MdBugReport, MdSecurity,
+  MdBuild, MdHttp, MdRouter, MdDevices, MdTerminal, MdMenuBook
 } from "react-icons/md";
 
 export type ToolCategory =
@@ -14,7 +15,8 @@ export type ToolCategory =
   | "encoders-decoders"
   | "formatters"
   | "generators"
-  | "web3";
+  | "web3"
+  | "utilities";
 
 export type ToolSubcategory = string;
 
@@ -79,6 +81,14 @@ export const toolSubcategories: Subcategory[] = [
   { id: "number-converters", name: "Numbers", parent: "converters", icon: MdNumbers },
   { id: "data-converters", name: "Data Formats", parent: "converters", icon: MdDataObject },
   { id: "color-converters", name: "Colors", parent: "converters", icon: MdPalette },
+
+  // Utilities subcategories
+  { id: "data-tools", name: "Data Tools", parent: "utilities", icon: MdDataObject },
+  { id: "unix-tools", name: "Unix/Linux", parent: "utilities", icon: MdTerminal },
+  { id: "network-tools", name: "Network", parent: "utilities", icon: MdRouter },
+  { id: "web-tools", name: "Web", parent: "utilities", icon: MdHttp },
+  { id: "reference", name: "Reference", parent: "utilities", icon: MdMenuBook },
+  { id: "comparison", name: "Comparison", parent: "utilities", icon: MdCompareArrows },
 ];
 
 export const toolCategories: { id: ToolCategory; name: string; description: string; icon: IconType }[] = [
@@ -117,5 +127,11 @@ export const toolCategories: { id: ToolCategory; name: string; description: stri
     name: "Generators",
     description: "Generate various types of data",
     icon: MdAutorenew,
+  },
+  {
+    id: "utilities",
+    name: "Utilities",
+    description: "Developer utilities and reference tools",
+    icon: MdBuild,
   },
 ];
