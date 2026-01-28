@@ -396,7 +396,7 @@ function HomeContent() {
                             <Link
                               key={tool.id}
                               href={tool.path}
-                              className="block w-fit py-1.5 px-2 -mx-2 rounded-lg text-sm text-[var(--color-gray-600)] bg-transparent hover:text-[var(--color-gray-900)] hover:bg-[var(--color-gray-200)] dark:hover:bg-[var(--color-gray-800)]"
+                              className="block w-fit py-1.5 px-2 -mx-2 rounded-lg text-sm text-[var(--color-gray-600)] bg-transparent hover:text-[var(--color-gray-900)] hover:bg-[var(--color-gray-200)]"
                             >
                               {tool.name}
                             </Link>
