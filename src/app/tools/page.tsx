@@ -18,15 +18,21 @@ export default function AllToolsPage() {
   );
   const [isDark, setIsDark] = useState(false);
 
-  // Theme toggle
+  // Theme toggle and hide global header
   useEffect(() => {
+    // Add class to hide global header on mobile
+    document.body.classList.add('tool-page');
+
     const checkDarkMode = () => {
       setIsDark(document.documentElement.classList.contains("dark"));
     };
     checkDarkMode();
     const observer = new MutationObserver(checkDarkMode);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
+    return () => {
+      document.body.classList.remove('tool-page');
+      observer.disconnect();
+    };
   }, []);
 
   const toggleTheme = () => {

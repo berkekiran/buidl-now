@@ -7,7 +7,7 @@ import { MdApps } from "react-icons/md";
 
 export function Footer() {
   const pathname = usePathname();
-  const isToolsPage = pathname === "/tools";
+  const isToolsPage = pathname?.startsWith("/tools");
 
   return (
     <>
@@ -25,7 +25,7 @@ export function Footer() {
               Berke
             </a>
           </span>
-          {!isToolsPage && (
+          {pathname === "/tools" ? null : (
             <>
               <span>·</span>
               <Link
