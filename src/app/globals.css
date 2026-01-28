@@ -187,10 +187,9 @@ html.dark {
     --color-red-200: #991b1b !important;
 }
 
-/* Hide global header/footer/theme-toggle on mobile for tool pages */
+/* Hide global header/theme-toggle on mobile for tool pages (keep footer visible) */
 @media (max-width: 1023px) {
     body.tool-page .global-header,
-    body.tool-page .global-footer,
     body.tool-page .global-theme-toggle {
         display: none !important;
     }
@@ -206,9 +205,40 @@ body h6 {
     font-family: var(--font-turret), sans-serif;
 }
 
-/* Thin scrollbar */
+/* Thin scrollbar with theme-aware colors */
 * {
     scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+html.dark * {
+    scrollbar-color: #3d3d3d transparent;
+}
+
+html.dark *::-webkit-scrollbar-thumb {
+    background: #3d3d3d;
+}
+
+html.dark *::-webkit-scrollbar-thumb:hover {
+    background: #5c5c5c;
 }
 
 /* Hide scrollbar but allow scroll */

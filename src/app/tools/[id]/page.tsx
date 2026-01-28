@@ -10,7 +10,6 @@ import { ToolStructuredData } from "@/components/structured-data";
 import { Code } from "@/components/ui/code";
 import { MdCode, MdClose, MdArrowBack, MdOpenInNew, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { FiInfo, FiSun, FiMoon } from "react-icons/fi";
-import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -50,6 +49,16 @@ export default function ToolPage({
       observer.disconnect();
     };
   }, []);
+
+  const toggleTheme = () => {
+    if (isDark) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -308,10 +317,10 @@ export default function ToolPage({
       {/* Desktop: Portal to body */}
       {mounted && createPortal(desktopModal, document.body)}
 
-      {/* Mobile: Normal Page Layout with own header/footer */}
-      <div className="lg:hidden min-h-screen flex flex-col">
-        {/* Mobile Header */}
-        <div className="flex items-center justify-between p-4">
+      {/* Mobile: Page Layout */}
+      <div className="lg:hidden pb-4">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6">
           <Link href="/" className="flex items-center gap-2 text-foreground hover:opacity-50 transition-opacity">
             <Image
               src="/buidl-now-logo.svg"
@@ -319,37 +328,24 @@ export default function ToolPage({
               width={32}
               height={32}
               className="w-8 h-8"
-              style={{ filter: 'var(--logo-filter)' }}
+              style={{ filter: isDark ? "invert(1)" : "none" }}
             />
-            <div className="flex flex-row items-center gap-1">
-              <span className="text-md font-medium">Buidl</span>
-              <span className="text-md font-normal italic">Now!</span>
+            <div className="flex flex-row items-center gap-1 font-semibold" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
+              <span className="text-md">Buidl</span>
+              <span className="text-md italic">Now!</span>
             </div>
           </Link>
           <button
             type="button"
-            onClick={() => {
-              if (isDark) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-              } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-              }
-            }}
+            onClick={toggleTheme}
             className="w-10 h-10 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center cursor-pointer transition-colors"
           >
-            {isDark ? (
-              <FiSun className="w-5 h-5" />
-            ) : (
-              <FiMoon className="w-5 h-5" />
-            )}
+            {isDark ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 px-4 pb-4">
-          {/* Tool Card */}
+        {/* Tool Card */}
+        <div className="px-4">
           <div className="bg-[var(--color-gray-0)] rounded-[20px] overflow-hidden flex flex-col border border-[var(--color-gray-200)] shadow-lg shadow-black/5 max-w-2xl mx-auto">
             <ToolCardContent />
           </div>
@@ -374,33 +370,6 @@ export default function ToolPage({
                 <MdChevronRight className="w-5 h-5" />
               </button>
             )}
-          </div>
-        </div>
-
-        {/* Mobile Footer */}
-        <div className="py-6 flex flex-col items-center gap-4">
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <span>
-              Built by{" "}
-              <a
-                href="https://berkekiran.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground hover:opacity-50 transition-opacity"
-              >
-                Berke
-              </a>
-            </span>
-            <span>·</span>
-            <a
-              href="https://github.com/berkekiran/buidl-now"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-foreground hover:opacity-50 transition-opacity"
-            >
-              <FaGithub className="w-4 h-4" />
-              <span>GitHub</span>
-            </a>
           </div>
         </div>
       </div>
