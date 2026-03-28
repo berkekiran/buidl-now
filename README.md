@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/favicon.png" alt="Buidl Now" width="200" />
+  <img src="public/buidl-now.svg" alt="Buidl Now" width="80" />
 </p>
 
 Buidl Now! Developer tools for builders who ship fast. A comprehensive suite of developer tools and Web3 utilities.

@@ -14,9 +14,11 @@ export function ThemeToggle() {
       setIsDark(document.documentElement.classList.contains("dark"));
     };
 
-    // Initial check
+    // Initial check - default to dark if no preference stored
     const stored = localStorage.getItem("theme");
-    if (stored === "dark") {
+    if (stored === "light") {
+      document.documentElement.classList.remove("dark");
+    } else {
       document.documentElement.classList.add("dark");
     }
     checkDarkMode();
