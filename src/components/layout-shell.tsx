@@ -13,7 +13,7 @@ interface LayoutShellProps {
 
 export function LayoutShell({ children }: LayoutShellProps) {
   const pathname = usePathname();
-  const isHomePage = pathname === "/";
+  const isHomePage = pathname === "/" || pathname.startsWith("/tools/");
 
   if (isHomePage) {
     return <main className="min-h-screen w-full">{children}</main>;

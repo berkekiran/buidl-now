@@ -47,24 +47,20 @@ export const metadata: Metadata = {
     template: "%s | Buidl Now!",
   },
   description:
-    "Free online developer tools for Web3 builders. Convert, encode, decode, hash, format, and validate data. Essential utilities for blockchain developers, smart contract engineers, and modern web developers.",
+    "Free online developer tools to convert, encode, decode, hash, format, validate, and inspect everyday data.",
   keywords: [
     "developer tools",
-    "web3 tools",
-    "blockchain tools",
-    "ethereum tools",
-    "smart contract tools",
     "online tools",
     "free tools",
     "converter tools",
     "encoder decoder",
     "hash generator",
-    "abi encoder",
-    "keccak hash",
+    "formatter",
+    "validator",
     "base64 converter",
     "hex converter",
     "json formatter",
-    "crypto tools",
+    "developer utility",
   ],
   authors: [{ name: "Berke (pzzaworks)", url: "https://pzza.works" }],
   creator: "Berke (pzzaworks)",
@@ -76,7 +72,7 @@ export const metadata: Metadata = {
     siteName: "Buidl Now!",
     title: "Buidl Now! - Developer Tools for Builders Who Ship Fast",
     description:
-      "Free online developer tools for Web3 builders. Convert, encode, decode, hash, format, and validate data. Essential utilities for blockchain developers.",
+      "Free online developer tools to convert, encode, decode, hash, format, validate, and inspect everyday data.",
     images: [
       {
         url: "/og-image.png",
@@ -90,9 +86,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Buidl Now! - Developer Tools for Builders Who Ship Fast",
     description:
-      "Free online developer tools for Web3 builders. Essential utilities for blockchain developers and smart contract engineers.",
+      "Free online developer tools to convert, encode, decode, hash, format, validate, and inspect everyday data.",
     images: ["/og-image.png"],
-    creator: "@buidlnow",
   },
   robots: {
     index: true,

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { Code } from "@/components/ui/code";
 import {
   OrganizationStructuredData,
@@ -33,6 +34,12 @@ interface HomepageToolOverride {
 interface ToolCategoryOption {
   label: string;
   value: string;
+}
+
+interface HomePageClientProps {
+  includeSiteStructuredData?: boolean;
+  initialSelectedToolId?: string;
+  routeMode?: "home" | "tool";
 }
 
 const monoStyle: CSSProperties = {
@@ -299,11 +306,19 @@ function ActionLink({
   );
 }
 
-export default function Home() {
+export function HomePageClient({
+  includeSiteStructuredData = true,
+  initialSelectedToolId,
+  routeMode = "home",
+}: HomePageClientProps) {
   const shouldReduceMotion = useReducedMotion();
   const categoryDropdownRef = useRef<HTMLDivElement>(null);
   const toolsSectionRef = useRef<HTMLElement>(null);
-  const [selectedToolId, setSelectedToolId] = useState(defaultToolId);
+  const pathname = usePathname();
+  const router = useRouter();
+  const [selectedToolId, setSelectedToolId] = useState(
+    initialSelectedToolId ?? defaultToolId
+  );
   const [selectedToolCategory, setSelectedToolCategory] = useState("all");
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [toolSearchQuery, setToolSearchQuery] = useState("");
@@ -350,6 +365,18 @@ export default function Home() {
   });
 
   useEffect(() => {
+    if (!initialSelectedToolId || !getToolMetaById(initialSelectedToolId)) {
+      return;
+    }
+
+    setSelectedToolId(initialSelectedToolId);
+  }, [initialSelectedToolId]);
+
+  useEffect(() => {
+    if (routeMode !== "home") {
+      return;
+    }
+
     const searchParams = new URLSearchParams(window.location.search);
     const toolId = searchParams.get("tool");
     if (!toolId || !getToolMetaById(toolId)) {
@@ -366,7 +393,7 @@ export default function Home() {
         });
       });
     }
-  }, []);
+  }, [routeMode]);
 
   useEffect(() => {
     function handlePointerDown(event: MouseEvent) {
@@ -398,9 +425,15 @@ export default function Home() {
     setSelectedToolId(toolId);
     setToolSearchQuery("");
 
-    const url = new URL(window.location.href);
-    url.searchParams.set("tool", toolId);
-    window.history.replaceState({}, "", `${url.pathname}${url.search}#tools`);
+    if (routeMode === "tool") {
+      router.replace(`/tools/${encodeURIComponent(toolId)}#tools`, {
+        scroll: false,
+      });
+    } else {
+      const url = new URL(window.location.href);
+      url.searchParams.set("tool", toolId);
+      window.history.replaceState({}, "", `${url.pathname}${url.search}#tools`);
+    }
 
     requestAnimationFrame(() => {
       toolsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -409,8 +442,8 @@ export default function Home() {
 
   return (
     <>
-      <WebsiteStructuredData />
-      <OrganizationStructuredData />
+      {includeSiteStructuredData ? <WebsiteStructuredData /> : null}
+      {includeSiteStructuredData ? <OrganizationStructuredData /> : null}
 
       <div className="min-h-screen w-full bg-[#f5f5f5] text-[#202020]">
         <motion.header
@@ -501,7 +534,14 @@ export default function Home() {
                     type="button"
                     className="inline-flex rounded-none border border-[#202020] bg-[#202020] px-8 py-6 text-[13px] font-medium uppercase tracking-[0.22em] text-[#f0fb29] transition-colors duration-300 hover:bg-[#f0fb29] hover:text-[#202020]"
                     style={monoStyle}
-                    onClick={scrollToTools}
+                    onClick={
+                      routeMode === "tool"
+                        ? () => {
+                            router.replace(`${pathname ?? ""}#tools`, { scroll: false });
+                            scrollToTools();
+                          }
+                        : scrollToTools
+                    }
                   >
                     Open Tools
                   </button>
@@ -993,4 +1033,8 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+export default function Home() {
+  return <HomePageClient />;
 }

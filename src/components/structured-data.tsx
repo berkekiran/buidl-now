@@ -31,7 +31,7 @@ export function ToolStructuredData({ tool }: ToolStructuredDataProps) {
       "@type": "Audience",
       audienceType: "Developers",
     },
-    keywords: [tool.name, tool.category, "developer tool", "web3", "blockchain"].filter(Boolean).join(", "),
+    keywords: [tool.name, tool.category, "developer tool", "online utility", "free tool"].filter(Boolean).join(", "),
   };
 
   return (
@@ -83,10 +83,10 @@ export function OrganizationStructuredData() {
     name: "Buidl Now!",
     url: "https://buidlnow.com",
     logo: "https://buidlnow.com/buildnow.svg",
-    description: "Free online developer tools for Web3 builders",
+    description: "Free online developer tools for builders who ship fast",
     sameAs: [
-      "https://twitter.com/buidlnow",
-      "https://github.com/buidlnow",
+      "https://github.com/pzzaworks",
+      "https://pzza.works",
     ],
   };
 

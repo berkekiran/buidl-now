@@ -29,10 +29,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     tool.category,
     tool.subcategory,
     "developer tools",
-    "web3 tools",
-    "blockchain tools",
     "online tools",
     "free tools",
+    "developer utility",
+    "browser tool",
   ].filter((k): k is string => Boolean(k));
 
   const customKeywords = toolConfig?.seo?.keywords || [];
@@ -66,7 +66,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       images: ["https://buidlnow.com/og-image.png"],
-      creator: "@buidlnow",
     },
     alternates: {
       canonical: url,
