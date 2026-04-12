@@ -70,25 +70,20 @@ const footerActions: SiteAction[] = [
   },
 ];
 
-const viewportOptions = {
-  amount: 0.2,
-  once: true,
-};
-
 const fadeUpVariants = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 32 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.55,
+      duration: 0.74,
       ease: [0.22, 1, 0.36, 1] as const,
     },
   },
 };
 
 const toolSwapTransition = {
-  duration: 0.24,
+  duration: 0.34,
   ease: [0.22, 1, 0.36, 1] as const,
 };
 
@@ -96,8 +91,44 @@ const staggerParentVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.08,
+      staggerChildren: 0.12,
+      delayChildren: 0.12,
+    },
+  },
+};
+
+const headerRevealVariants = {
+  hidden: { opacity: 0, y: -18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.72,
+      ease: [0.16, 1, 0.3, 1] as const,
+      delay: 0.04,
+    },
+  },
+};
+
+const heroWordmarkVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.88,
+      ease: [0.16, 1, 0.3, 1] as const,
+      delay: 0.14,
+    },
+  },
+};
+
+const heroCopyVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.28,
+      staggerChildren: 0.12,
     },
   },
 };
@@ -306,6 +337,77 @@ function ActionLink({
   );
 }
 
+interface RevealSectionProps {
+  children: ReactNode;
+  className: string;
+  pageReady: boolean;
+  shouldReduceMotion: boolean;
+  threshold?: number;
+  variants?: typeof staggerParentVariants | typeof fadeUpVariants;
+}
+
+function RevealSection({
+  children,
+  className,
+  pageReady,
+  shouldReduceMotion,
+  threshold = 0.2,
+  variants,
+}: RevealSectionProps) {
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (shouldReduceMotion) {
+      setIsVisible(true);
+      return;
+    }
+
+    if (!pageReady) {
+      return;
+    }
+
+    const node = sectionRef.current;
+    if (!node) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (!entry?.isIntersecting) {
+          return;
+        }
+
+        setIsVisible(true);
+        observer.disconnect();
+      },
+      {
+        threshold,
+        rootMargin: "0px 0px -10% 0px",
+      },
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [pageReady, shouldReduceMotion, threshold]);
+
+  return (
+    <motion.div
+      ref={sectionRef}
+      className={className}
+      initial={shouldReduceMotion ? false : "hidden"}
+      animate={shouldReduceMotion || isVisible ? "visible" : "hidden"}
+      variants={shouldReduceMotion ? undefined : variants}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export function HomePageClient({
   includeSiteStructuredData = true,
   initialSelectedToolId,
@@ -316,6 +418,7 @@ export function HomePageClient({
   const toolsSectionRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
   const router = useRouter();
+  const [isPageReady, setIsPageReady] = useState(false);
   const [selectedToolId, setSelectedToolId] = useState(
     initialSelectedToolId ?? defaultToolId
   );
@@ -363,6 +466,33 @@ export function HomePageClient({
     const haystack = `${tool.name} ${tool.description}`.toLowerCase();
     return haystack.includes(normalizedToolSearch);
   });
+
+  useEffect(() => {
+    if (shouldReduceMotion) {
+      setIsPageReady(true);
+      return;
+    }
+
+    let firstFrame = 0;
+    let secondFrame = 0;
+    let readyTimeout = 0;
+
+    setIsPageReady(false);
+
+    firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        readyTimeout = window.setTimeout(() => {
+          setIsPageReady(true);
+        }, 60);
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+      window.clearTimeout(readyTimeout);
+    };
+  }, [shouldReduceMotion]);
 
   useEffect(() => {
     if (!initialSelectedToolId || !getToolMetaById(initialSelectedToolId)) {
@@ -446,18 +576,13 @@ export function HomePageClient({
       {includeSiteStructuredData ? <OrganizationStructuredData /> : null}
 
       <div className="min-h-screen w-full bg-[#f5f5f5] text-[#202020]">
-        <motion.header
-          className="sticky top-0 z-50 bg-[#f0fb29]"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: -18 }}
-          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={shouldReduceMotion ? undefined : viewportOptions}
-          transition={
-            shouldReduceMotion
-              ? undefined
-              : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
-          }
-        >
-          <div className="mx-auto flex min-h-[84px] w-full max-w-[1920px] items-center justify-between gap-6 px-6 lg:px-16">
+        <header className="sticky top-0 z-50 bg-[#f0fb29]">
+          <motion.div
+            className="mx-auto flex min-h-[84px] w-full max-w-[1920px] items-center justify-between gap-6 px-6 lg:px-16"
+            initial={shouldReduceMotion ? false : "hidden"}
+            animate={shouldReduceMotion || isPageReady ? "visible" : "hidden"}
+            variants={shouldReduceMotion ? undefined : headerRevealVariants}
+          >
             <Link
               href="/"
               className="inline-flex items-center justify-center"
@@ -480,8 +605,8 @@ export function HomePageClient({
                 />
               ))}
             </div>
-          </div>
-        </motion.header>
+          </motion.div>
+        </header>
 
         <section className="min-h-[calc(100svh-84px)] border-b border-[#202020] bg-[#f0fb29]">
           <div className="mx-auto flex min-h-[calc(100svh-84px)] w-full max-w-[1920px] flex-col px-6 pb-[72px] pt-8 lg:px-16 lg:pb-20 lg:pt-8">
@@ -489,23 +614,17 @@ export function HomePageClient({
               src="/buidl-text.svg"
               alt="Buidl Now text"
               className="w-full max-w-[1420px]"
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
-              whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={shouldReduceMotion ? undefined : viewportOptions}
-              transition={
-                shouldReduceMotion
-                  ? undefined
-                  : { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.08 }
-              }
+              initial={shouldReduceMotion ? false : "hidden"}
+              animate={shouldReduceMotion || isPageReady ? "visible" : "hidden"}
+              variants={shouldReduceMotion ? undefined : heroWordmarkVariants}
             />
 
             <div className="flex flex-1 items-end justify-start pt-10 lg:pt-[72px]">
               <motion.div
                 className="max-w-[710px]"
-                variants={shouldReduceMotion ? undefined : staggerParentVariants}
+                variants={shouldReduceMotion ? undefined : heroCopyVariants}
                 initial={shouldReduceMotion ? false : "hidden"}
-                whileInView={shouldReduceMotion ? undefined : "visible"}
-                viewport={shouldReduceMotion ? undefined : viewportOptions}
+                animate={shouldReduceMotion || isPageReady ? "visible" : "hidden"}
               >
                 <motion.h1
                   className="text-[40px] font-medium leading-[46px] tracking-[-2.5px] text-[#202020]"
@@ -562,11 +681,10 @@ export function HomePageClient({
         </section>
 
         <section id="tools" ref={toolsSectionRef} className="bg-[#f5f5f5]">
-          <motion.div
+          <RevealSection
             className="mx-auto w-full max-w-[1920px] px-6 py-24 lg:px-16"
-            initial={shouldReduceMotion ? false : "hidden"}
-            whileInView={shouldReduceMotion ? undefined : "visible"}
-            viewport={shouldReduceMotion ? undefined : viewportOptions}
+            pageReady={isPageReady}
+            shouldReduceMotion={Boolean(shouldReduceMotion)}
             variants={shouldReduceMotion ? undefined : staggerParentVariants}
           >
             <SectionLabel title="/ Tools" />
@@ -941,15 +1059,15 @@ export function HomePageClient({
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+          </RevealSection>
         </section>
 
         <footer id="footer" className="border-t border-[#202020] bg-[#f5f5f5]">
-          <motion.div
+          <RevealSection
             className="mx-auto w-full max-w-[1920px] px-6 py-20 lg:px-16"
-            initial={shouldReduceMotion ? false : "hidden"}
-            whileInView={shouldReduceMotion ? undefined : "visible"}
-            viewport={shouldReduceMotion ? undefined : viewportOptions}
+            pageReady={isPageReady}
+            shouldReduceMotion={Boolean(shouldReduceMotion)}
+            threshold={0.12}
             variants={shouldReduceMotion ? undefined : staggerParentVariants}
           >
             <motion.div
@@ -1028,7 +1146,7 @@ export function HomePageClient({
                 </a>
               </span>
             </motion.div>
-          </motion.div>
+          </RevealSection>
         </footer>
       </div>
     </>
