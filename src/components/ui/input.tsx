@@ -39,10 +39,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={clsx(
-            "flex h-11 w-full rounded-[var(--radius-12)] bg-[var(--color-gray-0)] px-4 text-sm text-[var(--color-gray-950)]",
+            "flex h-11 w-full bg-[var(--color-gray-0)] px-4 text-sm text-[var(--color-gray-950)]",
             "border border-[var(--color-gray-200)]",
             "placeholder:text-[var(--color-gray-400)]",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blue-500)]/20 focus-visible:border-[var(--color-blue-500)]",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-yellow-400)]/25 focus-visible:border-[var(--color-yellow-500)]",
             "disabled:cursor-not-allowed disabled:opacity-50",
             "transition-all duration-200",
             "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
@@ -59,7 +59,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <button
             type="button"
             onClick={handleCopy}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
             title={copied ? "Copied!" : "Copy to clipboard"}
           >
             {copied ? (

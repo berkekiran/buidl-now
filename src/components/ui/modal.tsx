@@ -42,7 +42,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
       />
 
       {/* Modal Content */}
-      <div className="relative bg-[var(--color-gray-0)] border border-border rounded-2xl w-[90%] max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+      <div className="relative bg-[var(--color-gray-0)] border border-border w-[90%] max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
         {title && (
           <div className="flex items-center justify-between px-6 py-4 border-b border-border">

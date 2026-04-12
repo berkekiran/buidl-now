@@ -7,13 +7,14 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        border-radius: 0 !important;
     }
 
     body {
         background: var(--color-gray-50);
         color: var(--color-gray-950);
         font-family:
-            var(--font-albert-sans),
+            var(--font-chakra-petch),
             -apple-system,
             BlinkMacSystemFont,
             "Segoe UI",
@@ -31,6 +32,7 @@
 
     a {
         color: var(--color-gray-950);
+        cursor: pointer;
         text-decoration: none;
         transition: all 0.2s ease;
     }
@@ -41,8 +43,23 @@
 
     code {
         font-family:
-            "JetBrains Mono", "Fira Code", "Consolas", "Monaco", "Courier New",
+            var(--font-ibm-plex-mono),
+            "JetBrains Mono",
+            "Fira Code",
+            "Consolas",
+            "Monaco",
+            "Courier New",
             monospace;
+    }
+
+    button,
+    [role="button"],
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"],
+    summary,
+    select {
+        cursor: pointer;
     }
 
     /* Date input styling */
@@ -58,6 +75,40 @@
         cursor: pointer;
         position: absolute;
         right: 12px;
+    }
+
+    input[type="file"] {
+        cursor: pointer;
+        font-family:
+            var(--font-chakra-petch),
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+    }
+
+    input[type="file"]::file-selector-button,
+    input[type="file"]::-webkit-file-upload-button {
+        margin-right: 16px;
+        border: 1px solid var(--color-gray-300);
+        background: var(--color-gray-0);
+        color: var(--color-gray-950);
+        padding: 12px 18px;
+        font: inherit;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        border-radius: 0 !important;
+        appearance: none;
+        -webkit-appearance: none;
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+    input[type="file"]::file-selector-button:hover,
+    input[type="file"]::-webkit-file-upload-button:hover {
+        background: var(--color-yellow-50);
+        border-color: var(--color-gray-950);
     }
 }
 
@@ -195,14 +246,14 @@ html.dark {
     }
 }
 
-/* Headings use Turret Road */
+/* Main site typography uses Chakra Petch */
 body h1,
 body h2,
 body h3,
 body h4,
 body h5,
 body h6 {
-    font-family: var(--font-turret), sans-serif;
+    font-family: var(--font-chakra-petch), sans-serif;
 }
 
 /* Thin scrollbar with theme-aware colors */

@@ -49,7 +49,7 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={handleClick}
-      className="global-theme-toggle fixed top-6 right-6 md:top-10 md:right-10 z-[9999] w-10 h-10 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center cursor-pointer transition-colors"
+      className="global-theme-toggle fixed top-6 right-6 md:top-10 md:right-10 z-[9999] w-10 h-10 bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center cursor-pointer transition-colors"
     >
       {isDark ? (
         <FiSun className="w-5 h-5" />

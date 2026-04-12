@@ -1,23 +1,31 @@
 import type { Metadata, Viewport } from "next";
-import { Albert_Sans, Turret_Road } from "next/font/google";
+import {
+  Chakra_Petch,
+  IBM_Plex_Mono,
+  Turret_Road,
+} from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { ScrollToTop } from "@/components/scroll-to-top";
-import { GeometricBackground } from "@/components/geometric-background";
-import { ThemeToggle } from "@/components/theme-toggle";
-
-const albertSans = Albert_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-albert-sans",
-});
+import { LayoutShell } from "@/components/layout-shell";
 
 const turretRoad = Turret_Road({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-turret",
   weight: ["400", "500", "700"],
+});
+
+const chakraPetch = Chakra_Petch({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-chakra-petch",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-ibm-plex-mono",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const viewport: Viewport = {
@@ -29,6 +37,11 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://buidlnow.com"),
+  icons: {
+    icon: "/buildnow.svg",
+    shortcut: "/buildnow.svg",
+    apple: "/buildnow.svg",
+  },
   title: {
     default: "Buidl Now! - Developer Tools for Builders Who Ship Fast",
     template: "%s | Buidl Now!",
@@ -104,17 +117,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${albertSans.variable} ${turretRoad.variable} antialiased overflow-x-hidden`}>
-        <GeometricBackground />
-        <div className="relative z-10 min-h-screen w-full">
-          <Header />
-          <main className="min-h-screen w-full">
-            {children}
-          </main>
-          <Footer />
-        </div>
-        <ScrollToTop />
-        <ThemeToggle />
+      <body
+        className={`${turretRoad.variable} ${chakraPetch.variable} ${ibmPlexMono.variable} overflow-x-hidden antialiased`}
+      >
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );

@@ -1,435 +1,996 @@
 "use client";
 
-import { tools } from "@/lib/tools-list";
-import { toolCategories } from "@/types/tools";
+import type { CSSProperties, ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import clsx from "clsx";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useState, useEffect, useRef, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { Code } from "@/components/ui/code";
 import {
-  MdSearch,
-  MdClose,
-  MdKeyboardReturn,
-  MdAccessTime,
-  MdOutlineCurrencyExchange,
-  MdCode,
-  MdExpandMore,
-} from "react-icons/md";
-import {
-  WebsiteStructuredData,
   OrganizationStructuredData,
+  WebsiteStructuredData,
 } from "@/components/structured-data";
-import { motion, AnimatePresence } from "framer-motion";
+import { tools } from "@/lib/tools-list";
+import { getToolById } from "@/tools";
+import { type Tool } from "@/types/tools";
 
-function HomeContent() {
-  const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
-    new Set()
+interface SiteAction {
+  external?: boolean;
+  href: string;
+  label: string;
+}
+
+interface ToolStoryRow {
+  body: string;
+  title: string;
+}
+
+interface HomepageToolOverride {
+  shortLabel: string;
+  storyRows: ToolStoryRow[];
+}
+
+interface ToolCategoryOption {
+  label: string;
+  value: string;
+}
+
+const monoStyle: CSSProperties = {
+  fontFamily: 'var(--font-ibm-plex-mono), "IBM Plex Mono", monospace',
+};
+
+const sansStyle: CSSProperties = {
+  fontFamily: 'var(--font-chakra-petch), "Chakra Petch", sans-serif',
+};
+
+const defaultToolId = "function-selector";
+
+const headerActions: SiteAction[] = [
+  { href: "#tools", label: "Tools" },
+  {
+    external: true,
+    href: "https://github.com/pzzaworks/buidl-now",
+    label: "GitHub",
+  },
+];
+
+const footerActions: SiteAction[] = [
+  { href: "#tools", label: "Open Tools" },
+  {
+    external: true,
+    href: "https://github.com/pzzaworks/buidl-now",
+    label: "GitHub",
+  },
+];
+
+const viewportOptions = {
+  amount: 0.2,
+  once: true,
+};
+
+const fadeUpVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.55,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  },
+};
+
+const toolSwapTransition = {
+  duration: 0.24,
+  ease: [0.22, 1, 0.36, 1] as const,
+};
+
+const staggerParentVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.08,
+    },
+  },
+};
+
+function formatCategoryLabel(category: string): string {
+  return category
+    .split("-")
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join(" ");
+}
+
+const toolCategoryOptions: ToolCategoryOption[] = [
+  { value: "all", label: "All Tools" },
+  ...Array.from(new Set(tools.map((tool) => tool.category)))
+    .sort((left, right) => left.localeCompare(right))
+    .map((category) => ({
+      value: category,
+      label: formatCategoryLabel(category),
+    })),
+];
+
+const homepageToolOverrides: Record<string, HomepageToolOverride> = {
+  "function-selector": {
+    shortLabel: "Function Selector",
+    storyRows: [
+      {
+        title: "Selector In Seconds",
+        body: "Paste a Solidity function signature and get the 4-byte selector immediately, without bouncing to another lookup tool.",
+      },
+      {
+        title: "Built For Contract Work",
+        body: "Useful for calldata inspection, ABI debugging, interface work, and everyday smart-contract development tasks.",
+      },
+      {
+        title: "Copy-Ready Output",
+        body: "The result is ready to paste into scripts, tests, deployment flows, and contract tooling the moment you generate it.",
+      },
+    ],
+  },
+  "keccak-hash": {
+    shortLabel: "Keccak-256",
+    storyRows: [
+      {
+        title: "Hash Text Or Hex",
+        body: "Switch between plain text and hexadecimal input without leaving the same workspace or reformatting data elsewhere.",
+      },
+      {
+        title: "Ethereum-Native Flow",
+        body: "Perfect for selectors, message hashing, storage checks, and the small cryptographic tasks that come up during Web3 work.",
+      },
+      {
+        title: "Fast Verification",
+        body: "Use it as a quick correctness pass when you need to confirm a hash before moving back into code or contract tests.",
+      },
+    ],
+  },
+  "abi-encoder": {
+    shortLabel: "ABI Encoder",
+    storyRows: [
+      {
+        title: "Encode And Decode",
+        body: "Work both directions in one place so calldata creation and calldata inspection feel like the same task, not two separate workflows.",
+      },
+      {
+        title: "Useful During Debugging",
+        body: "Great for validating types, checking payload structure, and understanding what a transaction is actually carrying.",
+      },
+      {
+        title: "Ready For Scripts",
+        body: "The output is shaped for copy-paste into scripts, test suites, deployment helpers, and contract interaction flows.",
+      },
+    ],
+  },
+  "eth-unit-converter": {
+    shortLabel: "Unit Convert",
+    storyRows: [
+      {
+        title: "Wei To Ether Fast",
+        body: "Convert between common Ethereum denominations without stopping to do mental math or open a second calculator.",
+      },
+      {
+        title: "Safer Value Checks",
+        body: "Useful when verifying balances, fee amounts, token values, and human-readable outputs during everyday Web3 work.",
+      },
+      {
+        title: "Less Context Switching",
+        body: "Keep the unit conversion step in the same builder workspace so small value checks do not break your implementation flow.",
+      },
+    ],
+  },
+};
+
+function getToolMetaById(toolId: string): Tool | undefined {
+  return tools.find((tool) => tool.id === toolId);
+}
+
+function normalizeText(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function truncateText(value: string, maxLength: number): string {
+  if (value.length <= maxLength) {
+    return value;
+  }
+
+  return `${value.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
+function summarizeContent(content: ReactNode | string, title: string): string {
+  if (typeof content === "string") {
+    return truncateText(normalizeText(content), 200);
+  }
+
+  return `Includes ${title.toLowerCase()} guidance, practical notes, and live examples for this utility.`;
+}
+
+function buildToolStoryRows({
+  hasCode,
+  overrideRows,
+  sections,
+  exampleCount,
+}: {
+  exampleCount: number;
+  hasCode: boolean;
+  overrideRows?: ToolStoryRow[];
+  sections: { content: ReactNode | string; title: string }[];
+}): ToolStoryRow[] {
+  if (overrideRows && overrideRows.length > 0) {
+    return overrideRows.slice(0, 3);
+  }
+
+  const rows = sections.slice(0, 3).map((section) => ({
+    body: summarizeContent(section.content, section.title),
+    title: section.title,
+  }));
+
+  if (rows.length < 3 && exampleCount > 0) {
+    rows.push({
+      title: "Examples",
+      body: `Includes ${exampleCount} copy-ready example${exampleCount === 1 ? "" : "s"} for common builder workflows.`,
+    });
+  }
+
+  if (rows.length < 3 && hasCode) {
+    rows.push({
+      title: "Implementation",
+      body: "Comes with a copy-ready TypeScript snippet you can drop into scripts, apps, and contract tooling.",
+    });
+  }
+
+  return rows.slice(0, 3);
+}
+
+function SectionLabel({ title }: { title: string }) {
+  return (
+    <div className="flex items-center justify-between border-t border-[#202020] pt-4">
+      <span
+        className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]"
+        style={monoStyle}
+      >
+        {title}
+      </span>
+      <span
+        className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]"
+        style={monoStyle}
+      >
+        ■
+      </span>
+    </div>
   );
-  const selectedItemRef = useRef<HTMLAnchorElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
+}
 
-  // Initialize search query from URL parameter
-  useEffect(() => {
-    const urlSearch = searchParams.get("search");
-    if (urlSearch) {
-      setSearchQuery(urlSearch);
+function ActionLink({
+  action,
+  className,
+  onInternalClick,
+}: {
+  action: SiteAction;
+  className: string;
+  onInternalClick?: () => void;
+}) {
+  if (action.external) {
+    return (
+      <a
+        href={action.href}
+        target="_blank"
+        rel="noreferrer"
+        className={className}
+      >
+        {action.label}
+      </a>
+    );
+  }
+
+  return (
+    <a
+      href={action.href}
+      className={className}
+      onClick={(event) => {
+        event.preventDefault();
+        onInternalClick?.();
+      }}
+    >
+      {action.label}
+    </a>
+  );
+}
+
+export default function Home() {
+  const shouldReduceMotion = useReducedMotion();
+  const categoryDropdownRef = useRef<HTMLDivElement>(null);
+  const toolsSectionRef = useRef<HTMLElement>(null);
+  const [selectedToolId, setSelectedToolId] = useState(defaultToolId);
+  const [selectedToolCategory, setSelectedToolCategory] = useState("all");
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [toolSearchQuery, setToolSearchQuery] = useState("");
+
+  const activeToolMeta = getToolMetaById(selectedToolId) ?? tools[0];
+  const activeToolConfig = activeToolMeta
+    ? getToolById(activeToolMeta.id)
+    : undefined;
+  const ActiveToolComponent = activeToolConfig?.component;
+  const activeToolName = activeToolMeta?.name ?? activeToolConfig?.name ?? "";
+  const activeToolDescription =
+    activeToolMeta?.description ?? activeToolConfig?.description ?? "";
+  const toolSections = activeToolConfig?.sections ?? [];
+  const toolExamples = activeToolConfig?.examples ?? [];
+  const toolCodeSnippet = activeToolConfig?.codeSnippet ?? "";
+  const activeHomepageOverride =
+    homepageToolOverrides[selectedToolId] ??
+    homepageToolOverrides[activeToolMeta?.id ?? ""];
+  const toolStoryRows = buildToolStoryRows({
+    exampleCount: toolExamples.length,
+    hasCode: Boolean(toolCodeSnippet),
+    overrideRows: activeHomepageOverride?.storyRows,
+    sections: toolSections,
+  });
+  const activeCategoryOption =
+    toolCategoryOptions.find((option) => option.value === selectedToolCategory) ??
+    toolCategoryOptions[0];
+
+  const normalizedToolSearch = toolSearchQuery.trim().toLowerCase();
+  const filteredTools = tools.filter((tool) => {
+    const matchesCategory =
+      selectedToolCategory === "all" || tool.category === selectedToolCategory;
+
+    if (!matchesCategory) {
+      return false;
     }
-  }, [searchParams]);
 
-  const filteredTools = searchQuery
-    ? tools.filter((tool) =>
-        tool.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
-    : [];
+    if (!normalizedToolSearch) {
+      return true;
+    }
 
-  // Focus search input when user starts typing
+    const haystack = `${tool.name} ${tool.description}`.toLowerCase();
+    return haystack.includes(normalizedToolSearch);
+  });
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore if already focused or if modifier keys are pressed
-      if (
-        document.activeElement === searchInputRef.current ||
-        e.ctrlKey ||
-        e.metaKey ||
-        e.altKey ||
-        e.key === "Tab"
-      ) {
+    const searchParams = new URLSearchParams(window.location.search);
+    const toolId = searchParams.get("tool");
+    if (!toolId || !getToolMetaById(toolId)) {
+      return;
+    }
+
+    setSelectedToolId(toolId);
+
+    if (window.location.hash === "#tools") {
+      requestAnimationFrame(() => {
+        toolsSectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    function handlePointerDown(event: MouseEvent) {
+      if (!categoryDropdownRef.current) {
         return;
       }
 
-      // Focus input when user types any character
-      if (e.key.length === 1 && searchInputRef.current) {
-        searchInputRef.current.focus();
+      if (!categoryDropdownRef.current.contains(event.target as Node)) {
+        setIsCategoryDropdownOpen(false);
       }
-    };
+    }
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("mousedown", handlePointerDown);
+
+    return () => {
+      window.removeEventListener("mousedown", handlePointerDown);
+    };
   }, []);
 
-  // Scroll selected item into view when selectedIndex changes
-  useEffect(() => {
-    if (selectedItemRef.current) {
-      const container = selectedItemRef.current.closest("[data-scrollable]");
-      if (container) {
-        const itemRect = selectedItemRef.current.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        const offset = 8; // py-2 = 0.5rem = 8px padding
+  function scrollToTools() {
+    toolsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
-        if (itemRect.top < containerRect.top + offset) {
-          // Item is above visible area
-          container.scrollTop -= containerRect.top + offset - itemRect.top;
-        } else if (itemRect.bottom > containerRect.bottom - offset) {
-          // Item is below visible area
-          container.scrollTop +=
-            itemRect.bottom - containerRect.bottom + offset;
-        }
-      }
+  function activateTool(toolId: string) {
+    if (!getToolMetaById(toolId)) {
+      return;
     }
-  }, [selectedIndex]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!searchQuery || filteredTools.length === 0) return;
+    setSelectedToolId(toolId);
+    setToolSearchQuery("");
 
-    if (e.key === "Enter") {
-      e.preventDefault();
-      window.location.href = filteredTools[selectedIndex].path;
-    } else if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setSelectedIndex((prev) =>
-        prev < filteredTools.length - 1 ? prev + 1 : prev,
-      );
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
-    }
-  };
+    const url = new URL(window.location.href);
+    url.searchParams.set("tool", toolId);
+    window.history.replaceState({}, "", `${url.pathname}${url.search}#tools`);
 
-  // Reset selected index when search query changes
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    setSelectedIndex(0);
-  };
-
-  const toggleCategory = (categoryId: string) => {
-    setExpandedCategories((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(categoryId)) {
-        newSet.delete(categoryId);
-      } else {
-        newSet.add(categoryId);
-      }
-      return newSet;
+    requestAnimationFrame(() => {
+      toolsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
-  };
-
-  // Group tools by category
-  const toolsByCategory = toolCategories.map((category) => ({
-    ...category,
-    tools: tools.filter((tool) => tool.category === category.id),
-  }));
+  }
 
   return (
     <>
       <WebsiteStructuredData />
       <OrganizationStructuredData />
 
-      <div className="h-screen w-screen overflow-hidden">
-        {/* Left side content - Desktop only */}
-        <div className="hidden xl:flex fixed left-0 top-0 bottom-0 w-[calc(50%-300px)] z-10 justify-center items-center py-32 overflow-hidden">
-          <div className="relative max-h-full flex flex-col">
-            {/* Bottom gradient fade */}
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[var(--color-gray-50)] to-transparent pointer-events-none z-20" />
-            <div className="max-w-xs px-6 overflow-y-auto no-scrollbar pb-20">
-            <h1 className="text-4xl 2xl:text-5xl font-normal text-[var(--color-gray-950)] mb-4 tracking-tight leading-tight" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
-              Buidl <span className="italic">Now!</span>
-            </h1>
-            <p className="text-base text-[var(--color-gray-600)] leading-relaxed mb-6">
-              Essential developer tools for builders who ship fast. No ads, no tracking.
-              Just tools that work.
-            </p>
+      <div className="min-h-screen w-full bg-[#f5f5f5] text-[#202020]">
+        <motion.header
+          className="sticky top-0 z-50 bg-[#f0fb29]"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: -18 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+          viewport={shouldReduceMotion ? undefined : viewportOptions}
+          transition={
+            shouldReduceMotion
+              ? undefined
+              : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
+          }
+        >
+          <div className="mx-auto flex min-h-[84px] w-full max-w-[1920px] items-center justify-between gap-6 px-6 lg:px-16">
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center"
+              aria-label="Buidl Now home"
+            >
+              <img
+                src="/buildnow-inv.svg"
+                alt="Buidl Now icon"
+                className="h-12 w-auto"
+              />
+            </Link>
 
-            <p className="text-xs font-medium tracking-[0.2em] text-[var(--color-gray-400)] mb-3 uppercase" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
-              What's inside
-            </p>
-            <div className="space-y-2 text-sm text-[var(--color-gray-600)] mb-6">
-              <p>
-                <span className="font-medium text-[var(--color-gray-900)]">
-                  100+ developer tools
-                </span>{" "}
-                built for speed. ABI encoder/decoder, function selectors, keccak
-                hash, unit converters, and everything else you need when
-                building on Ethereum.
-              </p>
-              <p>
-                <span className="font-medium text-[var(--color-gray-900)]">
-                  Format, convert, generate.
-                </span>{" "}
-                JSON/YAML/XML converters, SQL formatter, hash generators,
-                UUID/nanoid generators, color tools, and more.
-              </p>
-              <p>
-                <span className="font-medium text-[var(--color-gray-900)]">
-                  DeFi & Protocol tools.
-                </span>{" "}
-                Uniswap price calculator, token launch calculator, gas
-                estimator, timelock transaction builder, Safe batch builder.
-              </p>
-            </div>
-
-            <p className="text-xs font-medium tracking-[0.2em] text-[var(--color-gray-400)] mb-3 uppercase" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
-              Why this exists
-            </p>
-            <div className="space-y-2 text-sm text-[var(--color-gray-600)] mb-6">
-              <p>
-                Tired of googling "keccak256 online" every time you need to hash
-                something. Tired of jumping between 10 different sites for basic
-                operations.
-              </p>
-              <p>
-                So we built one place with everything. Fast, keyboard-friendly.
-                Start typing anywhere to search.
-              </p>
-            </div>
-
-            <p className="text-xs font-medium tracking-[0.2em] text-[var(--color-gray-400)] mb-3 uppercase" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
-              Popular tools
-            </p>
-            <div className="space-y-1.5 text-sm">
-              <Link
-                href="/tools/abi-encoder"
-                className="block text-[var(--color-gray-600)] hover:text-[var(--color-gray-900)] transition-colors"
-              >
-                ABI Encoder/Decoder
-              </Link>
-              <Link
-                href="/tools/keccak-hash"
-                className="block text-[var(--color-gray-600)] hover:text-[var(--color-gray-900)] transition-colors"
-              >
-                Keccak-256 Hash
-              </Link>
-              <Link
-                href="/tools/eth-unit-converter"
-                className="block text-[var(--color-gray-600)] hover:text-[var(--color-gray-900)] transition-colors"
-              >
-                ETH Unit Converter
-              </Link>
-              <Link
-                href="/tools/json-formatter"
-                className="block text-[var(--color-gray-600)] hover:text-[var(--color-gray-900)] transition-colors"
-              >
-                JSON Formatter
-              </Link>
-              <Link
-                href="/tools/function-selector"
-                className="block text-[var(--color-gray-600)] hover:text-[var(--color-gray-900)] transition-colors"
-              >
-                Function Selector
-              </Link>
-            </div>
-
-            <p className="mt-6 text-xs text-[var(--color-gray-400)]" style={{ fontFamily: 'var(--font-turret), sans-serif' }}>
-              100% free and open source.
-            </p>
-          </div>
-          </div>
-        </div>
-
-        {/* Search Bar - Exactly centered */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] md:w-full max-w-xl px-4 z-50">
-          <MdSearch className="absolute left-7 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
-          <Input
-            ref={searchInputRef}
-            type="text"
-            placeholder="Search tools..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            onKeyDown={handleKeyDown}
-            className="pl-10 pr-24 h-12 text-base"
-          />
-          <div className="absolute right-7 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            {searchQuery && filteredTools.length > 0 && (
-              <kbd className="hidden sm:inline-flex items-center justify-center px-2 h-7 text-muted-foreground rounded border border-muted-foreground/30 min-w-8">
-                <MdKeyboardReturn className="w-4 h-4" />
-              </kbd>
-            )}
-            {searchQuery && (
-              <Button
-                onClick={() => setSearchQuery("")}
-                size="sm"
-                className="text-muted-foreground hover:text-foreground h-auto p-1 min-h-0"
-              >
-                <MdClose className="w-5 h-5" />
-              </Button>
-            )}
-          </div>
-
-          {/* Search Results - Below Search Box */}
-          <div
-            data-scrollable
-            className={`absolute left-0 right-0 top-full mt-2 bg-[var(--color-gray-0)] rounded-[16px] max-h-[40vh] overflow-y-auto z-[100] transition-all duration-200 ease-out border border-[var(--color-gray-200)] shadow-xl shadow-black/5 ${
-              searchQuery
-                ? "opacity-100 translate-y-0 pointer-events-auto"
-                : "opacity-0 -translate-y-2 pointer-events-none"
-            }`}
-          >
-            {filteredTools.length === 0 ? (
-              <div className="py-6 px-2 text-center">
-                <p className="text-sm text-muted-foreground">
-                  No tools found. Try a different search?
-                </p>
-              </div>
-            ) : (
-              <div className="py-2 px-2">
-                {filteredTools.map((tool, index) => (
-                  <Link
-                    key={tool.id}
-                    ref={index === selectedIndex ? selectedItemRef : null}
-                    href={tool.path}
-                    className={`block px-4 py-3 rounded-[12px] transition-all duration-200 border ring-2 ${
-                      index === selectedIndex
-                        ? "bg-[var(--color-gray-0)] border-[var(--color-blue-500)] ring-[var(--color-blue-500)]/20"
-                        : "border-transparent ring-transparent hover:bg-[var(--color-gray-100)]/50"
-                    }`}
-                    onClick={() => setSearchQuery("")}
-                    onMouseEnter={() => setSelectedIndex(index)}
-                  >
-                    <div className="flex items-center gap-2.5 mb-0.5">
-                      {tool.icon && (
-                        <tool.icon className="w-4 h-4 text-[var(--color-gray-400)]" />
-                      )}
-                      <div className="font-medium text-[var(--color-gray-950)]">
-                        {tool.name}
-                      </div>
-                    </div>
-                    <div className="text-sm text-[var(--color-gray-400)]">
-                      {tool.description}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Featured Tools - Below center */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 mt-10 w-[90%] md:w-full max-w-xl px-4 z-10">
-          <div className="flex flex-wrap gap-2 justify-center">
-            {[
-              {
-                tool: tools.find((t) => t.id === "epoch-converter"),
-                icon: MdAccessTime,
-              },
-              {
-                tool: tools.find((t) => t.id === "eth-unit-converter"),
-                icon: MdOutlineCurrencyExchange,
-              },
-              {
-                tool: tools.find((t) => t.id === "json-formatter"),
-                icon: MdCode,
-              },
-            ]
-              .filter((item) => item.tool)
-              .map(({ tool, icon: Icon }) => (
-                <Link key={tool!.id} href={tool!.path}>
-                  <Button size="sm" className="text-xs gap-1.5">
-                    <Icon className="w-3.5 h-3.5" />
-                    {tool!.name}
-                  </Button>
-                </Link>
+            <div className="flex items-center gap-5 sm:gap-8">
+              {headerActions.map((action) => (
+                <ActionLink
+                  key={action.label}
+                  action={action}
+                  className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020] sm:text-[13px]"
+                  onInternalClick={scrollToTools}
+                />
               ))}
-          </div>
-        </div>
-
-        {/* Right side - All Tools List (Desktop only) */}
-        <div className="hidden xl:flex fixed right-0 top-0 bottom-0 w-[calc(50%-300px)] z-10 justify-center items-center py-32 overflow-hidden">
-          <div className="relative max-h-full flex flex-col w-72">
-            {/* Bottom gradient fade */}
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[var(--color-gray-50)] to-transparent pointer-events-none z-20" />
-            <div className="px-6 overflow-y-auto no-scrollbar relative pb-20">
-            <div className="sticky top-0 z-10 bg-[var(--color-gray-50)] pt-2 pb-4 -mx-6 px-6">
-              <p
-                className="text-xs font-medium tracking-[0.2em] text-[var(--color-gray-400)] uppercase"
-                style={{ fontFamily: "var(--font-turret), sans-serif" }}
-              >
-                All Tools ({tools.length})
-              </p>
             </div>
+          </div>
+        </motion.header>
 
-            <div className="space-y-4">
-              {toolsByCategory.map((category) => (
-                <div key={category.id} id={`category-${category.id}`}>
+        <section className="min-h-[calc(100svh-84px)] border-b border-[#202020] bg-[#f0fb29]">
+          <div className="mx-auto flex min-h-[calc(100svh-84px)] w-full max-w-[1920px] flex-col px-6 pb-[72px] pt-8 lg:px-16 lg:pb-20 lg:pt-8">
+            <motion.img
+              src="/buidl-text.svg"
+              alt="Buidl Now text"
+              className="w-full max-w-[1420px]"
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
+              whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={shouldReduceMotion ? undefined : viewportOptions}
+              transition={
+                shouldReduceMotion
+                  ? undefined
+                  : { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.08 }
+              }
+            />
+
+            <div className="flex flex-1 items-end justify-start pt-10 lg:pt-[72px]">
+              <motion.div
+                className="max-w-[710px]"
+                variants={shouldReduceMotion ? undefined : staggerParentVariants}
+                initial={shouldReduceMotion ? false : "hidden"}
+                whileInView={shouldReduceMotion ? undefined : "visible"}
+                viewport={shouldReduceMotion ? undefined : viewportOptions}
+              >
+                <motion.h1
+                  className="text-[40px] font-medium leading-[46px] tracking-[-2.5px] text-[#202020]"
+                  style={sansStyle}
+                  variants={shouldReduceMotion ? undefined : fadeUpVariants}
+                >
+                  The developer tools you reach for every day, all in one
+                  place.
+                </motion.h1>
+
+                <motion.p
+                  className="mt-8 max-w-[690px] text-[18px] leading-8 text-[#202020]"
+                  style={sansStyle}
+                  variants={shouldReduceMotion ? undefined : fadeUpVariants}
+                >
+                  Converters, formatters, hashes, validators, and the small
+                  utilities you keep reopening stay together instead of getting
+                  lost across tabs.
+                </motion.p>
+
+                <motion.div
+                  className="mt-10 flex flex-wrap items-center gap-4"
+                  variants={shouldReduceMotion ? undefined : fadeUpVariants}
+                >
                   <button
-                    onClick={() => toggleCategory(category.id)}
-                    className="flex items-center gap-2 w-full text-left mb-2 group cursor-pointer"
+                    type="button"
+                    className="inline-flex rounded-none border border-[#202020] bg-[#202020] px-8 py-6 text-[13px] font-medium uppercase tracking-[0.22em] text-[#f0fb29] transition-colors duration-300 hover:bg-[#f0fb29] hover:text-[#202020]"
+                    style={monoStyle}
+                    onClick={scrollToTools}
                   >
-                    <category.icon className="w-4 h-4 text-[var(--color-gray-500)]" />
-                    <span className="text-sm font-medium text-[var(--color-gray-900)]">
-                      {category.name}
-                    </span>
-                    <span className="text-xs text-[var(--color-gray-400)]">
-                      ({category.tools.length})
-                    </span>
-                    <motion.span
-                      className="ml-auto text-[var(--color-gray-400)] group-hover:text-[var(--color-gray-600)] transition-colors"
-                      animate={{ rotate: expandedCategories.has(category.id) ? 180 : 0 }}
-                      transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                    >
-                      <MdExpandMore className="w-4 h-4" />
-                    </motion.span>
+                    Open Tools
                   </button>
 
-                  <AnimatePresence initial={false}>
-                    {expandedCategories.has(category.id) && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                        className="overflow-hidden"
-                      >
-                        <div className="space-y-0.5 ml-6 pb-2">
-                          {category.tools.map((tool) => (
-                            <Link
-                              key={tool.id}
-                              href={tool.path}
-                              className="block w-fit py-1.5 px-2 -mx-2 rounded-lg text-sm text-[var(--color-gray-600)] bg-transparent hover:text-[var(--color-gray-900)] hover:bg-[var(--color-gray-200)]"
-                            >
-                              {tool.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
+                  <a
+                    href="https://github.com/pzzaworks/buidl-now"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex rounded-none border border-[#202020] px-8 py-6 text-[13px] font-medium uppercase tracking-[0.22em] text-[#202020] transition-colors hover:bg-[#202020] hover:text-[#f0fb29]"
+                    style={monoStyle}
+                  >
+                    GitHub
+                  </a>
+                </motion.div>
+              </motion.div>
             </div>
           </div>
-          </div>
-        </div>
+        </section>
+
+        <section id="tools" ref={toolsSectionRef} className="bg-[#f5f5f5]">
+          <motion.div
+            className="mx-auto w-full max-w-[1920px] px-6 py-24 lg:px-16"
+            initial={shouldReduceMotion ? false : "hidden"}
+            whileInView={shouldReduceMotion ? undefined : "visible"}
+            viewport={shouldReduceMotion ? undefined : viewportOptions}
+            variants={shouldReduceMotion ? undefined : staggerParentVariants}
+          >
+            <SectionLabel title="/ Tools" />
+
+            <div className="grid grid-cols-1 gap-y-8 pt-10 lg:h-[760px] lg:grid-cols-[620px_minmax(0,1fr)] lg:items-stretch lg:gap-x-8 lg:pt-12">
+              <motion.div
+                className="lg:min-h-0"
+                variants={shouldReduceMotion ? undefined : fadeUpVariants}
+              >
+                <div className="border border-[#202020] bg-[#fbfaf6] lg:flex lg:h-full lg:min-h-0 lg:flex-col">
+                  <div className="border-b border-[#202020] px-4 py-3">
+                    <div
+                      className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]"
+                      style={monoStyle}
+                    >
+                      / Tool Finder
+                    </div>
+                  </div>
+
+                  <div className="border-b border-[#202020] bg-white px-4 py-4">
+                    <input
+                      type="text"
+                      value={toolSearchQuery}
+                      onChange={(event) => setToolSearchQuery(event.target.value)}
+                      placeholder="Search every tool..."
+                      className="w-full rounded-none border border-[#202020] bg-[#f5f5f5] px-4 py-4 text-[15px] text-[#202020] outline-none placeholder:text-[#202020]/44"
+                      style={monoStyle}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-[#202020] px-4 py-3">
+                    <div
+                      className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]/72"
+                      style={monoStyle}
+                    >
+                      {normalizedToolSearch
+                        ? `${filteredTools.length} results`
+                        : `${tools.length} tools`}
+                    </div>
+                    <div className="relative" ref={categoryDropdownRef}>
+                      <button
+                        type="button"
+                        className="inline-flex min-w-[168px] items-center justify-between gap-4 border border-[#202020] bg-white px-3 py-2 text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020] transition-colors hover:bg-[#f5f5f5]"
+                        style={monoStyle}
+                        onClick={() =>
+                          setIsCategoryDropdownOpen((currentValue) => !currentValue)
+                        }
+                      >
+                        <span>{activeCategoryOption.label}</span>
+                        <span>{isCategoryDropdownOpen ? "−" : "+"}</span>
+                      </button>
+
+                      {isCategoryDropdownOpen ? (
+                        <div className="absolute right-0 top-[calc(100%+8px)] z-20 min-w-[220px] border border-[#202020] bg-white">
+                          {toolCategoryOptions.map((option) => (
+                            <button
+                              key={option.value}
+                              type="button"
+                              className={clsx(
+                                "flex w-full items-center justify-between border-b border-[#202020]/10 px-4 py-3 text-left text-[12px] font-medium uppercase tracking-[0.18em] text-[#202020] last:border-b-0",
+                                option.value === selectedToolCategory
+                                  ? "bg-[#f0fb29]"
+                                  : "bg-white hover:bg-[#f5f5f5]",
+                              )}
+                              style={monoStyle}
+                              onClick={() => {
+                                setSelectedToolCategory(option.value);
+                                setIsCategoryDropdownOpen(false);
+                              }}
+                            >
+                              <span>{option.label}</span>
+                              <span>
+                                {option.value === selectedToolCategory ? "■" : ""}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div className="max-h-[420px] overflow-y-auto bg-white lg:min-h-0 lg:flex-1 lg:max-h-none">
+                    {filteredTools.length > 0 ? (
+                      filteredTools.map((tool) => (
+                        <button
+                          key={tool.id}
+                          type="button"
+                          className={clsx(
+                            "flex w-full items-start border-b border-[#202020]/10 px-4 py-4 text-left transition-colors last:border-b-0",
+                            tool.id === selectedToolId
+                              ? "bg-[#f0fb29]"
+                              : "bg-white hover:bg-[#f5f5f5]",
+                          )}
+                          onClick={() => activateTool(tool.id)}
+                        >
+                          <div className="min-w-0">
+                            <div
+                              className="text-[18px] leading-6 text-[#202020]"
+                              style={sansStyle}
+                            >
+                              {tool.name}
+                            </div>
+                            <div
+                              className="mt-1 text-[13px] leading-5 text-[#202020]/68"
+                              style={sansStyle}
+                            >
+                              {tool.description}
+                            </div>
+                          </div>
+                        </button>
+                      ))
+                    ) : (
+                      <div className="px-4 py-10">
+                        <div
+                          className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]/60"
+                          style={monoStyle}
+                        >
+                          No matches
+                        </div>
+                        <p
+                          className="mt-3 max-w-[360px] text-[16px] leading-7 text-[#202020]"
+                          style={sansStyle}
+                        >
+                          Try a tool name like function selector, keccak, abi,
+                          json, base64, or checksum.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="min-w-0 lg:min-h-0"
+                variants={shouldReduceMotion ? undefined : fadeUpVariants}
+              >
+                <div className="border border-[#202020] bg-[#fbfaf6] lg:flex lg:h-full lg:min-h-0 lg:flex-col">
+                  <div
+                    className="flex items-center gap-2 border-b border-[#202020] px-4 py-3"
+                    style={{
+                      backgroundImage:
+                        "radial-gradient(#202020 0.5px, transparent 0.5px)",
+                      backgroundPosition: "center",
+                      backgroundSize: "20px 20px",
+                    }}
+                  >
+                    <span className="h-[8px] w-[8px] bg-[#202020]" />
+                    <span className="h-[8px] w-[8px] bg-[#202020]" />
+                    <span className="h-[8px] w-[8px] bg-[#202020]" />
+                  </div>
+
+                  <div className="border-b border-[#202020] px-4 py-4 sm:px-6">
+                    <div
+                      className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]/72"
+                      style={monoStyle}
+                    >
+                      / Live Tool
+                    </div>
+                  </div>
+
+                  <div className="bg-white px-4 py-4 sm:px-5 sm:py-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
+                    <AnimatePresence mode="wait" initial={false}>
+                      {ActiveToolComponent ? (
+                        <motion.div
+                          key={selectedToolId}
+                          className="text-[#202020] lg:h-full [&_.font-mono]:!font-[var(--font-ibm-plex-mono)] [&_.text-muted-foreground]:!text-[#202020]/60 [&_button]:!rounded-none [&_button]:!shadow-none [&_input]:!rounded-none [&_input]:!shadow-none [&_textarea]:!rounded-none [&_textarea]:!shadow-none"
+                          style={sansStyle}
+                          initial={
+                            shouldReduceMotion ? false : { opacity: 0, y: 18 }
+                          }
+                          animate={
+                            shouldReduceMotion ? undefined : { opacity: 1, y: 0 }
+                          }
+                          exit={
+                            shouldReduceMotion ? undefined : { opacity: 0, y: -10 }
+                          }
+                          transition={shouldReduceMotion ? undefined : toolSwapTransition}
+                        >
+                          <ActiveToolComponent />
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key={`${selectedToolId}-empty`}
+                          className="p-2 text-[16px] leading-7 text-[#202020]"
+                          style={sansStyle}
+                          initial={
+                            shouldReduceMotion ? false : { opacity: 0, y: 18 }
+                          }
+                          animate={
+                            shouldReduceMotion ? undefined : { opacity: 1, y: 0 }
+                          }
+                          exit={
+                            shouldReduceMotion ? undefined : { opacity: 0, y: -10 }
+                          }
+                          transition={shouldReduceMotion ? undefined : toolSwapTransition}
+                        >
+                          This tool is not available yet.
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            <motion.div
+              className="pt-16 lg:pt-20"
+              variants={shouldReduceMotion ? undefined : fadeUpVariants}
+            >
+              <div
+                className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]/72"
+                style={monoStyle}
+              >
+                / Selected Tool
+              </div>
+
+              <div className="mt-5 border-t border-[#202020]/16 pt-8">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={`details-${selectedToolId}`}
+                    className="grid grid-cols-1 gap-y-8 lg:grid-cols-[minmax(0,520px)_minmax(0,1fr)] lg:gap-x-10"
+                    initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+                    animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                    exit={shouldReduceMotion ? undefined : { opacity: 0, y: -10 }}
+                    transition={shouldReduceMotion ? undefined : toolSwapTransition}
+                  >
+                    <div>
+                      <h2
+                        className="text-[32px] font-medium leading-[36px] tracking-[-2px] text-[#202020] lg:text-[40px] lg:leading-[44px]"
+                        style={sansStyle}
+                      >
+                        {activeToolName}
+                      </h2>
+
+                      <p
+                        className="mt-6 text-[18px] leading-8 text-[#202020]"
+                        style={sansStyle}
+                      >
+                        {activeToolDescription}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-x-8 gap-y-0 lg:grid-cols-3">
+                      {toolStoryRows.map((row, index) => (
+                        <div
+                          key={`${row.title}-${index}`}
+                          className="border-t border-[#202020]/16 py-7 first:pt-0 lg:border-t-0 lg:border-l lg:py-0 lg:pl-8 lg:first:border-l-0 lg:first:pl-0"
+                        >
+                          <div
+                            className="text-[12px] font-medium uppercase tracking-[0.2em] text-[#202020]"
+                            style={monoStyle}
+                          >
+                            ■ {String(index + 1).padStart(2, "0")}
+                          </div>
+
+                          <h3
+                            className="mt-5 text-[24px] font-medium leading-[1.05] tracking-[-0.04em] text-[#202020]"
+                            style={sansStyle}
+                          >
+                            {row.title}
+                          </h3>
+                          <p
+                            className="mt-4 text-[17px] leading-7 text-[#202020]"
+                            style={sansStyle}
+                          >
+                            {row.body}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="pt-24"
+              variants={shouldReduceMotion ? undefined : fadeUpVariants}
+            >
+              <SectionLabel title="/ Code" />
+
+              <div className="grid grid-cols-1 gap-y-10 pt-10 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-8 lg:pt-12">
+                <div>
+                  <div
+                    className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]/72"
+                    style={monoStyle}
+                  >
+                    / Integration
+                  </div>
+
+                  <p
+                    className="mt-5 max-w-[320px] text-[18px] leading-8 text-[#202020]"
+                    style={sansStyle}
+                  >
+                    Source code from the selected tool, shown here alongside the
+                    live version on the right.
+                  </p>
+                </div>
+
+                <div className="min-w-0 border border-[#202020] bg-[#fbfaf6]">
+                  <div
+                    className="h-[18px] border-b border-[#202020]"
+                    style={{
+                      backgroundImage:
+                        "radial-gradient(#202020 0.5px, transparent 0.5px)",
+                      backgroundPosition: "center",
+                      backgroundSize: "20px 20px",
+                    }}
+                  />
+
+                  <div className="flex items-center justify-between border-b border-[#202020] px-4 py-3">
+                    <div
+                      className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]"
+                      style={monoStyle}
+                    >
+                      / Source Code
+                    </div>
+                    <div
+                      className="bg-[#f0fb29] px-3 py-2 text-[12px] font-medium uppercase tracking-[0.18em] text-[#202020]"
+                      style={monoStyle}
+                    >
+                      {toolCodeSnippet ? "TypeScript" : "Snippet"}
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto bg-white p-4 sm:p-6">
+                    <AnimatePresence mode="wait" initial={false}>
+                      {toolCodeSnippet ? (
+                        <motion.div
+                          key={`code-${selectedToolId}`}
+                          initial={
+                            shouldReduceMotion ? false : { opacity: 0, y: 18 }
+                          }
+                          animate={
+                            shouldReduceMotion ? undefined : { opacity: 1, y: 0 }
+                          }
+                          exit={
+                            shouldReduceMotion ? undefined : { opacity: 0, y: -10 }
+                          }
+                          transition={shouldReduceMotion ? undefined : toolSwapTransition}
+                        >
+                          <Code
+                            framed={false}
+                            language="typescript"
+                            showCopy
+                            showLineNumbers={false}
+                          >
+                            {toolCodeSnippet.trim()}
+                          </Code>
+                        </motion.div>
+                      ) : (
+                        <motion.p
+                          key={`code-${selectedToolId}-empty`}
+                          className="text-[17px] leading-7 text-[#202020]"
+                          style={sansStyle}
+                          initial={
+                            shouldReduceMotion ? false : { opacity: 0, y: 18 }
+                          }
+                          animate={
+                            shouldReduceMotion ? undefined : { opacity: 1, y: 0 }
+                          }
+                          exit={
+                            shouldReduceMotion ? undefined : { opacity: 0, y: -10 }
+                          }
+                          transition={shouldReduceMotion ? undefined : toolSwapTransition}
+                        >
+                          Code examples for this tool will appear here.
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        <footer id="footer" className="border-t border-[#202020] bg-[#f5f5f5]">
+          <motion.div
+            className="mx-auto w-full max-w-[1920px] px-6 py-20 lg:px-16"
+            initial={shouldReduceMotion ? false : "hidden"}
+            whileInView={shouldReduceMotion ? undefined : "visible"}
+            viewport={shouldReduceMotion ? undefined : viewportOptions}
+            variants={shouldReduceMotion ? undefined : staggerParentVariants}
+          >
+            <motion.div
+              className="flex items-center gap-4 sm:items-end sm:gap-8"
+              variants={shouldReduceMotion ? undefined : fadeUpVariants}
+            >
+              <img
+                src="/buildnow-inv.svg"
+                alt="Buidl Now icon"
+                className="h-[56px] w-auto shrink-0 sm:h-[132px] lg:h-[160px]"
+              />
+              <img
+                src="/buidl-text.svg"
+                alt="Buidl Now text"
+                className="min-w-0 flex-1 max-w-[1280px]"
+              />
+            </motion.div>
+
+            <motion.div
+              className="mt-10 grid grid-cols-1 gap-y-12 border-t border-[#202020] pt-10 lg:grid-cols-[minmax(0,760px)_240px] lg:justify-between lg:gap-x-10 lg:pt-14"
+              variants={shouldReduceMotion ? undefined : fadeUpVariants}
+            >
+              <div>
+                <h2
+                  className="max-w-[760px] text-[40px] font-medium leading-[46px] tracking-[-2.5px] text-[#202020]"
+                  style={sansStyle}
+                >
+                  Keep every utility in one place and stay inside the build
+                  flow.
+                </h2>
+
+                <p
+                  className="mt-8 max-w-[560px] text-[18px] leading-8 text-[#202020]"
+                  style={sansStyle}
+                >
+                  Pick a tool, finish the check, copy what you need, and get
+                  back to the actual product work.
+                </p>
+              </div>
+
+              <div className="flex flex-col items-start gap-5 lg:items-end">
+                {footerActions.map((action) => (
+                  <ActionLink
+                    key={action.label}
+                    action={action}
+                    className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]"
+                    onInternalClick={scrollToTools}
+                  />
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="mt-16 flex flex-col gap-4 border-t border-[#202020]/16 pt-6 sm:flex-row sm:items-center sm:justify-between"
+              variants={shouldReduceMotion ? undefined : fadeUpVariants}
+            >
+              <span
+                className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]/72"
+                style={monoStyle}
+              >
+                Developer tools for builders who ship fast.
+              </span>
+
+              <span
+                className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#202020]/72"
+                style={monoStyle}
+              >
+                Built by{" "}
+                <a
+                  href="https://pzza.works"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[#202020]"
+                >
+                  berke
+                </a>
+              </span>
+            </motion.div>
+          </motion.div>
+        </footer>
       </div>
     </>
-  );
-}
-
-export default function Home() {
-  return (
-    <Suspense fallback={<HomeLoading />}>
-      <HomeContent />
-    </Suspense>
-  );
-}
-
-function HomeLoading() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4">
-      <div className="w-full max-w-xl">
-        <div className="h-12 bg-muted/20 rounded-md animate-pulse" />
-      </div>
-    </div>
   );
 }

@@ -2,17 +2,27 @@
 
 import { useState, useEffect } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneLight, oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {
+  materialLight,
+  materialOceanic,
+} from "react-syntax-highlighter/dist/esm/styles/prism";
 import { MdContentCopy, MdCheck, MdExpandMore, MdExpandLess } from "react-icons/md";
 
 interface CodeProps {
   children: string;
+  framed?: boolean;
   language?: string;
   showLineNumbers?: boolean;
   showCopy?: boolean;
 }
 
-export function Code({ children, language = "", showLineNumbers = true, showCopy = false }: CodeProps) {
+export function Code({
+  children,
+  language = "",
+  showLineNumbers = true,
+  showCopy = false,
+  framed = true,
+}: CodeProps) {
   const [copied, setCopied] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -45,7 +55,7 @@ export function Code({ children, language = "", showLineNumbers = true, showCopy
     <div className="relative">
       {/* Language Badge */}
       {language !== "" && (
-        <div className="absolute top-3 left-3 z-10 px-2.5 py-1 text-xs font-medium text-[var(--color-gray-400)] bg-[var(--color-gray-0)] rounded-lg">
+        <div className="absolute top-2 left-2 z-10 px-2 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--color-gray-500)] bg-[var(--color-gray-0)]">
           {language}
         </div>
       )}
@@ -55,30 +65,30 @@ export function Code({ children, language = "", showLineNumbers = true, showCopy
         <button
           type="button"
           onClick={handleCopy}
-          className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-[var(--color-gray-0)] border border-[var(--color-gray-200)] hover:bg-[var(--color-gray-50)] flex items-center justify-center transition-colors cursor-pointer"
+          className="absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center border border-[var(--color-gray-200)] bg-[var(--color-gray-0)] transition-colors cursor-pointer hover:bg-[var(--color-yellow-50)]"
           title={copied ? "Copied!" : "Copy to clipboard"}
         >
           {copied ? (
-            <MdCheck style={{ width: 18, height: 18, color: 'var(--color-green-500)' }} />
+            <MdCheck style={{ width: 16, height: 16, color: 'var(--color-green-500)' }} />
           ) : (
-            <MdContentCopy style={{ width: 18, height: 18 }} />
+            <MdContentCopy style={{ width: 16, height: 16 }} />
           )}
         </button>
       )}
 
       <SyntaxHighlighter
         language={language}
-        style={isDark ? oneDark : oneLight}
+        style={isDark ? materialOceanic : materialLight}
         showLineNumbers={showLineNumbers}
         wrapLongLines={false}
         customStyle={{
           margin: 0,
-          borderRadius: shouldCollapse ? "12px 12px 0 0" : "12px",
+          borderRadius: "0",
           background: "var(--color-gray-0)",
-          border: "1px solid var(--color-gray-200)",
+          border: framed ? "1px solid var(--color-gray-200)" : "0",
           fontSize: "0.8125rem",
-          padding: "1rem",
-          paddingTop: language !== "" || showCopy ? "3rem" : "1rem",
+          padding: "0.75rem",
+          paddingTop: language !== "" || showCopy ? "2.5rem" : "0.75rem",
           overflowX: "auto",
           maxWidth: "100%",
         }}
@@ -95,7 +105,13 @@ export function Code({ children, language = "", showLineNumbers = true, showCopy
       {shouldCollapse && (
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full px-4 py-3 text-sm font-medium text-[var(--color-gray-500)] bg-[var(--color-gray-0)] hover:bg-[var(--color-gray-50)] border border-t-0 border-[var(--color-gray-200)] rounded-b-[12px] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full px-4 py-3 text-sm font-medium text-[var(--color-gray-500)] bg-[var(--color-gray-0)] hover:bg-[var(--color-gray-50)] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+          style={{
+            borderLeft: framed ? "1px solid var(--color-gray-200)" : "0",
+            borderRight: framed ? "1px solid var(--color-gray-200)" : "0",
+            borderBottom: framed ? "1px solid var(--color-gray-200)" : "0",
+            borderTop: "0",
+          }}
         >
           {isExpanded ? (
             <>

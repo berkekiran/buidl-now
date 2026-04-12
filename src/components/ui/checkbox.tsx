@@ -19,10 +19,10 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           checked={checked}
           onChange={onChange}
           className={clsx(
-            "peer h-5 w-5 cursor-pointer appearance-none rounded-[var(--radius-6)] bg-[var(--color-gray-0)]",
+            "peer h-5 w-5 cursor-pointer appearance-none bg-[var(--color-gray-0)]",
             "border border-[var(--color-gray-300)]",
-            "checked:bg-[var(--color-blue-500)] checked:border-[var(--color-blue-500)]",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blue-500)]/20",
+            "checked:bg-[var(--color-yellow-500)] checked:border-[var(--color-yellow-500)]",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-yellow-400)]/25",
             "disabled:cursor-not-allowed disabled:opacity-50",
             "transition-all duration-200",
             className

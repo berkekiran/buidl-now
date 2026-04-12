@@ -12,15 +12,14 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         className={clsx(
           "inline-flex items-center justify-center gap-2 cursor-pointer font-medium transition-all duration-200",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blue-500)]/20",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-yellow-400)]/25",
           "disabled:pointer-events-none disabled:opacity-40",
-          "rounded-[var(--radius-12)]",
           // Variants
           variant === "primary" && [
             "bg-[var(--color-gray-0)] text-[var(--color-gray-950)]",
-            "border border-[var(--color-blue-500)]",
-            "shadow-[0_0_0_3px_rgba(51,92,255,0.2)]",
-            "hover:bg-[var(--color-blue-50)] active:bg-[var(--color-blue-100)]",
+            "border border-[var(--color-yellow-500)]",
+            "shadow-[0_0_0_3px_rgba(245,158,11,0.16)]",
+            "hover:bg-[var(--color-yellow-50)] active:bg-[var(--color-yellow-100)]",
           ],
           variant === "secondary" && [
             "bg-[var(--color-gray-0)] text-[var(--color-gray-950)]",
